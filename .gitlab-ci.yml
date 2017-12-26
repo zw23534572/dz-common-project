@@ -7,9 +7,9 @@ stages:
     - branch
     - trunk
 
-sonar_review:
-    stage: branch
-    script: "mvn package -U -Denforcer.skip=true --batch-mode verify sonar:sonar -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.host.url=$sonar_url -Dsonar.analysis.mode=preview -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME  -Dsonar.gitlab.project_id=$CI_PROJECT_ID"
+#sonar_review:
+#    stage: branch
+#    script: "mvn package -U -Denforcer.skip=true --batch-mode verify sonar:sonar -Dsonar.login=$sonar_login -Dsonar.password=$sonar_password -Dsonar.host.url=$sonar_url -Dsonar.analysis.mode=preview -Dsonar.gitlab.commit_sha=$CI_COMMIT_SHA -Dsonar.gitlab.ref_name=$CI_COMMIT_REF_NAME  -Dsonar.gitlab.project_id=$CI_PROJECT_ID"
 
 
 sonar:
