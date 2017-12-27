@@ -20,7 +20,11 @@ import java.util.Map;
 public class DatabaseMonitor extends Monitor {
 
 
-    private boolean dzMQ;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private boolean dzMQ;
 
     public DatabaseMonitor(Object obj) {
         super(obj);

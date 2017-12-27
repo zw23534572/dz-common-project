@@ -15,8 +15,8 @@ public enum CommonRespStatus {
         this.codeDesc = codeDesc;
     }
     
-    public int code;
-    public String codeDesc;
+    private int code;
+    private String codeDesc;
 
     public int getCode() {
         return code;

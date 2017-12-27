@@ -14,7 +14,7 @@ import com.dazong.common.resp.DataResponse;
  */
 public enum CommonErrors implements IErrors<DataResponse<?>> {
 //	SUCCESS(100, "成功"),
-	SUCCESS(CommonRespStatus.SUCCESS.code, "成功"),
+	SUCCESS(CommonRespStatus.SUCCESS.getCode(), "成功"),
 	ILLEGAL_PARAM(101, "参数[{0}]错误"),
 	SYSTEM_ERROR(199, "系统异常"),
 	DB_ERROR(501, "数据库异常：{0}");

@@ -32,9 +32,9 @@ public class SimpleMonitorServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleMonitorServlet.class);
 
-    private List<Monitor> monitorList;
+    private static List<Monitor> monitorList;
 
-    private Class clazz;
+    private static Class clazz;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);

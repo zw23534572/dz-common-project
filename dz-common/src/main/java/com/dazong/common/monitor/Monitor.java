@@ -1,14 +1,21 @@
 package com.dazong.common.monitor;
 
+import java.io.Serializable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Created by huqichao on 17/5/25.
  */
-public abstract class Monitor {
+public abstract class Monitor implements Serializable {
 
-    public static final int ERROR = 500;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public static final int ERROR = 500;
     public static final int SUCCESS = 200;
 
     public static final String NAME_DATABASE = "db";
