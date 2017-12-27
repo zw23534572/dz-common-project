@@ -26,9 +26,9 @@ public abstract class Monitor implements Serializable {
     public static final String NAME_TIME = "time";
 
 
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+    protected static Logger logger = LoggerFactory.getLogger(Monitor.class);
 
-    protected Object obj;
+    protected transient Object obj;
 
     public Monitor(Object obj){
         this.obj = obj;

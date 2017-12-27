@@ -75,11 +75,5 @@ public enum CommonErrors implements IErrors<DataResponse<?>> {
 		return message;
 	}
 	
-	public static void main(String[] args) {
-//		throw CommonErrors.SUCCESS.exp();
-//		throw CommonErrors.ILLEGAL_PARAM.exp("arg0");
-		System.out.println(JSON.toJSONString(CommonErrors.SUCCESS.parse()));
-		System.out.println(JSON.toJSONString(CommonErrors.ILLEGAL_PARAM.parse("arg0")));
-	}
 
 }
