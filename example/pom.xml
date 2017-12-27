@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.dazong.example</groupId>
+    <artifactId>example</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.6.RELEASE</version>
+    </parent>
+
+    <properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <lombok.version>1.16.18</lombok.version>
+        <mybatis.plus.version>2.1.2</mybatis.plus.version>
+        <elastic.job.version>2.1.5</elastic.job.version>
+        <reactor.version>2.0.8.RELEASE</reactor.version>
+        <mybatisplus.spring.boot.version>1.0.5</mybatisplus.spring.boot.version>
+        <curator.version>2.10.0</curator.version>
+        <clearing.version>1.0.0-SNAPSHOT</clearing.version>
+        <dz.pom.version>1.1-SNAPSHOT</dz.pom.version>
+        <orderNumber.version>3.0</orderNumber.version>
+        <clearing.version>1.0.0-SNAPSHOT</clearing.version>
+        <message-platform.version>1.0.3</message-platform.version>
+        <transaction.version>1.0.1</transaction.version>
+        <curator-test.version>1.3.3</curator-test.version>
+        <elasticjob-satrter.version>1.0.0-RELEASES</elasticjob-satrter.version>
+        <common.version>3.3.0-SNAPSHOT</common.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.dazong.pom</groupId>
+                <artifactId>dz-dependencies</artifactId>
+                <version>${dz.pom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+		<dependency>
+			  <groupId>com.dazong.message</groupId>
+			  <artifactId>message-client-sdk</artifactId>
+			  <version>${message-platform.version}</version>
+			</dependency>
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-springboot-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+		<dependency>
+			<groupId>com.dazong</groupId>
+			<artifactId>transaction</artifactId>
+			<version>${transaction.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-disconf-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-web-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-redis-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-fmeye-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-test-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.pom</groupId>
+            <artifactId>dz-jdbc-pom</artifactId>
+            <version>${dz.pom.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.common</groupId>
+            <artifactId>dz-common-util</artifactId>
+            <version>${common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dazong.common</groupId>
+            <artifactId>dz-common-web</artifactId>
+            <version>${common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatisplus-spring-boot-starter</artifactId>
+            <version>${mybatisplus.spring.boot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>${mybatis.plus.version}</version>
+        </dependency>
+
+        <!-- import elastic-job lite core -->
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-core</artifactId>
+            <version>${elastic.job.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-spring</artifactId>
+            <version>${elastic.job.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-bus</artifactId>
+            <version>${reactor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-client</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+		<dependency>
+		    <groupId>com.netflix.curator</groupId>
+		    <artifactId>curator-test</artifactId>
+		    <version>${curator-test.version}</version>
+		    <scope>test</scope>
+		</dependency>
+        
+		<dependency>
+			<groupId>com.dazong.clearing</groupId>
+			<artifactId>clearing-api</artifactId>
+			<version>${clearing.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.projectlombok</groupId>
+            		<artifactId>lombok</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+  <modules>
+    <module>example-client-sdk</module>
+    <module>example-domain</module>
+    <module>example-common</module>
+    <module>example-dao</module>
+    <module>example-manager</module>
+    <module>example-service</module>
+    <module>example-web</module>
+  </modules>
+</project>
