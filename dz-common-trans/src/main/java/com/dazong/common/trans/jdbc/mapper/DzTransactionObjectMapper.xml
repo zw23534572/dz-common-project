@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dazong.common.trans.jdbc.mapper.DzTransactionObjectMapper" >
+  <resultMap id="BaseResultMap" type="com.dazong.common.trans.support.DzTransactionObject" >
+    <id column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="rid" property="rid" jdbcType="VARCHAR" />
+    <result column="bussiness_id" property="bussinessId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="transaction_name" property="transactionName" jdbcType="VARCHAR" />
+    <result column="params" property="params" jdbcType="BLOB" />
+    <result column="retry_time" property="retryTime" jdbcType="BIGINT" />
+    <result column="retry_tally" property="retryTally" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="fmeye_id" property="fmeyeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    uid, pid, rid, bussiness_id, status, transaction_name, params, retry_time, retry_tally, remark, fmeye_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from dz_transaction
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from dz_transaction
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.dazong.common.trans.support.DzTransactionObject" >
+    insert into dz_transaction (uid, pid, rid, 
+      bussiness_id, status, transaction_name, 
+      params, retry_time, retry_tally,
+      remark, fmeye_id
+      )
+    values (#{uid,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, #{rid,jdbcType=VARCHAR}, 
+      #{bussinessId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{transactionName,jdbcType=VARCHAR}, 
+      #{params,jdbcType=BLOB}, #{retryTime,jdbcType=BIGINT}, #{retryTally,jdbcType=INTEGER},
+      #{remark,jdbcType=VARCHAR},#{fmeyeId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dazong.common.trans.support.DzTransactionObject" >
+    insert into dz_transaction
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="rid != null" >
+        rid,
+      </if>
+      <if test="bussinessId != null" >
+        bussiness_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="transactionName != null" >
+        transaction_name,
+      </if>
+      <if test="params != null" >
+        params,
+      </if>
+      <if test="retryTime != null" >
+        retry_time,
+      </if>
+      <if test="retryTally != null" >
+        retry_tally,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="fmeyeId != null" >
+        fmeye_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        #{rid,jdbcType=VARCHAR},
+      </if>
+      <if test="bussinessId != null" >
+        #{bussinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="transactionName != null" >
+        #{transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null" >
+        #{params,jdbcType=BLOB},
+      </if>
+      <if test="retryTime != null" >
+        #{retryTime,jdbcType=BIGINT},
+      </if>
+      <if test="retryTally != null" >
+        #{retryTally,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="fmeyeId != null" >
+        #{fmeyeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dazong.common.trans.support.DzTransactionObject" >
+    update dz_transaction
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=VARCHAR},
+      </if>
+      <if test="bussinessId != null" >
+        bussiness_id = #{bussinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="transactionName != null" >
+        transaction_name = #{transactionName,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null" >
+        params = #{params,jdbcType=BLOB},
+      </if>
+      <if test="retryTime != null" >
+        retry_time = #{retryTime,jdbcType=BIGINT},
+      </if>
+      <if test="retryTally != null" >
+        retry_tally = #{retryTally,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="fmeyeId != null" >
+        fmeye_id = #{fmeyeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dazong.common.trans.support.DzTransactionObject" >
+    update dz_transaction
+    set pid = #{pid,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=VARCHAR},
+      bussiness_id = #{bussinessId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      transaction_name = #{transactionName,jdbcType=VARCHAR},
+      params = #{params,jdbcType=BLOB},
+      retry_time = #{retryTime,jdbcType=BIGINT},
+      retry_tally = #{retryTally,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      fmeye_id = #{fmeyeId,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByRid" parameterType="java.lang.String" >
+    delete from dz_transaction
+    where rid = #{rid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteAllChildTransaction" parameterType="java.lang.String" >
+    delete from dz_transaction
+    where rid = #{rid,jdbcType=VARCHAR} and uid != #{rid,jdbcType=VARCHAR}
+  </delete>
+  <select id="queryTransactionsByRid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+     uid, pid, rid
+    from dz_transaction
+    where rid = #{rid,jdbcType=VARCHAR}
+  </select>
+  <select id="queryTimeoutTransactions" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT
+		t.*
+	FROM
+		dz_transaction t
+	LEFT JOIN dz_transaction p ON t.pid = p.uid
+	WHERE
+		t.retry_time &lt; UNIX_TIMESTAMP(now())* 1000
+	AND (p.uid IS NULL OR p.`STATUS` != 10)
+	and t.`STATUS` = 10
+	order by t.retry_time
+	LIMIT #{retryBatchSize}
+  </select>
+  <delete id="deleteByBussinessId" parameterType="java.lang.String" >
+    delete from dz_transaction
+    where bussiness_id = #{bussinessId,jdbcType=VARCHAR}
+  </delete>
+  <select id="queryBussinessIdQueue" resultMap="BaseResultMap" >
+    select 
+      distinct bussiness_id
+    from dz_transaction
+    where status = 0
+  </select>
+</mapper>
