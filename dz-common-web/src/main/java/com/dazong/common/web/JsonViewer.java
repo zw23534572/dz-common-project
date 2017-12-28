@@ -10,6 +10,11 @@ import org.springframework.web.servlet.view.AbstractView;
 
 import com.alibaba.fastjson.JSON;
 
+/**
+ * 
+ * @author luobinwen
+ *
+ */
 public class JsonViewer extends AbstractView {
 
 	@Override

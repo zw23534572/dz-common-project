@@ -51,10 +51,14 @@ dz-pom(基础pom)
 
 2、dz-common-trans  分布式事务
 重组之前的dz-universal-chain和DzTransaction项目，完整的最终一致性，应该包含服务端幂等和客户端重试。
-
+客户端重试，通过注解方式  
+@AutoRetry
+@Idempotent(id="#order.txid")
+@Idempotent(func="#order.txid")
 
 3、dz-common-lock  分布式锁
 以cc-commons-lock为蓝本
+@Locking(id="#breakOrderAddDto.receiptNo",module= ZkLockConstants.RECEIPT_PREFIX_LOCK)
 
 4、dz-common-mq  可靠消息封装
 以dz-mq 为蓝本
@@ -79,5 +83,36 @@ dz-pom(基础pom)
 10、dz-common-elasticjob-starter 封装elasticjob通过spring starter方式调用
 https://git.dazong.com/TradeDept/elasticjob-spring-boot-starter
 
+
+```
+
+# 分工
+
+| 项目|负责人 | 备注
+|-------|------|------|
+| dz-pom项目 |其超|不迁移，直接用|
+| dz-common |斌文|
+| dz-common-trans |杨辉、志远|
+| dz-common-lock |俊雄|
+| dz-common-mq |其超、臧斌|
+| dz-common-fileserver |官旭、臧斌|
+| dz-common-fegin-interface |紫依|
+| dz-common-web |周伟|
+| dz-common-cache |审霖|
+| dz-common-elasticjob-starter |杨辉|
+| dz-project-example |all developer|使用示例，相关特性、用法，都加到这个项目，此项目为标准模板
+| auto-create-project|其超|自动创建项目，自动创建业务项目
+| 单号服务|俊雄|自动创建项目，自动创建业务项目
+
+# 基本流程（部门开发规范简略版）
+```
+用其超的dz-mq举例
+
+需要做以下几件事。
+1、一个项目README.md 要大致描述原理，数据流等
+2、完成代码开发或迁移
+3、编写单元测试，代码覆盖率80%？
+4、解决sonar扫描出来的所有问题（框架要求严点，坏味道也不要放过）
+5、在dz-project-example项目里面编写至少一个使用示例
 
 ```

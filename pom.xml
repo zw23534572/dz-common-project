@@ -25,6 +25,7 @@
 		<module>dz-common-trans</module>
 		<module>dz-common-web</module>
 		<module>dz-common-fegin-interface</module>
+		<module>dz-project-example</module>
 	</modules>
 	
 	<distributionManagement>

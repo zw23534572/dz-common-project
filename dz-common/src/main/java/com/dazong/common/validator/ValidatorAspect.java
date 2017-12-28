@@ -1,7 +1,7 @@
 package com.dazong.common.validator;
 
 import com.dazong.common.exceptions.CommonErrors;
-import com.dazong.common.exceptions.FmValidateException;
+import com.dazong.common.exceptions.ArgsException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.hibernate.validator.HibernateValidator;
@@ -43,7 +43,7 @@ public class ValidatorAspect {
         Object[] args = pjp.getArgs();
         Set<ConstraintViolation<Object>> violations = executableValidator.validateParameters(target, method, args);
         if (!violations.isEmpty()) {
-            throw new FmValidateException(CommonErrors.ILLEGAL_PARAM.getCode(), getViolationMsg(violations));
+            throw new ArgsException(CommonErrors.ILLEGAL_PARAM.getCode(), getViolationMsg(violations));
         }
 
         Object retVal = pjp.proceed();

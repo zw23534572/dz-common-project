@@ -8,6 +8,11 @@ import com.dazong.common.util.DateFormatUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * 
+ * @author luobinwen
+ *
+ */
 public class JsonObjectMapperFactoryBean implements FactoryBean<ObjectMapper> {
 
     @Override

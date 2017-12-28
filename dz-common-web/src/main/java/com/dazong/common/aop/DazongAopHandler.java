@@ -34,11 +34,13 @@ public class DazongAopHandler {
         ResultCode resultCode = pjp.getTarget().getClass().getAnnotation(ResultCode.class);
         Object retVal;
         try {
-            Object returnValue = pjp.proceed(); // 接口返回对象的内容
+        	// 接口返回对象的内容
+            Object returnValue = pjp.proceed(); 
             // 如果返回的已经是包装类(是CommonResponse子孙类),则直接返回
             if (returnValue != null && CommonResponse.class.isAssignableFrom(returnValue.getClass())) {
                 retVal = returnValue;
-            }else { // 如果不是包装类,则包装后返回给前端
+            }else {
+            	// 如果不是包装类,则包装后返回给前端
                 if(resultCode != null) {
                     retVal = new DataResponse(resultCode.success(),"处理成功",returnValue);
                 }else {

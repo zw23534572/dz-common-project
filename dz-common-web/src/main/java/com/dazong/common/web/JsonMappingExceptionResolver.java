@@ -12,6 +12,11 @@ import com.dazong.common.exceptions.BusinessException;
 import com.dazong.common.resp.CommonRespStatus;
 import com.dazong.common.resp.CommonResponse;
 
+/**
+ * 
+ * @author luobinwen
+ *
+ */
 public class JsonMappingExceptionResolver extends SimpleMappingExceptionResolver {
 	private static final Logger log = LoggerFactory.getLogger(JsonMappingExceptionResolver.class);
 
