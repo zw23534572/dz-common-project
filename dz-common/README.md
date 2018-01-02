@@ -10,6 +10,7 @@
 system_code=88
 ```
 * 代码中使用
+
 ```java
 public class StartupServer {
     public static void main(String[] args) {
@@ -24,7 +25,10 @@ public class StartupServer {
 
 ```
 
+
 ### 2、状态、异常、响应（response）对应关系
+
+
 
 ```java
 //所有状态都基于IResultStatus接口
