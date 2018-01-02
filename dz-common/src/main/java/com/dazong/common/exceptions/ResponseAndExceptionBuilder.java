@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.dazong.common.IErrors;
 import com.dazong.common.resp.DataResponse;
 
 /**

@@ -1,8 +1,8 @@
 package com.dazong.common.aop;
 
 import com.alibaba.fastjson.JSON;
+import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.BusinessException;
-import com.dazong.common.resp.CommonRespStatus;
 import com.dazong.common.resp.CommonResponse;
 import com.dazong.common.resp.DataResponse;
 import org.aspectj.lang.JoinPoint;
@@ -42,9 +42,9 @@ public class DazongAopHandler {
             }else {
             	// 如果不是包装类,则包装后返回给前端
                 if(resultCode != null) {
-                    retVal = new DataResponse(resultCode.success(),"处理成功",returnValue);
+                    retVal = new DataResponse<>(resultCode.success(),"处理成功",returnValue);
                 }else {
-                    retVal = new DataResponse(returnValue);
+                    retVal = new DataResponse<>(returnValue);
                 }
             }
         } catch (Throwable exception) {
@@ -52,12 +52,12 @@ public class DazongAopHandler {
             // 如果异常是大宗基础异常类的子孙类
             if(BusinessException.class.isAssignableFrom(exception.getClass())) {
                 BusinessException resultException = (BusinessException)exception;
-                retVal = new DataResponse(resultException.getCode(), resultException.getMessage());
+                retVal = new CommonResponse(resultException);
             }else {
                 if(resultCode != null) {
-                    retVal = new DataResponse(resultCode.fail(), "处理失败");
+                    retVal = new CommonResponse(resultCode.fail(), "处理失败");
                 }else {
-                    retVal = CommonRespStatus.FAIL.wapperResponse();
+                    retVal = new CommonResponse(CommonStatus.ERROR);
                 }
             }
         }

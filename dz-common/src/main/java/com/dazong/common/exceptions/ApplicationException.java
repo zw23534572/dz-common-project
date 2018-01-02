@@ -3,6 +3,8 @@ package com.dazong.common.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dazong.common.IResultStatus;
+
 /**
  * 异常基类，扩展了异常码code 与 异常参数 args
  * 
@@ -25,6 +27,10 @@ public abstract class ApplicationException extends RuntimeException {
 
     public ApplicationException() {
         super();
+    }
+    
+    public ApplicationException(IResultStatus status){
+    	this(status.getCode(),status.getMessage());
     }
 
     public ApplicationException(String message) {

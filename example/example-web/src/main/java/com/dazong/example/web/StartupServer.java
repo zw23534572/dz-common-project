@@ -1,7 +1,8 @@
 package com.dazong.example.web;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
-import com.dazong.common.validator.EnableValiadtor;
+import com.dazong.common.ApplicationInfo;
+import com.dazong.common.annotation.EnableValiadtor;
 import com.dazong.common.web.monitor.SimpleMonitorServlet;
 
 import org.apache.curator.framework.CuratorFramework;
@@ -64,6 +65,11 @@ public class StartupServer {
 	@Bean
 	public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
 		return new RestTemplate(factory);
+	}
+	
+	@Bean
+	public ApplicationInfo applicationInfo(){
+		return new ApplicationInfo();
 	}
 
 	@Bean

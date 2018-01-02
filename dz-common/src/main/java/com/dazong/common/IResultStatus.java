@@ -1,4 +1,4 @@
-package com.dazong.common.resp;
+package com.dazong.common;
 
 public interface IResultStatus  {
     /**

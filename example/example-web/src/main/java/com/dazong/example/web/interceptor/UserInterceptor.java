@@ -43,7 +43,7 @@ public class UserInterceptor implements HandlerInterceptor {
          */
         if (EnvironmentCache.getUserInfo() == null) {
             logger.info("{},User {} is not exist.", request.getRequestURI(),userId);
-            DataResponse<?> wrapper = new DataResponse<>(ResultEnum.USER_IS_NOT_EXIST.getCode(), ResultEnum.USER_IS_NOT_EXIST.getMsg());
+            DataResponse<?> wrapper = new DataResponse<>(ResultEnum.USER_IS_NOT_EXIST);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             response.getWriter().write(JSON.toJSONString(wrapper));
