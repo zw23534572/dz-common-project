@@ -25,6 +25,7 @@ public class StartupServer {
 ```
 
 ### 2、状态、异常、响应（response）对应关系
+
 ```java
 //所有状态都基于IResultStatus接口
 public interface IResultStatus  {
@@ -41,6 +42,7 @@ public interface IResultStatus  {
 	public String getMessage();
 }
 
+//common中公共定义
 public enum CommonStatus implements IResultStatus {
 
 	/**
@@ -61,6 +63,16 @@ public enum CommonStatus implements IResultStatus {
 	ERROR(500, "系统错误！{0}")
 }
 
+//业务系统使用举例，例如helios
+public enum ResultEnum implements IResultStatus {
+	
+	SUCCESS(150200,"成功"),
+    FAIL(150500,"失败"),
+    USER_IS_NOT_EXIST(150101,"用户不存在！")
+	;
+}
+
+
 //直接使用异常包装状态，如果设置系统码为88，客户端响应为88500，未设置则为500
 ApplicationException e=new ApplicationException(CommonStatus.ERROR);
 
@@ -70,24 +82,24 @@ CommonResponse response=new CommonResponse(e);
 //使用响应包装状态码
 CommonResponse response=new CommonResponse(CommonStatus.ERROR);
 
-//业务系统使用举例
-public enum ResultEnum implements IResultStatus {
-	
-	SUCCESS(150200,"成功"),
-    FAIL(150500,"失败"),
-    USER_IS_NOT_EXIST(150101,"用户不存在！")
-	;
-}
 
+//业务系统中，基于业务系统中定义的状态枚举，抛出异常
 throw new BusinessException(ResultEnum.SUCCESS);
 
-//给共用的状态拼接系统码
+
+
+```
+
+### 3、给公用的状态拼接系统码
+
+```java
+
 CommonStatus.ERROR.getCode();//值是500
 CommonStatus.ERROR.joinSystemStatusCode().getCode();//举例，如果系统码是88，值是88500
 
 ```
 
-### Valiadtor(基于JSR 349 Bean Validation 1.1，HibernateValidator实现)
+### 4、Valiadtor(基于JSR 349 Bean Validation 1.1，HibernateValidator实现)
 
 > 如果使用参数验证，所有参数验证失败的状态码都是101,如果设置系统码则为88101，{"msg": "getUser.arg0.userId必须为null","code": 88101}
 
