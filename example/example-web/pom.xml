@@ -29,5 +29,17 @@
             <artifactId>example-common</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.dazong.example</groupId>
+            <artifactId>example-common</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        
+        <dependency>
+        <groupId>com.dazong.common</groupId>
+		<artifactId>dz-common</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

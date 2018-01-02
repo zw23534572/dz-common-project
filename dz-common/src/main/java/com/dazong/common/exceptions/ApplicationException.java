@@ -21,7 +21,7 @@ public abstract class ApplicationException extends RuntimeException {
     /**
      * 异常信息的参数
      */
-    protected Object[] args;
+    protected transient  Object[] args;
 
     public ApplicationException() {
         super();
@@ -81,11 +81,10 @@ public abstract class ApplicationException extends RuntimeException {
     }
     
     /**
-     *  TODO ???? 
      * @return
      */
     public Map<String, Object> toMap(){
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>(2);
         map.put("code", this.code);
         map.put("msg", this.getMessage());
         return map;

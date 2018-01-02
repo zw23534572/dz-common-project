@@ -2,6 +2,9 @@ package com.dazong.example.domain;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+
+import javax.validation.constraints.Null;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -13,6 +16,7 @@ public class UserInfo {
 	private String id;
 	
 	/** 用户编号 入参时使用*/
+	@Null
 	@JSONField(name = "user_id")
 	private String userId;
 

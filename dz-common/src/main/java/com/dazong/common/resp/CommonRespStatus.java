@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum CommonRespStatus {
+public enum CommonRespStatus  implements IResultStatus{
     
     SUCCESS(200,"成功"),
     FAIL(400,"处理失败！{0}"),
@@ -59,4 +59,10 @@ public enum CommonRespStatus {
     public CommonResponse wapperResponse(String msg){
     	return new CommonResponse(code,msg);
     }
+
+	@Override
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

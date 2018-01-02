@@ -21,5 +21,4 @@ public @interface NotNull {
 	int code();
 
 	String message() default "";
-
 }

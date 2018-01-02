@@ -1,5 +1,7 @@
 target/
 .idea/
+.sts4-cache/
+.vscode/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup

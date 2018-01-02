@@ -1,6 +1,7 @@
 package com.dazong.example.web;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
+import com.dazong.common.validator.EnableValiadtor;
 import com.dazong.common.web.monitor.SimpleMonitorServlet;
 
 import org.apache.curator.framework.CuratorFramework;
@@ -29,75 +30,79 @@ import javax.annotation.PreDestroy;
  */
 @EnableTransactionManagement
 @SpringBootApplication
-@ImportResource(locations={"classpath:application-bean.xml"})
-@ComponentScan({"com.dazong.example","com.dazong.common.aop"})
+@ImportResource(locations = { "classpath:application-bean.xml" })
+@ComponentScan({ "com.dazong.example", "com.dazong.common.aop" })
 @MapperScan("com.dazong.example.dao.mapper*")
+@EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
 public class StartupServer {
 
-    private Logger logger = LoggerFactory.getLogger(StartupServer.class);
+	private Logger logger = LoggerFactory.getLogger(StartupServer.class);
 
-    @Autowired
-    private CuratorFramework curatorFramework;
+	@Autowired
+	private CuratorFramework curatorFramework;
 
-    public static void main(String[] args) {
-    	System.setProperty("org.terracotta.quartz.skipUpdateCheck","true");
-        System.setProperty("dubbo.application.logger","slf4j");
-        SpringApplication.run(StartupServer.class, args);
+	public static void main(String[] args) {
+		System.setProperty("org.terracotta.quartz.skipUpdateCheck", "true");
+		System.setProperty("dubbo.application.logger", "slf4j");
+		SpringApplication.run(StartupServer.class, args);
 
-    }
+	}
 
-    @PreDestroy
-    public void shutdown(){
-        logger.info("Web server shutdown");
-        curatorFramework.close();
-    }
+	@PreDestroy
+	public void shutdown() {
+		logger.info("Web server shutdown");
+		curatorFramework.close();
+	}
 
-    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor page = new PaginationInterceptor();
-        page.setDialectType("mysql");
-        return page;
-    }
+	@Bean
+	public PaginationInterceptor paginationInterceptor() {
+		PaginationInterceptor page = new PaginationInterceptor();
+		page.setDialectType("mysql");
+		return page;
+	}
 
-    @Bean
-    public RestTemplate restTemplate(ClientHttpRequestFactory factory){
-        return new RestTemplate(factory);
-    }
+	@Bean
+	public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
+		return new RestTemplate(factory);
+	}
 
-    @Bean
-    public CuratorFramework curatorFramework(@Value("${zk.host}") final String serverList){
-        CuratorFramework cf = CuratorFrameworkFactory.newClient(serverList, new RetryNTimes(10,5000));
-        cf.start();
-        return cf;
-    }
+	@Bean
+	public CuratorFramework curatorFramework(@Value("${zk.host}") final String serverList) {
+		CuratorFramework cf = CuratorFrameworkFactory.newClient(serverList, new RetryNTimes(10, 5000));
+		cf.start();
+		return cf;
+	}
 
-    @Bean
-    public ClientHttpRequestFactory simpleClientHttpRequestFactory(){
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setReadTimeout(5000);//ms
-        factory.setConnectTimeout(15000);//ms
-        return factory;
-    }
+	@Bean
+	public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
+		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+		factory.setReadTimeout(5000);// ms
+		factory.setConnectTimeout(15000);// ms
+		return factory;
+	}
 
-    /**
-     * 初始化统一检测servlet
-     * @return
-     */
-    @Bean
-    public SimpleMonitorServlet simpleMonitorServlet(){
-        return new SimpleMonitorServlet();
-    }
+	/**
+	 * 初始化统一检测servlet
+	 * 
+	 * @return
+	 */
+	@Bean
+	public SimpleMonitorServlet simpleMonitorServlet() {
+		return new SimpleMonitorServlet();
+	}
 
-    /**
-     * 将统一检测servlet注入到spring boot中
-     * @param simpleMonitorServlet 统一检测servlet
-     * @return
-     */
-    @Bean
-    public ServletRegistrationBean simpleMonitorServletRegistrationBean(SimpleMonitorServlet simpleMonitorServlet){
-        ServletRegistrationBean registration = new ServletRegistrationBean(simpleMonitorServlet);
-        registration.setEnabled(true);
-        registration.addUrlMappings("/simpleMonitor");
-        return registration;
-    }
+	/**
+	 * 将统一检测servlet注入到spring boot中
+	 * 
+	 * @param simpleMonitorServlet
+	 *            统一检测servlet
+	 * @return
+	 */
+	@Bean
+	public ServletRegistrationBean simpleMonitorServletRegistrationBean(SimpleMonitorServlet simpleMonitorServlet) {
+		ServletRegistrationBean registration = new ServletRegistrationBean(simpleMonitorServlet);
+		registration.setEnabled(true);
+		registration.addUrlMappings("/simpleMonitor");
+		return registration;
+	}
 }

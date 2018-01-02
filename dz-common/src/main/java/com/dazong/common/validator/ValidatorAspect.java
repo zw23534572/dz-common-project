@@ -1,7 +1,8 @@
 package com.dazong.common.validator;
 
 import com.dazong.common.exceptions.CommonErrors;
-import com.dazong.common.exceptions.ArgsException;
+import com.dazong.common.exceptions.ArgumetException;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.hibernate.validator.HibernateValidator;
@@ -34,7 +35,7 @@ public class ValidatorAspect {
         }
         executableValidator = validatorFactory.getValidator().forExecutables();
     }
-
+    
     public Object aroundAdvice(ProceedingJoinPoint pjp) throws Throwable {
         // 方法参数校验
         MethodSignature ms = (MethodSignature) pjp.getSignature();
@@ -43,7 +44,7 @@ public class ValidatorAspect {
         Object[] args = pjp.getArgs();
         Set<ConstraintViolation<Object>> violations = executableValidator.validateParameters(target, method, args);
         if (!violations.isEmpty()) {
-            throw new ArgsException(CommonErrors.ILLEGAL_PARAM.getCode(), getViolationMsg(violations));
+            throw new ArgumetException(CommonErrors.ILLEGAL_PARAM.getCode(), getViolationMsg(violations));
         }
 
         Object retVal = pjp.proceed();
