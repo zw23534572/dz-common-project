@@ -7,7 +7,7 @@ import com.dazong.common.IResultStatus;
  * 
  * @author luobw
  */
-public class ArgumetException extends BusinessException {
+public class ArgumetException extends ApplicationException {
 
 	/**
 	 * 

@@ -18,13 +18,13 @@ public class ApplicationInfo {
 
 	@Value("${system_code}")
 	public void setApplicationInfo(Integer systemCode) {
-		info.systemCode = systemCode;
+		INFO.systemCode = systemCode;
 	}
 
-	private static final ApplicationInfo info = new ApplicationInfo();
+	private static final ApplicationInfo INFO = new ApplicationInfo();
 
 	public static ApplicationInfo instance() {
-		return info;
+		return INFO;
 	}
 
 }

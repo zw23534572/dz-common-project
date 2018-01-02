@@ -10,18 +10,6 @@ public class PlatformException extends ApplicationException {
 
 	private static final long serialVersionUID = 1L;
 
-	public PlatformException() {
-		super();
-	}
-
-	public PlatformException(String message) {
-		super(message);
-	}
-
-	public PlatformException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
 	public PlatformException(String message, Object[] args) {
 		super(message, args);
 	}

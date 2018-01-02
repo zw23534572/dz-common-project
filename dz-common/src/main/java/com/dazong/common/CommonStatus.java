@@ -23,16 +23,15 @@ public enum CommonStatus implements IErrors<DataResponse<?>> {
 	/**
 	 * 成功
 	 */
-	SUCCESS(200, "成功"), 
+	SUCCESS(200, "成功"),
 	/**
 	 * 处理失败
 	 */
-	FAIL(400, "处理失败！{0}"), 
+	FAIL(400, "处理失败！{0}"),
 	/**
 	 * 系统错误
 	 */
-	ERROR(500, "系统错误！{0}")
-	;
+	ERROR(500, "系统错误！{0}");
 
 	private int code;
 	private String message;
@@ -91,14 +90,14 @@ public enum CommonStatus implements IErrors<DataResponse<?>> {
 	}
 
 	public IResultStatus joinSystemStatusCode() {
-		Integer code = Integer.parseInt(ApplicationInfo.instance().getSystemCode() + "" + this.code);
-		return new ResultStatus(code, this.message);
+		Integer fullCode = Integer.parseInt(Integer.toString(ApplicationInfo.instance().getSystemCode()) + this.code);
+		return new ResultStatus(fullCode, this.message);
 
 	}
-	
+
 	public IResultStatus joinSystemStatusCode(String message) {
-		Integer code = Integer.parseInt(ApplicationInfo.instance().getSystemCode() + "" + this.code);
-		return new ResultStatus(code, message);
+		Integer fullCode = Integer.parseInt(Integer.toString(ApplicationInfo.instance().getSystemCode()) + this.code);
+		return new ResultStatus(fullCode, message);
 
 	}
 

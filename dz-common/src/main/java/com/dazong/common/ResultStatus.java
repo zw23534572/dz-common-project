@@ -1,5 +1,10 @@
 package com.dazong.common;
 
+/**
+ * 一般ResultStatus
+ * @author luobinwen
+ *
+ */
 public class ResultStatus implements IResultStatus {
 
 	private int code;

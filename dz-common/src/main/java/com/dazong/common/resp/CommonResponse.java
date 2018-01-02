@@ -59,7 +59,7 @@ public class CommonResponse implements Serializable {
 	}
 
 	public Map<String, Object> toMapModel() {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>(2);
 		map.put("code", retCode);
 		map.put("msg", retMsg);
 		return map;

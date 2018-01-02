@@ -4,6 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.IResultStatus;
 
+/**
+ * 
+ * @author luobinwen
+ *
+ * @param <T>
+ */
 public class DataResponse<T> extends CommonResponse {
 
 	private static final long serialVersionUID = -4197769202915890604L;

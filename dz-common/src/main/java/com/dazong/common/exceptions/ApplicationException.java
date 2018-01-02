@@ -18,27 +18,15 @@ public abstract class ApplicationException extends RuntimeException {
     /**
      * 异常错误码
      */
-    protected Integer code;
+    protected final Integer code;
 
     /**
      * 异常信息的参数
      */
     protected transient  Object[] args;
-
-    public ApplicationException() {
-        super();
-    }
-    
+  
     public ApplicationException(IResultStatus status){
     	this(status.getCode(),status.getMessage());
-    }
-
-    public ApplicationException(String message) {
-        super(message);
-    }
-
-    public ApplicationException(String message, Throwable cause) {
-        super(message, cause);
     }
 
     public ApplicationException(String message, Object[] args) {

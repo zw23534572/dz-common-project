@@ -2,13 +2,35 @@ package com.dazong.common.resp;
 
 import java.util.List;
 
+/**
+ * 
+ * @author luobinwen
+ *
+ * @param <T>
+ */
 public class PagedDataResponse<T> extends CommonResponse {
 
     private static final long serialVersionUID = 1L;
-    private int page_size; // 每页大小
-    private int page_no; // 当前页。第一页是1
-    private int total_item; // 总记录数
-    private int total_page; // 总页数
+    
+    /**
+     * 每页大小
+     */
+    private int page_size;
+    
+    /**
+     * 当前页。第一页是1
+     */
+    private int page_no;
+    
+    /**
+     * 总记录数
+     */
+    private int total_item;
+    
+    /**
+     * 总页数
+     */
+    private int total_page;
 
     private List<T> data;
 
