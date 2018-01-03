@@ -65,13 +65,6 @@ public class StartupServer {
 		return new ApplicationInfo();
 	}
 
-	@Bean
-	public CuratorFramework curatorFramework(@Value("${zk.host}") final String serverList) {
-		CuratorFramework cf = CuratorFrameworkFactory.newClient(serverList, new RetryNTimes(10, 5000));
-		cf.start();
-		return cf;
-	}
-
 	/**
 	 * 初始化统一检测servlet
 	 * 
