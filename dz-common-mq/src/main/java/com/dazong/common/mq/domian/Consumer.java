@@ -8,6 +8,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+/**
+ * @author huqichao
+ * @date 2017-10-30 15:31
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper=true)

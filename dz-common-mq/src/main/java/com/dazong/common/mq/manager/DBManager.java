@@ -11,11 +11,12 @@ import javax.sql.DataSource;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
  * @author huqichao
- * @create 2017-10-30 19:49
+ * @date 2017-10-30 19:49
  **/
 @Component
 public class DBManager {
@@ -25,7 +26,7 @@ public class DBManager {
     @Autowired
     private DataSource dataSource;
 
-    public TableInfo selectTable(String dbName, String tableName) throws Exception {
+    public TableInfo selectTable(String dbName, String tableName) throws SQLException {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -65,11 +66,11 @@ public class DBManager {
         }
     }
 
-    public void executeSqlFile(Reader reader) throws Exception {
+    public void executeSqlFile(Reader reader) throws SQLException {
         executeSqlFile(reader, false, null, 0);
     }
 
-    public void executeSqlFile(Reader reader, boolean updateVersion, TableInfo tableInfo, int version) throws Exception {
+    public void executeSqlFile(Reader reader, boolean updateVersion, TableInfo tableInfo, int version) throws SQLException {
         ScriptRunner runner = null;
         try {
             Connection conn = dataSource.getConnection();
@@ -90,7 +91,7 @@ public class DBManager {
         }
     }
 
-    private void updateTableVersion(Connection conn, TableInfo tableInfo, int version) throws Exception {
+    private void updateTableVersion(Connection conn, TableInfo tableInfo, int version) throws SQLException {
         Statement stmt = conn.createStatement();
         String sql = String.format("ALTER TABLE `%s`.`%s` COMMENT='%s';",
                 tableInfo.getDbName(), tableInfo.getTableName(), tableInfo.getComment(version));

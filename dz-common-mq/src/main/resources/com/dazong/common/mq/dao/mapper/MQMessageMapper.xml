@@ -72,7 +72,7 @@
         update dz_mq_consumer set notify_count=notify_count+1, last_notify_time=now(3) where id=#{id}
     </update>
 
-    <update id="updateStatusById">
+    <update id="updateConsumerMessageStatusById">
         update dz_mq_consumer set status=#{status} where id=#{id}
     </update>
 

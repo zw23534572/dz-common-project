@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author huqichao
- * @create 2017-11-06 15:30
+ * @date 2017-11-06 15:30
  **/
 public class Message {
 
@@ -29,7 +29,7 @@ public class Message {
 
     public void acknowledge(){
         try {
-            messageMapper.updateStatusById(id, DZConsumerMessage.STATUS_DONE);
+            messageMapper.updateConsumerMessageStatusById(id, DZConsumerMessage.STATUS_DONE);
             logger.debug("ack event id: {}", id);
         } catch (Exception e) {
             throw new MQException("ack fail: %s", id);
