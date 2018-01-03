@@ -3,12 +3,12 @@ package com.dazong.common.web.monitor;
 import org.springframework.jms.core.JmsTemplate;
 
 import com.dazong.common.monitor.CheckResult;
-import com.dazong.common.monitor.Monitor;
+import com.dazong.common.monitor.BaseMonitor;
 
 /**
  * Created by huqichao on 17/5/25.
  */
-public class MQMonitor extends Monitor {
+public class MQMonitor extends BaseMonitor {
 
 
     public MQMonitor(Object obj) {

@@ -8,7 +8,7 @@ import com.dazong.common.IResultStatus;
  * @author wzy
  * 
  */
-public class PlatformException extends ApplicationException {
+public class PlatformException extends BaseApplicationException {
 
 	private static final long serialVersionUID = 1L;
 

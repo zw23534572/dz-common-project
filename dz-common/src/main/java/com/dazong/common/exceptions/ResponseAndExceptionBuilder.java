@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.dazong.common.IErrors;
-import com.dazong.common.resp.DataResponse;
+import com.dazong.common.resp.CommonResponse;
 
 /**
  * 返回对象和异常的组装器
@@ -27,9 +27,9 @@ public class ResponseAndExceptionBuilder {
 	 * @param args
 	 * @return
 	 */
-	public static DataResponse<?> parseMsg(Enum<? extends IErrors<?>> errorEnum, String message, Object... args) {
+	public static CommonResponse parseMsg(Enum<? extends IErrors<?>> errorEnum, String message, Object... args) {
 		IErrors<?> errorEnumItem = (IErrors<?>) errorEnum;
-		DataResponse<?> resp = new DataResponse<>();
+		CommonResponse resp = new CommonResponse();
 		resp.setCode(errorEnumItem.getCode());
 		String msg = message != null ? message : errorEnumItem.getMessage();
 		if (ArrayUtils.isNotEmpty(args) && msg != null) {
@@ -49,7 +49,7 @@ public class ResponseAndExceptionBuilder {
 	 * @param args
 	 * @return
 	 */
-	public static ApplicationException expMsg(Enum<?> errorEnum, String message, Throwable cause, Object... args) {
+	public static BaseApplicationException expMsg(Enum<?> errorEnum, String message, Throwable cause, Object... args) {
 		IErrors<?> errorEnumItem = (IErrors<?>) errorEnum;
 		String formatedMsg = message != null ? message : errorEnumItem.getMessage();
 		if (ArrayUtils.isNotEmpty(args) && formatedMsg != null) {

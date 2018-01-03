@@ -2,7 +2,7 @@ package com.dazong.common.web.monitor;
 
 import com.alibaba.dubbo.rpc.service.EchoService;
 import com.dazong.common.monitor.CheckResult;
-import com.dazong.common.monitor.Monitor;
+import com.dazong.common.monitor.BaseMonitor;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by huqichao on 17/5/25.
  */
-public class DubboMonitor extends Monitor {
+public class DubboMonitor extends BaseMonitor {
 
     public DubboMonitor(Object obj) {
         super(obj);

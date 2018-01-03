@@ -1,6 +1,6 @@
 package com.dazong.common;
 
-import com.dazong.common.exceptions.ApplicationException;
+import com.dazong.common.exceptions.BaseApplicationException;
 
 /**
  * 错误枚举的接口类。统一异常转化与抛出的格式
@@ -41,7 +41,7 @@ public interface IErrors<T> extends IResultStatus {
      * 
      * @return
      */
-    public ApplicationException exp();
+    public BaseApplicationException exp();
 
     /**
      * 采用枚举中定义的message作为异常信息，并传递一些参数
@@ -50,7 +50,7 @@ public interface IErrors<T> extends IResultStatus {
      *            参数列表
      * @return
      */
-    public ApplicationException exp(Object... args);
+    public BaseApplicationException exp(Object... args);
 
     /**
      * 采用枚举中定义的message作为异常信息，并传递一些参数，支持传入底层的异常
@@ -61,7 +61,7 @@ public interface IErrors<T> extends IResultStatus {
      *            参数列表
      * @return
      */
-    public ApplicationException exp(Throwable cause, Object... args);
+    public BaseApplicationException exp(Throwable cause, Object... args);
 
     /**
      * 采用枚举中定义的code，使用自定义的message作为异常信息，并可能会带上一些参数
@@ -72,7 +72,7 @@ public interface IErrors<T> extends IResultStatus {
      *            具体参数列表
      * @return
      */
-    public ApplicationException expMsg(String message, Object... args);
+    public BaseApplicationException expMsg(String message, Object... args);
 
     /**
      * 采用枚举中定义的code，使用自定义的message作为异常信息，并可能会带上一些参数，并自持传入底层的异常
@@ -85,7 +85,7 @@ public interface IErrors<T> extends IResultStatus {
      *            具体参数列表
      * @return
      */
-    public ApplicationException expMsg(String message, Throwable cause, Object... args);
+    public BaseApplicationException expMsg(String message, Throwable cause, Object... args);
     
     /**
      * 获取枚举中定义的异常码

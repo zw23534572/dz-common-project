@@ -32,7 +32,7 @@ public class SimpleMonitorServlet extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleMonitorServlet.class);
 
-    private static List<Monitor> monitorList;
+    private static List<BaseMonitor> monitorList;
 
     private static Class clazz;
 
@@ -46,7 +46,7 @@ public class SimpleMonitorServlet extends HttpServlet {
 
         CheckResult result;
         long start = 0;
-        for(Monitor monitor : monitorList){
+        for(BaseMonitor monitor : monitorList){
             start = System.currentTimeMillis();
             result = monitor.check();
             result.setCost(System.currentTimeMillis() - start);
@@ -55,7 +55,7 @@ public class SimpleMonitorServlet extends HttpServlet {
         }
 
         try {
-            sb.append("|").append(Monitor.NAME_TIME).append("#").append(clazz.getField("time").get(clazz));
+            sb.append("|").append(BaseMonitor.NAME_TIME).append("#").append(clazz.getField("time").get(clazz));
         } catch (Exception e) {
             logger.error("无法获取应用启动时间", e);
         }

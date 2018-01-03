@@ -2,7 +2,7 @@ package com.dazong.common.web.monitor;
 
 import com.alibaba.fastjson.JSON;
 import com.dazong.common.monitor.CheckResult;
-import com.dazong.common.monitor.Monitor;
+import com.dazong.common.monitor.BaseMonitor;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * Created by huqichao on 17/5/25.
  */
-public class DatabaseMonitor extends Monitor {
+public class DatabaseMonitor extends BaseMonitor {
 
 
     /**

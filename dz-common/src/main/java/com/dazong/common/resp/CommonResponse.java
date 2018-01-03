@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.IResultStatus;
-import com.dazong.common.exceptions.ApplicationException;
+import com.dazong.common.exceptions.BaseApplicationException;
 
 /**
  * 
@@ -29,7 +29,7 @@ public class CommonResponse implements Serializable {
 		this(resultStatus.getCode(), resultStatus.getMessage());
 	}
 
-	public CommonResponse(ApplicationException e) {
+	public CommonResponse(BaseApplicationException e) {
 		this(e.getCode(), e.getMessage());
 	}
 

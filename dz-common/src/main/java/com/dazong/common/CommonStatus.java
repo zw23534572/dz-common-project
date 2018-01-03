@@ -1,8 +1,8 @@
 package com.dazong.common;
 
-import com.dazong.common.exceptions.ApplicationException;
+import com.dazong.common.exceptions.BaseApplicationException;
 import com.dazong.common.exceptions.ResponseAndExceptionBuilder;
-import com.dazong.common.resp.DataResponse;
+import com.dazong.common.resp.CommonResponse;
 
 /**
  * <pre>
@@ -14,7 +14,7 @@ import com.dazong.common.resp.DataResponse;
  * 
  * @author wzy 2017-08-11
  */
-public enum CommonStatus implements IErrors<DataResponse<?>> {
+public enum CommonStatus implements IErrors<CommonResponse> {
 
 	/**
 	 * 参数异常
@@ -47,42 +47,42 @@ public enum CommonStatus implements IErrors<DataResponse<?>> {
 	}
 
 	@Override
-	public DataResponse<?> parse() {
+	public CommonResponse parse() {
 		return ResponseAndExceptionBuilder.parseMsg(this, this.message);
 	}
 
 	@Override
-	public DataResponse<?> parse(Object... args) {
+	public CommonResponse parse(Object... args) {
 		return ResponseAndExceptionBuilder.parseMsg(this, this.message, args);
 	}
 
 	@Override
-	public DataResponse<?> parseMsg(String message, Object... args) {
+	public CommonResponse parseMsg(String message, Object... args) {
 		return ResponseAndExceptionBuilder.parseMsg(this, this.message, args);
 	}
 
 	@Override
-	public ApplicationException exp() {
+	public BaseApplicationException exp() {
 		return ResponseAndExceptionBuilder.expMsg(this, this.message, null);
 	}
 
 	@Override
-	public ApplicationException exp(Object... args) {
+	public BaseApplicationException exp(Object... args) {
 		return ResponseAndExceptionBuilder.expMsg(this, this.message, null, args);
 	}
 
 	@Override
-	public ApplicationException exp(Throwable cause, Object... args) {
+	public BaseApplicationException exp(Throwable cause, Object... args) {
 		return ResponseAndExceptionBuilder.expMsg(this, this.message, cause, args);
 	}
 
 	@Override
-	public ApplicationException expMsg(String message, Object... args) {
+	public BaseApplicationException expMsg(String message, Object... args) {
 		return ResponseAndExceptionBuilder.expMsg(this, message, null, args);
 	}
 
 	@Override
-	public ApplicationException expMsg(String message, Throwable cause, Object... args) {
+	public BaseApplicationException expMsg(String message, Throwable cause, Object... args) {
 		return ResponseAndExceptionBuilder.expMsg(this, message, cause, args);
 	}
 

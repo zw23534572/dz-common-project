@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * Created by  on 17/5/25.
  *
  */
-public abstract class Monitor implements Serializable {
+public abstract class BaseMonitor implements Serializable {
 
     /**
 	 * 
@@ -30,11 +30,11 @@ public abstract class Monitor implements Serializable {
     public static final String NAME_TIME = "time";
 
 
-    protected static Logger logger = LoggerFactory.getLogger(Monitor.class);
+    protected static Logger logger = LoggerFactory.getLogger(BaseMonitor.class);
 
     protected transient Object obj;
 
-    public Monitor(Object obj){
+    public BaseMonitor(Object obj){
         this.obj = obj;
     }
 
