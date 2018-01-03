@@ -6,6 +6,7 @@ import com.dazong.example.common.constant.ResultEnum;
 import com.dazong.example.domain.EnvironmentCache;
 import com.dazong.example.domain.UserInfo;
 import com.dazong.example.service.common.impl.HttpClientServiceImpl;
+import com.dazong.example.service.test.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class UserInterceptor implements HandlerInterceptor {
 
     @Autowired
     private HttpClientServiceImpl httpClientService;
+    
+    @Autowired
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
@@ -39,7 +43,7 @@ public class UserInterceptor implements HandlerInterceptor {
          */
         if (EnvironmentCache.getUserInfo() == null) {
             logger.info("{},User {} is not exist.", request.getRequestURI(),userId);
-            DataResponse<?> wrapper = new DataResponse<>(ResultEnum.USER_IS_NOT_EXIST.getCode(), ResultEnum.USER_IS_NOT_EXIST.getMsg());
+            DataResponse<?> wrapper = new DataResponse<>(ResultEnum.USER_IS_NOT_EXIST);
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json; charset=utf-8");
             response.getWriter().write(JSON.toJSONString(wrapper));
@@ -50,7 +54,9 @@ public class UserInterceptor implements HandlerInterceptor {
 
     private void constructLoginUser(String userId){
         if (!StringUtils.isEmpty(userId)) {
-            DataResponse<UserInfo> response = httpClientService.queryUserInfoByUserID(userId);
+        	UserInfo user=new UserInfo();
+        	user.setUserId(userId);
+            DataResponse<UserInfo> response =userService.getUser(user);//userService.getUser(userId); //httpClientService.queryUserInfoByUserID(userId);
             if (response != null && response.getCode() == 20200) {
                 EnvironmentCache.saveUserInfo(response.getData());
             }

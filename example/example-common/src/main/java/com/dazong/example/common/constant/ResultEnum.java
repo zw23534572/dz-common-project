@@ -1,6 +1,8 @@
 package com.dazong.example.common.constant;
 
-public enum ResultEnum {
+import com.dazong.common.IResultStatus;
+
+public enum ResultEnum implements IResultStatus {
 	
 	SUCCESS(150200,"成功"),
     FAIL(150500,"失败"),
@@ -15,11 +17,15 @@ public enum ResultEnum {
 		this.msg = msg;
 	}
 
+	@Override
 	public int getCode() {
-		return code;
+		return this.code;
 	}
 
-	public String getMsg() {
-		return msg;
+	@Override
+	public String getMessage() {
+		return this.msg;
 	}
+
+
 }

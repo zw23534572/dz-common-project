@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.BusinessException;
-import com.dazong.common.resp.CommonRespStatus;
 import com.dazong.common.resp.CommonResponse;
 
 /**
@@ -31,7 +31,7 @@ public class JsonMappingExceptionResolver extends SimpleMappingExceptionResolver
 			jsonmv.addAllObjects(businessException.toMap());
 
 		} else {
-			CommonResponse resp = CommonRespStatus.FAIL.wapperResponse(ex.getMessage());
+			CommonResponse resp = new CommonResponse(CommonStatus.ERROR.joinSystemStatusCode(ex.getMessage()));
 			jsonmv.addAllObjects(resp.toMapModel());
 		}
 
