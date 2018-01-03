@@ -1,5 +1,7 @@
 package com.dazong.example.domain;
 
+import com.dazong.common.feign.client.dto.response.UserInfo;
+
 /**
  * 本机缓存
  * @author huqichao

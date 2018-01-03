@@ -1,11 +1,11 @@
-package com.dazong.example.domain;
-
-import com.alibaba.fastjson.annotation.JSONField;
-import lombok.Data;
-
-import javax.validation.constraints.Null;
+package com.dazong.common.feign.client.dto.response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Data;
 
 /**
  * @author huqichao
@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Data
 public class UserInfo {
 	/** 用户编号 出参时使用*/
-	private String id;
+	private Long id;
 	
 	/** 用户编号 入参时使用*/
-	@Null
 	@JSONField(name = "user_id")
-	private String userId;
+	@JsonProperty("user_id")
+	private Long userId;
 
 	/** 手机号码*/
 	private String mobile;
@@ -28,6 +28,7 @@ public class UserInfo {
 	
 	/** 密码强度 */
 	@JSONField(name = "password_strong")
+	@JsonProperty("password_strong")
 	private String passwordStrong;
 	
 	/** 用户名称*/
@@ -44,6 +45,7 @@ public class UserInfo {
 	
 	/** 角色 */
 	@JSONField(name = "role_type")
+	@JsonProperty("role_type")
 	private Integer roleType;
 	
 	/** 公司信息*/
@@ -53,7 +55,7 @@ public class UserInfo {
 	public UserInfo(){
 		
 	}
-	public UserInfo(String userId, String realname) {
+	public UserInfo(Long userId, String realname) {
 		this.userId = userId;
 		this.realname = realname;
 	}

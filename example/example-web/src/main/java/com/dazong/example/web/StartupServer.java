@@ -35,6 +35,7 @@ import javax.annotation.PreDestroy;
 @ComponentScan({ "com.dazong.example", "com.dazong.common.aop" })
 @MapperScan("com.dazong.example.dao.mapper*")
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
+//@EnableFeignClients
 public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);
