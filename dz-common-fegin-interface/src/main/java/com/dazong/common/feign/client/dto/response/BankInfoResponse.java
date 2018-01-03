@@ -35,11 +35,11 @@ public class BankInfoResponse {
 	
 	@JSONField(name = "create_time")
 	@JsonProperty("create_time")
-	private String create_time;
+	private String createTime;
 	
 	@JSONField(name = "update_time")
 	@JsonProperty("update_time")
-	private String update_time;
+	private String updateTime;
 	
 	private BankInfo info;
 	

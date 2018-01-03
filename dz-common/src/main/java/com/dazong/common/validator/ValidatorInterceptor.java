@@ -48,8 +48,7 @@ public class ValidatorInterceptor implements MethodInterceptor {
 			throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.joinSystemStatusCode(getViolationMsg(violations)));
 		}
 
-		Object retVal = invocation.proceed();
-		return retVal;
+		return invocation.proceed();
 	}
 
 	private String getViolationMsg(Set<ConstraintViolation<Object>> violations) {

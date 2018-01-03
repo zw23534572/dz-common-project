@@ -62,12 +62,12 @@ public class UserInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
 			ModelAndView modelAndView) throws Exception {
-
+		//不需要扩展，所以说明都不做
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object o, Exception e) throws Exception {
-
+		//不需要扩展，所以说明都不做
 	}
 }

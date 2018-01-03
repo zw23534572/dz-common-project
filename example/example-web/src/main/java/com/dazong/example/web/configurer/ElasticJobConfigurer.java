@@ -32,11 +32,4 @@ public class ElasticJobConfigurer {
         return new ZookeeperRegistryCenter(configuration);
     }
 
-    //@Bean(initMethod = "init")
-    //public JobScheduler registryRefundProcessJob(RefundProcessJob refundProcessJob) {
-    //    LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(new SimpleJobConfiguration(
-    //            JobCoreConfiguration.newBuilder(RefundProcessJob.class.getSimpleName(), "0 0/5 * * * ?", 1).build(),
-    //            RefundProcessJob.class.getCanonicalName())).overwrite(true).build();
-    //    return new SpringJobScheduler(refundProcessJob, regCenter, liteJobConfiguration);
-    //}
 }

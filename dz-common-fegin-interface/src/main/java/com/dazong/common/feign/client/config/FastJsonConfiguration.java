@@ -33,10 +33,10 @@ public class FastJsonConfiguration {
 	public FastJsonConfiguration() {
 		FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
 		FastJsonConfig config = new FastJsonConfig();
-		config.setSerializerFeatures(SerializerFeature.WriteDateUseDateFormat, // ʱ���ʽת��
-				SerializerFeature.WriteMapNullValue, // �����յ��ֶ�
-				SerializerFeature.WriteNullStringAsEmpty, // String null -> ""
-				SerializerFeature.WriteNullNumberAsZero);// Number null -> 0
+		config.setSerializerFeatures(SerializerFeature.WriteDateUseDateFormat,
+				SerializerFeature.WriteMapNullValue,
+				SerializerFeature.WriteNullStringAsEmpty,
+				SerializerFeature.WriteNullNumberAsZero);
 		config.setCharset(Charset.forName("UTF-8"));
 		converter.setFastJsonConfig(config);
 

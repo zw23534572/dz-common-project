@@ -5,8 +5,12 @@ import java.io.Serializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
- * Created by huqichao on 17/5/25.
+ * 
+ * @author huqichao
+ * Created by  on 17/5/25.
+ *
  */
 public abstract class Monitor implements Serializable {
 

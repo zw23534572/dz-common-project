@@ -46,10 +46,14 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = new FastJsonConfig();
         config.setSerializerFeatures(
-                SerializerFeature.WriteDateUseDateFormat, //时间格式转化
-                SerializerFeature.WriteMapNullValue,//保留空的字段
-                SerializerFeature.WriteNullStringAsEmpty,//String null -> ""
-                SerializerFeature.WriteNullNumberAsZero);//Number null -> 0
+        		//时间格式转化
+                SerializerFeature.WriteDateUseDateFormat, 
+                //保留空的字段
+                SerializerFeature.WriteMapNullValue,
+                //String null -> ""
+                SerializerFeature.WriteNullStringAsEmpty,
+                //Number null -> 0
+                SerializerFeature.WriteNullNumberAsZero);
         config.setCharset(Charset.forName("UTF-8"));
         converter.setFastJsonConfig(config);
 
