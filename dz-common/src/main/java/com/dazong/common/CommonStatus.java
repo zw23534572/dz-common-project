@@ -31,7 +31,12 @@ public enum CommonStatus implements IErrors<DataResponse<?>> {
 	/**
 	 * 系统错误
 	 */
-	ERROR(500, "系统错误！{0}");
+	ERROR(500, "系统错误！{0}"),
+
+	/**
+	 * mq系统错误
+	 */
+	MQ_ERROR(505, "消息组件发生异常");
 
 	private int code;
 	private String message;

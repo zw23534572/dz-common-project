@@ -35,14 +35,11 @@ public class MQNotifyManager {
             logger.debug("通知消息------>{}", message);
             for (Map.Entry<Consumer, IMessageListener> entry : listenerMap.entrySet()){
                 //消息为队列时，则只判断消息目标。消息为topic时，判断消息目标和名称
-                if (message.isQueue()){
-                    if (entry.getKey().getDestination().equals(message.getDestination())){
+                if (entry.getKey().getDestination().equals(message.getDestination())){
+                    if (message.isQueue() || entry.getKey().getName().equals(message.getName())){
                         listener = entry.getValue();
                         break;
                     }
-                } else if (entry.getKey().getDestination().equals(message.getDestination()) && entry.getKey().getName().equals(message.getName())){
-                    listener = entry.getValue();
-                    break;
                 }
             }
             if (listener == null){

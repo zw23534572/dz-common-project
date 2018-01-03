@@ -1,5 +1,7 @@
 package com.dazong.common.exceptions;
 
+import com.dazong.common.IResultStatus;
+
 /**
  * 平台异常的父类 。如：公共组件异常
  * 
@@ -45,4 +47,12 @@ public class PlatformException extends ApplicationException {
 		super(code, message, cause, args);
 	}
 
+	/**
+	 *
+	 * @param resultStatus 枚举状态
+	 * @param cause 异常信息
+	 */
+	public PlatformException(IResultStatus resultStatus, Throwable cause) {
+		super(resultStatus.getCode(), resultStatus.getMessage(), cause);
+	}
 }
