@@ -19,10 +19,8 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.client.RestTemplate;
+
 
 import javax.annotation.PreDestroy;
 
@@ -35,7 +33,6 @@ import javax.annotation.PreDestroy;
 @ComponentScan({ "com.dazong.example", "com.dazong.common.aop" })
 @MapperScan("com.dazong.example.dao.mapper*")
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
-//@EnableFeignClients
 public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);
@@ -64,11 +61,6 @@ public class StartupServer {
 	}
 
 	@Bean
-	public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
-		return new RestTemplate(factory);
-	}
-	
-	@Bean
 	public ApplicationInfo applicationInfo(){
 		return new ApplicationInfo();
 	}
@@ -78,14 +70,6 @@ public class StartupServer {
 		CuratorFramework cf = CuratorFrameworkFactory.newClient(serverList, new RetryNTimes(10, 5000));
 		cf.start();
 		return cf;
-	}
-
-	@Bean
-	public ClientHttpRequestFactory simpleClientHttpRequestFactory() {
-		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-		factory.setReadTimeout(5000);// ms
-		factory.setConnectTimeout(15000);// ms
-		return factory;
 	}
 
 	/**
