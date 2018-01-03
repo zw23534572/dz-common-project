@@ -16,7 +16,7 @@ import java.util.*;
 
 /**
  * @author huqichao
- * @create 2017-10-31 09:47
+ * @date 2017-10-31 09:47
  **/
 @Component
 public class MQNotifyManager {
@@ -35,10 +35,8 @@ public class MQNotifyManager {
             logger.debug("通知消息------>{}", message);
             for (Map.Entry<Consumer, IMessageListener> entry : listenerMap.entrySet()){
                 //消息为队列时，则只判断消息目标。消息为topic时，判断消息目标和名称
-                if (!entry.getKey().getDestination().equals(message.getDestination())){
-                    continue;
-                }
-                if (message.isQueue() || entry.getKey().getName().equals(message.getName())){
+                if (entry.getKey().getDestination().equals(message.getDestination())
+                        && isMatchSubscribeNameOrQueue(entry.getKey(), message)){
                     listener = entry.getValue();
                     break;
                 }
@@ -57,6 +55,10 @@ public class MQNotifyManager {
                 messageMapper.updateConsumerMessage(message);
             }
         }
+    }
+
+    private boolean isMatchSubscribeNameOrQueue(Consumer consumer, DZConsumerMessage message){
+        return message.isQueue() || consumer.getName().equals(message.getName());
     }
 
     @Async("mqTaskExecutor")
