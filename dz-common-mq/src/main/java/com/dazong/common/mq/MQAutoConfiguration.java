@@ -23,6 +23,9 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jms.core.JmsTemplate;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * @author huqichao
  * @create 2017-10-30 19:25
@@ -74,7 +77,7 @@ public class MQAutoConfiguration implements ApplicationContextAware {
         new ActiveMQConsumer(jmsTemplate, mqNotifyManager, messageMapper).init();
     }
 
-    private void upgradeDBWithVersion(TableInfo tableInfo) throws Exception {
+    private void upgradeDBWithVersion(TableInfo tableInfo) throws SQLException, IOException {
         int version = tableInfo.getVersion();
         String path;
         if (version < SQL_VERSION){
