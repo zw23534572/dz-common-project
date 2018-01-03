@@ -59,7 +59,7 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private volatile boolean inited;
 
-    private void init() throws PlatformException {
+    private void init() {
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
             String path;
@@ -73,7 +73,6 @@ public class MQAutoConfiguration implements ApplicationContextAware {
                 logger.debug("执行数据库脚本: {}", path);
                 dbManager.executeSqlFile(Resources.getResourceAsReader(path));
             }
-
             upgradeDBWithVersion(tableInfo);
 
             addListener();
