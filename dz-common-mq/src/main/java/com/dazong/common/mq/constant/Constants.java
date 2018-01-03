@@ -6,6 +6,8 @@ package com.dazong.common.mq.constant;
  **/
 public class Constants {
 
+    private Constants(){}
+
     public static final String TOPIC_PREFIX = "VirtualTopic.";
 
     public static final String CONSUMER_PREFIX = "Consumer.";

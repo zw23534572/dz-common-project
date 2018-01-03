@@ -30,7 +30,7 @@ public class ActiveMQConsumer extends AbstractConsumer {
         this.messageMapper = messageMapper;
     }
 
-    public void init() throws Exception {
+    public void init() throws JMSException {
         Connection connection = jmsTemplate.getConnectionFactory().createConnection();
         connection.start();
 

@@ -44,11 +44,10 @@ public class MQNotifyManager {
                     listener = entry.getValue();
                     break;
                 }
-
             }
             if (listener == null){
                 logger.warn("没有 Listener 监听 {} 消息", message);
-                messageMapper.updateStatusById(message.getId(), DZMessage.STATUS_DONE);
+                messageMapper.updateConsumerMessageStatusById(message.getId(), DZMessage.STATUS_DONE);
                 return;
             }
 
@@ -81,7 +80,7 @@ public class MQNotifyManager {
      * @param attachment 消息中附件，飞马眼使用
      * @throws Exception
      */
-    private void notify(IMessageListener listener, DZConsumerMessage message, String attachment) throws Exception {
+    private void notify(IMessageListener listener, DZConsumerMessage message, String attachment) {
         listener.receive(message.copy(messageMapper));
     }
 
