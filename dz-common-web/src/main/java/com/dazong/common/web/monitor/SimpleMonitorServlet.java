@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,26 +40,21 @@ public class SimpleMonitorServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			doPost(req, resp);
-		} catch (UnknownHostException uhex) {
-			logger.error("未知异常", uhex);
-		}
+		doPost(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		StringBuilder sb = monitor();
 		try {
-
+			StringBuilder sb = monitor();
 			PrintWriter out = resp.getWriter();
 			out.append(sb.substring(1));
 
 			out.flush();
 			out.close();
 
-		} catch (UnknownHostException uhex) {
-			logger.error("未知异常", uhex);
+		} catch (Exception e) {
+			throw new ServletException(e);
 		}
 	}
 
