@@ -23,9 +23,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * 提供检测接口
- * Created by huqichao on 17/5/8.
+ * @author huqichao
+ * Created by  on 17/5/8.
+ *
  */
 @WebServlet(name="SimpleMonitor",urlPatterns="/simpleMonitor")
 public class SimpleMonitorServlet extends HttpServlet {
@@ -34,13 +37,14 @@ public class SimpleMonitorServlet extends HttpServlet {
 
     private static List<BaseMonitor> monitorList;
 
-    private static Class clazz;
+    private static Class<?> clazz;
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req, resp);
     }
 
-
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StringBuilder sb = new StringBuilder();
 

@@ -20,6 +20,7 @@ import com.dazong.common.resp.CommonResponse;
 public class JsonMappingExceptionResolver extends SimpleMappingExceptionResolver {
 	private static final Logger log = LoggerFactory.getLogger(JsonMappingExceptionResolver.class);
 
+	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception ex) {
 		log.error("请求异常！请求地址{}", request.getRequestURL(), ex);

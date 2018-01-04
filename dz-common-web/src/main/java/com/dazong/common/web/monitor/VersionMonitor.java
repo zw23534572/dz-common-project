@@ -7,7 +7,10 @@ import com.dazong.common.monitor.BaseMonitor;
 import java.util.Properties;
 
 /**
- * Created by huqichao on 17/5/26.
+ * 
+ * @author huqichao
+ * Created by  on 17/5/25.
+ *
  */
 public class VersionMonitor extends BaseMonitor {
 
