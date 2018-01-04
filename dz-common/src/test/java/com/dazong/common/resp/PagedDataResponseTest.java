@@ -10,25 +10,25 @@ public class PagedDataResponseTest {
     public void testTotalPageCalculate() {
 
 
-        PagedDataResponse<Object> target = new PagedDataResponse<Object>(1, 20, 21);
+        PageResult<String> target = new PageResult<String>(1, 20, 21);
         assertThat(target.getTotalPage()).isEqualTo(2);
 
-        target = new PagedDataResponse<Object>(1, 20, 20);
+        target = new PageResult<String>(1, 20, 20);
         assertThat(target.getTotalPage()).isEqualTo(1);
 
-        target = new PagedDataResponse<Object>(1, 20, 19);
+        target = new PageResult<String>(1, 20, 19);
         assertThat(target.getTotalPage()).isEqualTo(1);
 
-        target = new PagedDataResponse<Object>(1, 19, 20);
+        target = new PageResult<String>(1, 19, 20);
         assertThat(target.getTotalPage()).isEqualTo(2);
 
-        target = new PagedDataResponse<Object>(1, Integer.MAX_VALUE, 20);
+        target = new PageResult<String>(1, Integer.MAX_VALUE, 20);
         assertThat(target.getTotalPage()).isEqualTo(1);
 
-        target = new PagedDataResponse<Object>(1, Integer.MAX_VALUE, 0);
+        target = new PageResult<String>(1, Integer.MAX_VALUE, 0);
         assertThat(target.getTotalPage()).isEqualTo(0);
         
-        target = new PagedDataResponse<Object>(1, 0, 20);
+        target = new PageResult<String>(1, 0, 20);
         assertThat(target.getTotalPage()).isEqualTo(1);
     }
 }
