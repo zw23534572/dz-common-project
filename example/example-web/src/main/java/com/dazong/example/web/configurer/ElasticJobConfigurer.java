@@ -1,10 +1,6 @@
 package com.dazong.example.web.configurer;
 
-import com.dangdang.ddframe.job.config.JobCoreConfiguration;
-import com.dangdang.ddframe.job.config.simple.SimpleJobConfiguration;
-import com.dangdang.ddframe.job.lite.api.JobScheduler;
-import com.dangdang.ddframe.job.lite.config.LiteJobConfiguration;
-import com.dangdang.ddframe.job.lite.spring.api.SpringJobScheduler;
+
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 
@@ -32,11 +28,4 @@ public class ElasticJobConfigurer {
         return new ZookeeperRegistryCenter(configuration);
     }
 
-    //@Bean(initMethod = "init")
-    //public JobScheduler registryRefundProcessJob(RefundProcessJob refundProcessJob) {
-    //    LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(new SimpleJobConfiguration(
-    //            JobCoreConfiguration.newBuilder(RefundProcessJob.class.getSimpleName(), "0 0/5 * * * ?", 1).build(),
-    //            RefundProcessJob.class.getCanonicalName())).overwrite(true).build();
-    //    return new SpringJobScheduler(refundProcessJob, regCenter, liteJobConfiguration);
-    //}
 }

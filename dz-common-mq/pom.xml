@@ -27,6 +27,14 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common</artifactId>
+			<version>${parent.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>com.dazong.eye</groupId>
 			<artifactId>fmeye-common</artifactId>

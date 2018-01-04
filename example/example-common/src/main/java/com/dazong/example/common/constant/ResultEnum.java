@@ -1,9 +1,24 @@
 package com.dazong.example.common.constant;
 
-public enum ResultEnum {
-	
+import com.dazong.common.IResultStatus;
+
+/**
+ * 结果枚举
+ * @author luobinwen
+ *
+ */
+public enum ResultEnum implements IResultStatus {
+	/**
+	 * 成功
+	 */
 	SUCCESS(150200,"成功"),
+	/**
+	 * 失败
+	 */
     FAIL(150500,"失败"),
+    /**
+     * 用户不存在
+     */
     USER_IS_NOT_EXIST(150101,"用户不存在！")
 	;
 	
@@ -15,11 +30,15 @@ public enum ResultEnum {
 		this.msg = msg;
 	}
 
+	@Override
 	public int getCode() {
-		return code;
+		return this.code;
 	}
 
-	public String getMsg() {
-		return msg;
+	@Override
+	public String getMessage() {
+		return this.msg;
 	}
+
+
 }

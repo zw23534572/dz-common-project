@@ -117,28 +117,3 @@ https://git.dazong.com/TradeDept/elasticjob-spring-boot-starter
 
 ```
 
-# dz-common Valiadtor
-
-### 基于JSR 349 Bean Validation 1.1，基于HibernateValidator实现
-```java
-//启用验证
-@EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
-public class StartupServer {
-    public static void main(String[] args) {
-		System.setProperty("org.terracotta.quartz.skipUpdateCheck", "true");
-		System.setProperty("dubbo.application.logger", "slf4j");
-		SpringApplication.run(StartupServer.class, args);
-
-	}
-}
-
-//实现验证
-public interface UserService {
-
-	public DataResponse<UserInfo> getUser(@NotNull String userId);
-	
-	public DataResponse<UserInfo> getUser(@Valid UserInfo userInfo);
-}
-
-
-```

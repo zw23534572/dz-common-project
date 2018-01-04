@@ -1,26 +1,16 @@
 package com.dazong.common.exceptions;
 
+import com.dazong.common.IResultStatus;
+
 /**
  * 平台异常的父类 。如：公共组件异常
  * 
  * @author wzy
  * 
  */
-public class PlatformException extends ApplicationException {
+public class PlatformException extends BaseApplicationException {
 
 	private static final long serialVersionUID = 1L;
-
-	public PlatformException() {
-		super();
-	}
-
-	public PlatformException(String message) {
-		super(message);
-	}
-
-	public PlatformException(String message, Throwable cause) {
-		super(message, cause);
-	}
 
 	public PlatformException(String message, Object[] args) {
 		super(message, args);
@@ -57,4 +47,12 @@ public class PlatformException extends ApplicationException {
 		super(code, message, cause, args);
 	}
 
+	/**
+	 *
+	 * @param resultStatus 枚举状态
+	 * @param cause 异常信息
+	 */
+	public PlatformException(IResultStatus resultStatus, Throwable cause) {
+		super(resultStatus.getCode(), resultStatus.getMessage(), cause);
+	}
 }

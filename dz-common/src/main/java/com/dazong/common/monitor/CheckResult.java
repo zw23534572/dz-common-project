@@ -1,7 +1,10 @@
 package com.dazong.common.monitor;
 
 /**
- * Created by huqichao on 17/5/25.
+ * 
+ * @author huqichao
+ * Created by  on 17/5/25.
+ *
  */
 public class CheckResult {
 
@@ -18,7 +21,7 @@ public class CheckResult {
     public CheckResult(String name) {
         this.name = name;
         this.success = true;
-        this.status = Monitor.SUCCESS;
+        this.status = BaseMonitor.SUCCESS;
         this.errorMsg = "";
     }
 

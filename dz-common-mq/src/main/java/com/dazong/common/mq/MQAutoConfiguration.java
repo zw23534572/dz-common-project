@@ -1,6 +1,8 @@
 package com.dazong.common.mq;
 
 import com.dangdang.ddframe.job.lite.spring.job.util.AopTargetUtils;
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.mq.annotation.Subscribe;
 import com.dazong.common.mq.core.consumer.IMessageListener;
 import com.dazong.common.mq.core.consumer.activemq.ActiveMQConsumer;
@@ -22,6 +24,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jms.core.JmsTemplate;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * @author huqichao
@@ -54,27 +59,30 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private volatile boolean inited;
 
-    private void init() throws Exception {
-        TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
-        String path;
-        if (tableInfo == null) {
-            tableInfo = new TableInfo();
-            tableInfo.setDbName(dbName);
-            tableInfo.setTableName(TABLE_NAME);
-            tableInfo.setTableDesc("发送消息本地表-0");
+    private void init() {
+        try {
+            TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
+            String path;
+            if (tableInfo == null) {
+                tableInfo = new TableInfo();
+                tableInfo.setDbName(dbName);
+                tableInfo.setTableName(TABLE_NAME);
+                tableInfo.setTableDesc("发送消息本地表-0");
 
-            path = "META-INF/sql/dz-common-mq.sql";
-            logger.debug("执行数据库脚本: {}", path);
-            dbManager.executeSqlFile(Resources.getResourceAsReader(path));
+                path = "META-INF/sql/dz-common-mq.sql";
+                logger.debug("执行数据库脚本: {}", path);
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path));
+            }
+            upgradeDBWithVersion(tableInfo);
+
+            addListener();
+            new ActiveMQConsumer(jmsTemplate, mqNotifyManager, messageMapper).init();
+        } catch (Exception e){
+            throw new PlatformException(CommonStatus.MQ_ERROR.joinSystemStatusCode(), e);
         }
-
-        upgradeDBWithVersion(tableInfo);
-
-        addListener();
-        new ActiveMQConsumer(jmsTemplate, mqNotifyManager, messageMapper).init();
     }
 
-    private void upgradeDBWithVersion(TableInfo tableInfo) throws Exception {
+    private void upgradeDBWithVersion(TableInfo tableInfo) throws SQLException, IOException {
         int version = tableInfo.getVersion();
         String path;
         if (version < SQL_VERSION){

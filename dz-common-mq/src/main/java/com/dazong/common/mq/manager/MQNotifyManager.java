@@ -16,7 +16,7 @@ import java.util.*;
 
 /**
  * @author huqichao
- * @create 2017-10-31 09:47
+ * @date 2017-10-31 09:47
  **/
 @Component
 public class MQNotifyManager {
@@ -35,20 +35,15 @@ public class MQNotifyManager {
             logger.debug("通知消息------>{}", message);
             for (Map.Entry<Consumer, IMessageListener> entry : listenerMap.entrySet()){
                 //消息为队列时，则只判断消息目标。消息为topic时，判断消息目标和名称
-                if (message.isQueue()){
-                    if (entry.getKey().getDestination().equals(message.getDestination())){
-                        listener = entry.getValue();
-                        break;
-                    }
-                } else if (entry.getKey().getDestination().equals(message.getDestination()) && entry.getKey().getName().equals(message.getName())){
+                if (entry.getKey().getDestination().equals(message.getDestination())
+                        && isMatchSubscribeNameOrQueue(entry.getKey(), message)){
                     listener = entry.getValue();
                     break;
                 }
-
             }
             if (listener == null){
                 logger.warn("没有 Listener 监听 {} 消息", message);
-                messageMapper.updateStatusById(message.getId(), DZMessage.STATUS_DONE);
+                messageMapper.updateConsumerMessageStatusById(message.getId(), DZMessage.STATUS_DONE);
                 return;
             }
 
@@ -60,6 +55,10 @@ public class MQNotifyManager {
                 messageMapper.updateConsumerMessage(message);
             }
         }
+    }
+
+    private boolean isMatchSubscribeNameOrQueue(Consumer consumer, DZConsumerMessage message){
+        return message.isQueue() || consumer.getName().equals(message.getName());
     }
 
     @Async("mqTaskExecutor")
@@ -81,7 +80,7 @@ public class MQNotifyManager {
      * @param attachment 消息中附件，飞马眼使用
      * @throws Exception
      */
-    private void notify(IMessageListener listener, DZConsumerMessage message, String attachment) throws Exception {
+    private void notify(IMessageListener listener, DZConsumerMessage message, String attachment) {
         listener.receive(message.copy(messageMapper));
     }
 

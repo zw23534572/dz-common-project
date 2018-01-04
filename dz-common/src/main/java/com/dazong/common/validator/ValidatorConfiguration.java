@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import com.dazong.common.annotation.EnableValiadtor;
+
 /**
  * 
  * @author luobinwen
@@ -25,7 +27,7 @@ public class ValidatorConfiguration {
 			EnableValiadtor settings = AnnotationUtils.findAnnotation(bean.getClass(), EnableValiadtor.class);
 			advisor.setPatterns(settings.patterns());
 		}
-		// advisor.setPattern("com.dazong.example.service..*.*(..)");
+
 		return advisor;
 	}
 
