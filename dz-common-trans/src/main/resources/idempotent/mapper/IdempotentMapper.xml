@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dazong.common.idempotent.dao.IdempotentDao">
+    <select id="selectOne" resultType="com.dazong.common.idempotent.domain.Idempotent">
+	SELECT
+      id AS id,
+      idempotent_id AS idempotentId,
+      return_class AS returnClass,
+      remark AS remark,
+      status AS status,
+      return_info AS returnInfo,
+      return_byte AS returnByte
+      FROM
+      idempotent
+      WHERE
+      idempotent_id = #{idempotentId,jdbcType=VARCHAR}
+  </select>
+
+    <insert id="add" parameterType="com.dazong.common.idempotent.domain.Idempotent" useGeneratedKeys="true"
+            keyProperty="id">
+    insert into idempotent (id,
+                            idempotent_id,
+                            return_class,
+                            remark,
+                            status,
+                            return_info,
+                            return_byte
+                            )
+    values (#{id,jdbcType=BIGINT},
+            #{idempotentId,jdbcType=VARCHAR},
+            #{returnClass,jdbcType=VARCHAR},
+            #{remark,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{returnInfo,jdbcType=LONGVARCHAR},
+            #{returnByte,jdbcType=LONGVARBINARY}
+            )
+  </insert>
+
+    <update id="updateStatus">
+        update idempotent
+        set status = #{newStatus,jdbcType=VARCHAR}
+        <if test="returnInfo != null and returnInfo != ''">
+            , return_info = #{returnInfo,jdbcType=LONGVARCHAR}
+        </if>
+        <if test="returnByte != null">
+            , return_byte = #{returnByte,jdbcType=LONGVARBINARY}
+        </if>
+        <if test="returnClass != null and returnClass != ''">
+            , return_class = #{returnClass,jdbcType=LONGVARCHAR}
+        </if>
+        <if test="remark != null and remark != ''">
+            , remark = #{remark,jdbcType=VARCHAR}
+        </if>
+        where status = #{oldStatus,jdbcType=VARCHAR}
+        and idempotent_id = #{idempotentId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="createTableIfNotExists">
+        CREATE TABLE if not EXISTS `idempotent` (
+          `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+          `idempotent_id` varchar(64) NOT NULL COMMENT '防重id',
+          `return_info` text COMMENT '返回信息',
+          `return_byte` blob COMMENT '返回信息的二进制存储',
+          `return_class` varchar(200) DEFAULT NULL COMMENT '返回类型',
+          `status` varchar(20) DEFAULT NULL COMMENT '状态:PROCESSING|SUCCESS|FAIL',
+          `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+          `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+          `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+          PRIMARY KEY (`id`),
+          KEY `uniq_id_bid` (`idempotent_id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+    </update>
+
+</mapper>

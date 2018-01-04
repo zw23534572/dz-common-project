@@ -20,6 +20,8 @@
 		<fmeye.version>2.3.4-SNAPSHOT</fmeye.version>
 		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
 		<lombok.version>1.16.18</lombok.version>
+		<guava.version>15.0</guava.version>
+		<hessian.version>4.0.38</hessian.version>
 	</properties>
 
 	<dependencies>
@@ -54,6 +56,27 @@
         	<type>pom</type>
         	<scope>provided</scope>
 		</dependency>
-		
-	</dependencies>
+		<dependency>
+			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common</artifactId>
+			<version>4.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.caucho</groupId>
+			<artifactId>hessian</artifactId>
+			<version>${hessian.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+			<scope>test</scope>
+        </dependency>
+
+    </dependencies>
 </project>
