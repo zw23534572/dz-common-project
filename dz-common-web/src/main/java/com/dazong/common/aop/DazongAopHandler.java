@@ -51,7 +51,7 @@ public class DazongAopHandler {
 		}
 
 		doAfter(retVal);
-		
+
 		return retVal;
 	}
 
@@ -72,14 +72,14 @@ public class DazongAopHandler {
 		return retVal;
 	}
 
-	public void doBefore(JoinPoint joinPoint) throws Throwable {
+	public void doBefore(JoinPoint joinPoint) {
 		// 记录下请求内容
 		if (logger.isInfoEnabled()) {
 			logger.info(serializableRequest(joinPoint));
 		}
 	}
 
-	public void doAfter(Object ret) throws Throwable {
+	public void doAfter(Object ret) {
 		// 处理完请求，返回内容，json转换之后输出到日志中
 		if (logger.isInfoEnabled()) {
 			logger.info("返回参数 : " + JSON.toJSONString(ret));

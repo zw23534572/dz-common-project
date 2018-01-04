@@ -13,10 +13,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by huqichao on 17/5/25.
+ * 
+ * @author huqichao Created by on 17/5/25.
+ *
  */
 public class DatabaseMonitor extends BaseMonitor {
 
+	private static final String COUNT = "count";
+	private static final String STATUS = "status";
 	private static final String CLOSE_ERROR = "close error";
 	private static final String DATABASE_CONNECTION_ERROR = "database connection error";
 	/**
@@ -59,10 +63,12 @@ public class DatabaseMonitor extends BaseMonitor {
 				logger.error(DATABASE_CONNECTION_ERROR, e);
 			} finally {
 				try {
-					if (statement != null)
+					if (statement != null) {
 						statement.close();
-					if (connection != null)
+					}
+					if (connection != null) {
 						connection.close();
+					}
 				} catch (Exception e) {
 					logger.error(CLOSE_ERROR, e);
 					result.setSuccess(false);
@@ -116,16 +122,16 @@ public class DatabaseMonitor extends BaseMonitor {
 			int notifyCount = 0;
 			while (rs.next()) {
 				if (rs.getString("type").equals("producer")) {
-					if (rs.getInt("status") == 0) {
-						unSendCount += rs.getInt("count");
-					} else if (rs.getInt("status") == 1) {
-						sendCount += rs.getInt("count");
+					if (rs.getInt(STATUS) == 0) {
+						unSendCount += rs.getInt(COUNT);
+					} else if (rs.getInt(STATUS) == 1) {
+						sendCount += rs.getInt(COUNT);
 					}
 				} else if (rs.getString("type").equals("consumer")) {
-					if (rs.getInt("status") == 0) {
-						unNotifyCount += rs.getInt("count");
-					} else if (rs.getInt("status") == 1) {
-						notifyCount += rs.getInt("count");
+					if (rs.getInt(STATUS) == 0) {
+						unNotifyCount += rs.getInt(COUNT);
+					} else if (rs.getInt(STATUS) == 1) {
+						notifyCount += rs.getInt(COUNT);
 					}
 				}
 			}
