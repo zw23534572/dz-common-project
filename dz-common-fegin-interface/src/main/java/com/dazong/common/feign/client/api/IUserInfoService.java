@@ -27,8 +27,8 @@ import com.dazong.common.resp.DataResponse;
 public interface IUserInfoService {
 	
 	/**
-	 * <B>�������ƣ���ȡ�û�</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：获取用户</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param userRequest
 	 * @return
 	 */
@@ -36,16 +36,16 @@ public interface IUserInfoService {
 	public DataResponse<UserInfo> queryUserByUserId(@RequestBody UserRequest userRequest);
 
 	/**
-	 * <B>�������ƣ�������дʻ�</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：检查敏感词汇</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param sensitiveRequest
 	 * @return
 	 */
 	@RequestMapping(value = "/flex/getFlexWord", method = RequestMethod.POST)
 	public DataResponse<?> checkSensitiveWords(@RequestBody SensitiveRequest sensitiveRequest);
 	/**
-	 * <B>�������ƣ���ȡ��˾</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：获取公司</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param companyRequest
 	 * @return
 	 */
@@ -53,8 +53,8 @@ public interface IUserInfoService {
 	public DataResponse<Company> queryCompanyByComId(@RequestBody CompanyRequest companyRequest);
 	
 	/**
-	 * <B>�������ƣ���������</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：检查白名单</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param whiteRequest
 	 * @return
 	 */
@@ -62,8 +62,8 @@ public interface IUserInfoService {
 	public DataResponse<?> checkIsWhite(@RequestBody WhiteRequest whiteRequest);
 	
 	/**
-	 * <B>�������ƣ���ȡ���п���Ϣ</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：获取银行卡信息</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param bankInfoRequest
 	 * @return
 	 */

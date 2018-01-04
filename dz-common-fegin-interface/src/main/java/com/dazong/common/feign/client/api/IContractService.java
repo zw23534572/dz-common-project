@@ -16,16 +16,16 @@ import com.dazong.common.resp.DataResponse;
 @FeignClient(name = "${feignclient.htapi.serviceId}", url = "${feignclient.htapi.url}", configuration = FastJsonConfiguration.class)
 public interface IContractService {
 	/**
-	 * <B>�������ƣ���������ȷ����</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：创建交易确认书</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param createContractRequest
 	 * @return
 	 */
 	@RequestMapping(value = "/contract/add_contract", method = RequestMethod.POST)
 	DataResponse<?> createContract(@RequestBody CreateContractRequest createContractRequest);
 	/**
-	 * <B>�������ƣ�У��Э��Ȩ��</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：校验协议权限</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param agreementRequest
 	 * @return
 	 */

@@ -15,8 +15,8 @@ import com.dazong.common.resp.DataResponse;
 public interface IPushapiService {
 
 	/**
-	 * <B>�������ƣ�����û�U���Ƿ�����</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：检查用户U盾是否在线</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param userId
 	 * @return
 	 */
@@ -24,8 +24,8 @@ public interface IPushapiService {
 	DataResponse<?> isUserOnline(@PathVariable("userId") String userId);
 	
 	/**
-	 * <B>�������ƣ�У��U����Ϣ�Ƿ�Ϸ�</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：校验U盾信息是否合法</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param userId
 	 * @param uusign
 	 * @param data

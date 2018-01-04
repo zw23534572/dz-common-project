@@ -17,8 +17,8 @@ import com.dazong.common.resp.DataResponse;
 public interface IAuthService {
 	
 	/**
-	 * <B>�������ƣ����urlȨ��</B><BR>
-	 * <B>��Ҫ˵����</B><BR>
+	 * <B>方法名称：检查url权限</B><BR>
+	 * <B>概要说明：</B><BR>
 	 * @param authRequest
 	 * @return
 	 */
