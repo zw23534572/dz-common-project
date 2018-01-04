@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.dazong.common.trans.autoconfigure.AutoRetryAutoconfigure
+com.dazong.common.trans.autoconfigure.AutoRetryAutoconfigure,com.dazong.common.idempotent.IdempotentAutoConfiguration
