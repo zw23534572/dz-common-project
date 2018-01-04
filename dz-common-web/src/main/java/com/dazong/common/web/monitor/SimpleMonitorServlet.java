@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,11 +41,30 @@ public class SimpleMonitorServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
+		try {
+			doPost(req, resp);
+		} catch (UnknownHostException uhex) {
+			logger.error("未知异常", uhex);
+		}
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		StringBuilder sb = monitor();
+		try {
+
+			PrintWriter out = resp.getWriter();
+			out.append(sb.substring(1));
+
+			out.flush();
+			out.close();
+
+		} catch (UnknownHostException uhex) {
+			logger.error("未知异常", uhex);
+		}
+	}
+
+	private StringBuilder monitor() {
 		StringBuilder sb = new StringBuilder();
 
 		CheckResult result;
@@ -57,16 +77,17 @@ public class SimpleMonitorServlet extends HttpServlet {
 					.append(result.getErrorMsg()).append("#").append(result.getCost());
 		}
 
+		startTimeMonitor(sb);
+
+		return sb;
+	}
+
+	private void startTimeMonitor(StringBuilder sb) {
 		try {
 			sb.append("|").append(BaseMonitor.NAME_TIME).append("#").append(clazz.getField("time").get(clazz));
 		} catch (Exception e) {
 			logger.error("无法获取应用启动时间", e);
 		}
-		PrintWriter out = resp.getWriter();
-		out.append(sb.substring(1));
-
-		out.flush();
-		out.close();
 	}
 
 	@Override
@@ -101,12 +122,12 @@ public class SimpleMonitorServlet extends HttpServlet {
 				}
 			}
 
+			if (dataSourceEqualsName == null) {
+				dataSourceEqualsName = dataSourceContainsName;
+			}
+
 			if (dataSourceEqualsName != null) {
 				DataSource dataSource = (DataSource) context.getBean(dataSourceEqualsName);
-				monitorList.add(new DatabaseMonitor(dataSource));
-			}
-			if (dataSourceEqualsName == null && dataSourceContainsName != null) {
-				DataSource dataSource = (DataSource) context.getBean(dataSourceContainsName);
 				monitorList.add(new DatabaseMonitor(dataSource));
 			}
 
