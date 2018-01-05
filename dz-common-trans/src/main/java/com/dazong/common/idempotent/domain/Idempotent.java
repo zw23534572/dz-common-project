@@ -2,6 +2,9 @@ package com.dazong.common.idempotent.domain;
 
 import java.util.Date;
 
+/**
+ * @author zhiyuan.wang
+ */
 public class Idempotent {
     /**
      * 主键

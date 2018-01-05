@@ -70,7 +70,8 @@ public class IdempotentAspect {
      * @param idempotentId
      */
     private void serializeResult(Object rlt, String idempotentId) {
-        if(rlt == null){ // 返回值为null || void方法
+        // 返回值为null || void方法
+        if(rlt == null){
             idempotentDao.updateStatus(idempotentId, STATUS_SUCCESS, STATUS_PROCESSING, null, null, null, null);
             return;
         }
@@ -96,13 +97,14 @@ public class IdempotentAspect {
     }
 
     private ResultHolder getLastSuccessResult(String idempotentId) {
-        logger.info("IdempotentAspect start... idempotentId=" + idempotentId);
+        logger.info("IdempotentAspect start... idempotentId={}", idempotentId);
         Idempotent idempotent = idempotentDao.selectOne(idempotentId);
-        logger.info("IdempotentAspect - last time idempotent is : " + JSON.toJSONString(idempotent));
+        logger.info("IdempotentAspect - last time idempotent is : {}", JSON.toJSONString(idempotent));
         // 查幂等记录是否存在，不存在就插入
         if (idempotent == null) {
             idempotent = buildIdempotent(idempotentId);
-            idempotentDao.add(idempotent); // 幂等的接口，在并发时，同时插入幂等记录时，只能让一个成功。（唯一约束来保证）
+            // 幂等的接口，在并发时，同时插入幂等记录时，只能让一个成功。（唯一约束来保证）
+            idempotentDao.add(idempotent);
             return null;
         }
 
@@ -112,12 +114,13 @@ public class IdempotentAspect {
             return lastReturn(idempotent);
         }
 
-        if (STATUS_FAIL.equals(idempotent.getStatus())) { // 前一次失败，这一次继续重做
+        // 前一次失败，这一次继续重做
+        if (STATUS_FAIL.equals(idempotent.getStatus())) {
             logger.warn("IdempotentAspect - biz excute fail last time, continue executing origin origin method!");
             int count = idempotentDao.updateStatus(idempotentId,
                     STATUS_PROCESSING, STATUS_FAIL, null, null, null, null);
             if (count != 1) {
-                logger.error("IdempotentAspect - update status error, update count=" + count);
+                logger.error("IdempotentAspect - update status error, update count={}", count);
                 throw IdempotentErrors.OTHER_THREAD_PROCESSING.exp();
             }
             return null;
