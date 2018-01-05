@@ -11,34 +11,36 @@
 	<packaging>jar</packaging>
 	<name>dz-common-web</name>
 
-
+	<properties>
+		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
+	</properties>
 	<dependencies>
 
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-web-pom</artifactId>
-			<version>1.1</version>
+			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
 
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
-			<version>1.1</version>
+			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
 
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-dubbo-pom</artifactId>
-			<version>1.1</version>
+			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-activemq-pom</artifactId>
-			<version>1.1</version>
+			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
 
