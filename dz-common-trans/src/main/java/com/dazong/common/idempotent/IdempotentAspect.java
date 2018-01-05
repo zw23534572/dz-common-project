@@ -6,7 +6,7 @@ import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.SerializerFactory;
 import com.dazong.common.idempotent.dao.IdempotentDao;
 import com.dazong.common.idempotent.domain.Idempotent;
-import com.dazong.common.idempotent.exception.UniversalChainErrors;
+import com.dazong.common.idempotent.exception.IdempotentErrors;
 import com.google.common.base.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -82,7 +82,7 @@ public class IdempotentAspect {
             h2o.writeObject(rlt);
             h2o.flushBuffer();
         } catch (IOException e) {
-            throw UniversalChainErrors.IDENPOTENT_ERROR.exp(e);
+            throw IdempotentErrors.IDENPOTENT_ERROR.exp(e);
         }
         try {
             idempotentDao.updateStatus(idempotentId, STATUS_SUCCESS, STATUS_PROCESSING, JSON.toJSONString(rlt), os.toByteArray(), rlt.getClass().getName(), null);
@@ -118,15 +118,15 @@ public class IdempotentAspect {
                     STATUS_PROCESSING, STATUS_FAIL, null, null, null, null);
             if (count != 1) {
                 logger.error("IdempotentAspect - update status error, update count=" + count);
-                throw UniversalChainErrors.OTHER_THREAD_PROCESSING.exp();
+                throw IdempotentErrors.OTHER_THREAD_PROCESSING.exp();
             }
             return null;
         } else if (STATUS_PROCESSING.equals(idempotent.getStatus())) {
             logger.warn("IdempotentAspect - idempotent status is {}, other thread maybe executing!", idempotent.getStatus());
-            throw UniversalChainErrors.OTHER_THREAD_PROCESSING.exp();
+            throw IdempotentErrors.OTHER_THREAD_PROCESSING.exp();
         } else {
             logger.warn("IdempotentAspect - unknown idempotent status : {}, ERROR!", idempotent.getStatus());
-            throw UniversalChainErrors.IDENPOTENT_ERROR.exp();
+            throw IdempotentErrors.IDENPOTENT_ERROR.exp();
         }
     }
 
@@ -148,7 +148,7 @@ public class IdempotentAspect {
             Class<?> clazz = Class.forName(idempotent.getReturnClass());
             return new ResultHolder(h2i.readObject(clazz));
         } catch (Exception e) {
-            throw UniversalChainErrors.DESERIALIZATION_FAIL.exp(e, idempotent.getIdempotentId());
+            throw IdempotentErrors.DESERIALIZATION_FAIL.exp(e, idempotent.getIdempotentId());
         } finally {
             try {
                 is.close();
