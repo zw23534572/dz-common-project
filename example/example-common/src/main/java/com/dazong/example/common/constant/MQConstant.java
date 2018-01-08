@@ -6,5 +6,7 @@ package com.dazong.example.common.constant;
  */
 public class MQConstant {
 
+    private MQConstant(){}
+
     public static final String MQ_DESTINATION = "MQ_TEST";
 }

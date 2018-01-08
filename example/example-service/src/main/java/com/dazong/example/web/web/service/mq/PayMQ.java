@@ -19,7 +19,7 @@ public class PayMQ implements IMessageListener {
 
     @Override
     public void receive(Message message) {
-        logger.debug("PayMQ-------" + message);
+        logger.debug("PayMQ-------{}", message);
         message.acknowledge();
     }
 }
