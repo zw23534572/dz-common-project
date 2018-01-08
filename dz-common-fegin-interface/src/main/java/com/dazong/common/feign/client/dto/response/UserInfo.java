@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author huqichao
  */
 @Data
-public class UserInfo {
+public class UserInfo implements Serializable {
 	/** 用户编号 出参时使用*/
 	private Long id;
 	

@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -103,8 +104,12 @@ public class IdempotentAspect {
         // 查幂等记录是否存在，不存在就插入
         if (idempotent == null) {
             idempotent = buildIdempotent(idempotentId);
-            // 幂等的接口，在并发时，同时插入幂等记录时，只能让一个成功。（唯一约束来保证）
-            idempotentDao.add(idempotent);
+            try {
+                // 幂等的接口，在并发时，同时插入幂等记录时，只能让一个成功。（唯一约束来保证）
+                idempotentDao.add(idempotent);
+            } catch (DuplicateKeyException e) {
+                throw IdempotentErrors.OTHER_THREAD_PROCESSING.exp();
+            }
             return null;
         }
 
