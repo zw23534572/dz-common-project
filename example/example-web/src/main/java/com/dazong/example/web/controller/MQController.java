@@ -26,7 +26,12 @@ public class MQController {
     @RequestMapping("/send")
     public String sendMQ(String content){
         DZMessage message = DZMessage.wrap(MQConstant.MQ_DESTINATION, content);
+        //立即发送mq通知给业务
         message.setImmediate(true);
+        //不是队列
+        message.setQueue(false);
+        //不是发送第三方
+        message.setSendThird(false);
         producer.sendMessage(message);
         return "SCCUESS";
     }
