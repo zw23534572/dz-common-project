@@ -24,4 +24,7 @@
         </aop:aspect>
     </aop:config>
     <import resource="classpath*:spring-dubbo-consumers.xml" />
+
+    <!-- 加载mq配置 -->
+    <import resource="classpath*:/META-INF/dz-common-mq.xml" />
 </beans>
