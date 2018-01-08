@@ -32,8 +32,6 @@ public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);
 
-
-
 	public static void main(String[] args) {
 		System.setProperty("org.terracotta.quartz.skipUpdateCheck", "true");
 		System.setProperty("dubbo.application.logger", "slf4j");
