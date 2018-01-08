@@ -1,5 +1,6 @@
 package com.dazong.example.service.test.impl;
 
+import com.dazong.common.idempotent.Idempotent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public DataResponse<UserInfo> getUser(UserInfo userInfo) {
 		return httpClientServiceImpl.queryUserInfoByUserID(userInfo.getUserId().toString());
+	}
+
+	/**
+	 * 幂等示例
+	 * @param userInfo
+	 * @return
+	 */
+	@Override
+	@Idempotent("#userInfo.userId")
+	public DataResponse<UserInfo> saveUser(UserInfo userInfo) {
+		System.out.println("保存userInfo = [" + userInfo + "]");
+		return new DataResponse<>(userInfo);
 	}
 
 }

@@ -26,4 +26,6 @@ public interface UserService {
 	 * @return
 	 */
 	public DataResponse<UserInfo> getUser(@Valid UserInfo userInfo);
+
+	DataResponse<UserInfo> saveUser(UserInfo userInfo);
 }

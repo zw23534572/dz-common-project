@@ -48,6 +48,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common-trans</artifactId>
+			<version>4.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common</artifactId>
 			<version>4.0.0-SNAPSHOT</version>
 		</dependency>
