@@ -19,7 +19,7 @@ public class TurnMQ implements IMessageListener {
 
     @Override
     public void receive(Message message) {
-        logger.debug("TurnMQ-------" + message.getBody());
+        logger.debug("TurnMQ-------{}", message.getBody());
         message.acknowledge();
     }
 }
