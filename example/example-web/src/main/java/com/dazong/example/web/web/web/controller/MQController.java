@@ -2,7 +2,7 @@ package com.dazong.example.web.web.web.controller;
 
 import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
 import com.dazong.common.mq.domian.DZMessage;
-import com.dazong.example.web.web.common.constant.MQConstant;
+import com.dazong.example.common.constant.MQConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

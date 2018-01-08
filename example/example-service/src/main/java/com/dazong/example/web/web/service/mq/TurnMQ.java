@@ -4,7 +4,7 @@ import com.dazong.common.mq.annotation.Subscribe;
 import com.dazong.common.mq.constant.SubscribeType;
 import com.dazong.common.mq.core.consumer.IMessageListener;
 import com.dazong.common.mq.domian.Message;
-import com.dazong.example.web.web.common.constant.MQConstant;
+import com.dazong.example.common.constant.MQConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

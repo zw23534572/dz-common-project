@@ -5,7 +5,7 @@ import com.dazong.common.feign.client.api.IUserInfoService;
 import com.dazong.common.feign.client.dto.request.UserRequest;
 import com.dazong.common.feign.client.dto.response.UserInfo;
 import com.dazong.common.resp.DataResponse;
-import com.dazong.example.web.web.common.constant.ResultEnum;
+import com.dazong.example.common.constant.ResultEnum;
 import com.dazong.example.web.web.domain.EnvironmentCache;
 
 import org.slf4j.Logger;
