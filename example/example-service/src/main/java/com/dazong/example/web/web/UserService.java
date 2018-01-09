@@ -27,5 +27,10 @@ public interface UserService {
 	 */
 	public DataResponse<UserInfo> getUser(@Valid UserInfo userInfo);
 
+	/**
+	 * 幂等测试
+	 * @param userInfo
+	 * @return
+	 */
 	DataResponse<UserInfo> saveUser(UserInfo userInfo);
 }
