@@ -1,5 +1,7 @@
 package com.dazong.common.feign.client.dto.response;
 
+import java.io.Serializable;
+
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,7 +11,12 @@ import lombok.Data;
  *  @author yanghui
  */
 @Data
-public class Company {
+public class Company implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5981047830020442410L;
 
 	/** 公司编号*/
 	private Long id;

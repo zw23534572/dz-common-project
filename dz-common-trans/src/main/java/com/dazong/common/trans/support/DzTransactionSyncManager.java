@@ -1,9 +1,10 @@
 package com.dazong.common.trans.support;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.core.NamedThreadLocal;
+
+import com.google.common.collect.Maps;
 
 /**
  * 事务上下文管理器
@@ -54,7 +55,7 @@ public class DzTransactionSyncManager {
 	public static void addResources(String key, Object value) {
 		Map<String, Object> resMap = RESOURCES.get();
 		if (resMap == null) {
-			resMap = new HashMap<>();
+			resMap = Maps.newHashMap();
 			RESOURCES.set(resMap);
 		}
 

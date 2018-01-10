@@ -47,20 +47,17 @@ public class DzJdbcTransactionDurableManagerAdapter implements DzTransactionDura
 	@Override
 	public void prepareRetryTransaction(DzTransactionObject to) {
 		List<String> offsprings = getAllOffspring(to);
-		if (offsprings != null) {
-			for (String uid : offsprings) {
-				mapper.deleteByPrimaryKey(uid);
-			}
+		for (String uid : offsprings) {
+			mapper.deleteByPrimaryKey(uid);
 		}
+
 	}
 
 	@Override
 	public void retryFail(DzTransactionObject updateTo) {
 		List<String> offsprings = getAllOffspring(updateTo);
-		if (offsprings != null) {
-			for (String uid : offsprings) {
-				mapper.deleteByPrimaryKey(uid);
-			}
+		for (String uid : offsprings) {
+			mapper.deleteByPrimaryKey(uid);
 		}
 
 		mapper.updateByPrimaryKeySelective(updateTo);

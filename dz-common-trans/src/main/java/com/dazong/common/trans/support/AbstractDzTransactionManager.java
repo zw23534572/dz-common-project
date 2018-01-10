@@ -2,7 +2,6 @@ package com.dazong.common.trans.support;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -34,7 +33,6 @@ import com.google.common.collect.Maps;
  * @author hujunzhong
  *
  */
-@SuppressWarnings("serial")
 public abstract class AbstractDzTransactionManager implements DzTransactionManager {
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
