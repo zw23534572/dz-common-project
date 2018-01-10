@@ -53,7 +53,7 @@ public class DzTransactionScheduler {
 	private void scheduleBussinessFinished() {
 		try{
 			manager.scheduleBussinessFinished();
-		}catch (Throwable e) {
+		}catch (Exception e) {
 			logger.error("处理业务完成异常", e);
 		}
 	}
@@ -71,7 +71,7 @@ public class DzTransactionScheduler {
 			logger.debug("重试事务:{},{}",Thread.currentThread().getId(), dzTransactionObject.getTransactionName());
 			try{
 				manager.retryTransaction(dzTransactionObject);
-			}catch (Throwable e) {
+			}catch (Exception e) {
 				logger.error("事务重试异常:", e);
 			}
 		}

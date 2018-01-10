@@ -1,22 +1,30 @@
 package com.dazong.common.trans;
 
-public class DzTransactionException extends RuntimeException {
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.BaseApplicationException;
+
+
+/**
+ * 异常类
+ * 
+ * @author hujunzhong
+ *
+ */
+public class DzTransactionException extends BaseApplicationException {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3906827017056676612L;
-
-	public DzTransactionException(){
-		super();
+	
+	public DzTransactionException(String message) {
+		super(CommonStatus.RETRY_UTIL_ERROR.getCode(), message);
 	}
 	
-	public DzTransactionException(String msg){
-		super(msg);
+	public DzTransactionException(String message, Throwable cause) {
+		super(CommonStatus.RETRY_UTIL_ERROR.getCode(), message, cause);
 	}
 
 	
-	public DzTransactionException(String msg, Throwable t){
-		super(msg, t);
-	}
+
 }

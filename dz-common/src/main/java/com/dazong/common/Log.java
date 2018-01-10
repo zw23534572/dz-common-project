@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * 日志规范的工具封装
- * 
+ * @author zhiyuan.wang
  */
 public class Log {
 	/**
@@ -22,7 +22,7 @@ public class Log {
 	/**
 	 * 额外的参数
 	 */
-	private Map<String, Object> params = new HashMap<String, Object>();
+	private Map<String, Object> params = new HashMap<>();
 
 	/**
 	 * 日志格式 [operation][message],{key1=value1,key2=value2,key3=value3}

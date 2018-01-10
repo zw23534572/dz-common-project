@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>com.dazong.common</groupId>
+		<artifactId>dz-common-parent</artifactId>
+		<version>4.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dz-common-util</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+
+	<packaging>jar</packaging>
+	<name>dz-common-util</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+        <dependency>
+            <groupId>com.dazong.common</groupId>
+            <artifactId>dz-common</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.1.last</version>
+        </dependency>
+    </dependencies>
+
+
+</project>
