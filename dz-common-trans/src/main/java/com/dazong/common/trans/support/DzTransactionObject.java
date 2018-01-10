@@ -1,6 +1,7 @@
 package com.dazong.common.trans.support;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * 事务对象实体,存放单个事务的数据
@@ -161,5 +162,14 @@ public class DzTransactionObject implements Serializable{
 	public void setFmeyeId(String fmeyeId) {
 		this.fmeyeId = fmeyeId;
 	}
+
+	@Override
+	public String toString() {
+		return "DzTransactionObject [uid=" + uid + ", pid=" + pid + ", rid=" + rid + ", bussinessId=" + bussinessId
+				+ ", status=" + status + ", transactionName=" + transactionName + ", params=" + Arrays.toString(params)
+				+ ", retryTime=" + retryTime + ", retryTally=" + retryTally + ", remark=" + remark + ", fmeyeId="
+				+ fmeyeId + "]";
+	}
+	
 	
 }
