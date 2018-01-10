@@ -8,6 +8,12 @@ import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.dazong.common.trans.SerializeException;
 
+/**
+ * Hessian参数序列化
+ * 
+ * @author hujunzhong
+ *
+ */
 public class HessianSerialize implements IParamSerialize {
 
 	private boolean allowUnSerializable = true;

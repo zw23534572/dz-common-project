@@ -4,6 +4,7 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +15,7 @@ import org.springframework.aop.interceptor.AsyncExecutionInterceptor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 
 import com.dazong.common.trans.DzTransactionManager;
+import com.dazong.common.trans.SimpleThreadFactory;
 import com.dazong.common.trans.support.DzTransactionInfo;
 
 /**
@@ -29,11 +31,12 @@ public class DzTransactionProcessAsyncDelegate implements DzTransactionProcess {
 	private AsyncExecutionInterceptor asyncInterceptor;
 
 	private DzTransactionProcess targetProcess;
-	
-	public DzTransactionProcessAsyncDelegate(DzTransactionProcess targetProcess,int nThreads) {
+
+	public DzTransactionProcessAsyncDelegate(DzTransactionProcess targetProcess, int nThreads) {
 		logger.info("异步事务线程数:{}", nThreads);
+
 		Executor executor = new ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>());
+				new LinkedBlockingQueue<Runnable>(), new SimpleThreadFactory());
 		asyncInterceptor = new AsyncExecutionInterceptor(executor);
 		asyncInterceptor.setExceptionHandler(new AsyncUncaughtExceptionHandler() {
 

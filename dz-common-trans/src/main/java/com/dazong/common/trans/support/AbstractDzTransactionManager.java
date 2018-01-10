@@ -1,6 +1,5 @@
 package com.dazong.common.trans.support;
 
-import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -22,14 +21,21 @@ import com.dazong.common.trans.DzTransactionDurableManger;
 import com.dazong.common.trans.DzTransactionException;
 import com.dazong.common.trans.DzTransactionManager;
 import com.dazong.common.trans.SerializeException;
+import com.dazong.common.trans.SimpleThreadFactory;
 import com.dazong.common.trans.TransactionDefinition;
 import com.dazong.common.trans.TransactionStatus;
 import com.dazong.common.trans.annotation.Propagation;
 import com.dazong.common.trans.properties.DzTransactionProperties;
 import com.dazong.common.trans.serialize.IParamSerialize;
+import com.google.common.collect.Maps;
 
+/**
+ * 
+ * @author hujunzhong
+ *
+ */
 @SuppressWarnings("serial")
-public abstract class AbstractDzTransactionManager implements DzTransactionManager, Serializable {
+public abstract class AbstractDzTransactionManager implements DzTransactionManager {
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -51,9 +57,9 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 	public void init() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		int nThreads = this.dzTransactionConfig.getAsyncCommitThreadSize();
 		executor = new ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>());
+				new LinkedBlockingQueue<Runnable>(), new SimpleThreadFactory());
 		logger.info("初始化事务提交线程池,线程数:{}", nThreads);
-		transactionDeclearMap = new HashMap<>();
+		transactionDeclearMap = Maps.newHashMap();
 		usedFmeye = isUsedFmeye();
 		paramSerialize = (IParamSerialize) Class.forName(this.dzTransactionConfig.getParamSerializeClass())
 				.newInstance();

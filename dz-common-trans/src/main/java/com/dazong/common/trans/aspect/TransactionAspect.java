@@ -28,6 +28,11 @@ import com.dazong.common.trans.support.DzTransactionInfo;
 import com.dazong.common.trans.support.DzTransactionSupport;
 import com.dazong.common.trans.support.DzTransactionSyncManager;
 
+/**
+ * 事务切面
+ * @author hujunzhong
+ *
+ */
 @Configuration
 public class TransactionAspect
 		implements ApplicationListener<ContextRefreshedEvent>, MethodInterceptor, DzTransactionProcess {

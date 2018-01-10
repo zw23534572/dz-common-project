@@ -34,13 +34,13 @@ public interface TransactionDefinition {
 	int getMaxTryTimes();
 	
 	/**
-	 * 
+	 * 获得参数
 	 * @return
 	 */
 	Object[] getParams();
 	
 	/**
-	 * 
+	 * 获得业务id
 	 * @return
 	 */
 	String getBussinessId();
