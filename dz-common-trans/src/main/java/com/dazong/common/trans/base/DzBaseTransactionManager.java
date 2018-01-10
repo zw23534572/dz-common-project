@@ -10,6 +10,11 @@ import com.dazong.common.trans.support.DzTransactionObject;
 import com.dazong.common.trans.support.DzTransactionSupport;
 import com.dazong.common.trans.support.DzTransactionSyncManager;
 
+/**
+ * 
+ * @author hujunzhong
+ *
+ */
 @Lazy
 @Component
 @SuppressWarnings("serial")

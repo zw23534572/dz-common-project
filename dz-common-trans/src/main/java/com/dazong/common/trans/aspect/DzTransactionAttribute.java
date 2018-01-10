@@ -2,6 +2,11 @@ package com.dazong.common.trans.aspect;
 
 import com.dazong.common.trans.support.DefaultTransactionDefinition;
 
+/**
+ * 
+ * @author hujunzhong
+ *
+ */
 @SuppressWarnings("serial")
 public class DzTransactionAttribute extends DefaultTransactionDefinition implements TransactionAttribute {
 	

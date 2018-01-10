@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common</artifactId>
-			<version>4.0.0-SNAPSHOT</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

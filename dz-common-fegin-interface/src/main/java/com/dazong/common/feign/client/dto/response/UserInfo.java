@@ -14,6 +14,11 @@ import java.io.Serializable;
  */
 @Data
 public class UserInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9077197157796128092L;
+
 	/** 用户编号 出参时使用*/
 	private Long id;
 	

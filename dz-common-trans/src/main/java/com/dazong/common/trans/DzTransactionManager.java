@@ -22,7 +22,7 @@ public interface DzTransactionManager {
 	/**
 	 * 事务完成,提交事务
 	 * @param status
-	 * @param isSuccess
+	 * @param rootTransactionSuccess
 	 */
 	void commit(TransactionStatus status, boolean rootTransactionSuccess);
 

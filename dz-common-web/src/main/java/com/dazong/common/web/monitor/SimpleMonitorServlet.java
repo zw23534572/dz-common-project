@@ -32,6 +32,11 @@ import java.util.Map;
 @WebServlet(name = "SimpleMonitor", urlPatterns = "/simpleMonitor")
 public class SimpleMonitorServlet extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5862694489691648828L;
+
 	private static final Logger logger = LoggerFactory.getLogger(SimpleMonitorServlet.class);
 
 	private static List<BaseMonitor> monitorList;
@@ -40,7 +45,11 @@ public class SimpleMonitorServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		doPost(req, resp);
+		try {
+			doPost(req, resp);
+		} catch (Exception e) {
+			logger.error("SimpleMonitorServlet异常", e);
+		}
 	}
 
 	@Override
@@ -54,7 +63,7 @@ public class SimpleMonitorServlet extends HttpServlet {
 			out.close();
 
 		} catch (Exception e) {
-			throw new ServletException(e);
+			logger.error("SimpleMonitorServlet异常", e);
 		}
 	}
 
