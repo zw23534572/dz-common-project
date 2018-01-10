@@ -1,4 +1,4 @@
-package com.dazong.example.web.web.web;
+package com.dazong.example.web;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.dazong.common.ApplicationInfo;

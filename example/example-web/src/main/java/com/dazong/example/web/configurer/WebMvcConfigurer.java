@@ -1,17 +1,15 @@
-package com.dazong.example.web.web.web.configurer;
+package com.dazong.example.web.configurer;
 
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.dazong.common.web.JsonMappingExceptionResolver;
-import com.dazong.example.web.web.web.interceptor.UserInterceptor;
+import com.dazong.common.support.JsonMappingExceptionResolver;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.nio.charset.Charset;
@@ -24,16 +22,6 @@ import java.util.List;
  */
 @Configuration
 public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
-
-    @Bean
-    public UserInterceptor userInterceptor() {
-        return new UserInterceptor();
-    }
-    //添加拦截器
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(userInterceptor()).addPathPatterns("/**").excludePathPatterns("/**/noUser/**");
-    }
 
 
     @Bean

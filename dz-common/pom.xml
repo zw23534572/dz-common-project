@@ -29,6 +29,11 @@
 			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.paranamer</groupId>
+			<artifactId>paranamer</artifactId>
+			<version>2.3</version>
+		</dependency>
 	</dependencies>
 
 
