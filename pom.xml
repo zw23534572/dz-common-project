@@ -18,6 +18,7 @@
 	<name>dz-common-parent</name>
 	<modules>
 		<module>dz-common</module>
+		<module>dz-common-util</module>
 		<module>dz-common-cache</module>
 		<module>dz-common-fileserver</module>
 		<module>dz-common-lock</module>
@@ -26,7 +27,7 @@
 		<module>dz-common-web</module>
 		<module>dz-common-fegin-interface</module>
 		<module>example</module>
-	</modules>
+    </modules>
 	
 	<distributionManagement>
 		<repository>
