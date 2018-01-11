@@ -108,4 +108,12 @@ public interface IUserInfoService {
      */
     @RequestMapping(value = "/goodsOwner/detail", method = RequestMethod.POST)
     DataResponse<Company> getGoodsOwnerDetail(@RequestBody BankInfoRequest request);
+
+    /**
+     * 查询货主名称列表
+     *
+     * @return List<Company>
+     */
+    @RequestMapping(value = "/goodsOwner/nameList", method = RequestMethod.POST)
+    DataResponse<List<Company>> getGoodsOwnerNameList();
 }

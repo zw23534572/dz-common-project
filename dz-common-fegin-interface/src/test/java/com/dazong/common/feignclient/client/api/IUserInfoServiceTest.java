@@ -37,7 +37,7 @@ public class IUserInfoServiceTest {
         list.add(Long.valueOf(100001188));
         whiteRequest.setCompanyIds(list);
         DataResponse<List<WhiteListResponse>> response = this.iUserInfoService.getWhiteList(whiteRequest);
-        if (response.isSuccess()) {
+        if (response.isSuccess() && null != response.getData()) {
             for (WhiteListResponse item : response.getData()) {
                 logger.info("companyID={},status={}", item.getCompanyID(), item.getStatus());
             }
@@ -60,7 +60,7 @@ public class IUserInfoServiceTest {
         request.setPage(1);
         request.setPageSize(10);
         DataResponse<List<Company>> response = this.iUserInfoService.getGoodsOwnerList(request);
-        if (response.isSuccess()) {
+        if (response.isSuccess() && null != response.getData()) {
             for (Company item : response.getData()) {
                 logger.info("result={}", item);
             }
@@ -74,6 +74,16 @@ public class IUserInfoServiceTest {
         DataResponse<Company> response = this.iUserInfoService.getGoodsOwnerDetail(request);
         if (response.isSuccess()) {
             logger.info("result={}", response.getData());
+        }
+    }
+
+    @Test
+    public void testGetGoodsOwnerNameList() {
+        DataResponse<List<Company>> response = this.iUserInfoService.getGoodsOwnerNameList();
+        if (response.isSuccess() && null != response.getData()) {
+            for (Company item : response.getData()) {
+                logger.info("result={}", item);
+            }
         }
     }
 }
