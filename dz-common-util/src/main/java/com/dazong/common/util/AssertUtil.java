@@ -17,6 +17,8 @@ public class AssertUtil {
 
     protected static Logger logger = LoggerFactory.getLogger(AssertUtil.class);
 
+    private AssertUtil(){}
+
     /**
      * 判断对象是否为空，为空抛异常
      * @param o

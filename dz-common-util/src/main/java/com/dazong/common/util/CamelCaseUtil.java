@@ -59,11 +59,11 @@ public class CamelCaseUtil {
         if (s == null) {
             return null;
         }
-        s = s.toLowerCase();
-        StringBuilder sb = new StringBuilder(s.length());
+        String str = s.toLowerCase();
+        StringBuilder sb = new StringBuilder(str.length());
         boolean upperCase = false;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
             if (c == SEPARATOR) {
                 upperCase = true;
             } else if (upperCase) {
@@ -86,18 +86,8 @@ public class CamelCaseUtil {
         if (s == null) {
             return null;
         }
-        s = toCamelCase(s);
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
-    }
-
-    public static void main(String[] args) {
-        System.out.println("abc_c_ddd：" + CamelCaseUtil.toUnderlineName("abc_c_ddd"));
-        System.out.println("abc_c_ddd：" + CamelCaseUtil.toCamelCase("abc_c_ddd"));
-        System.out.println("abc_c_ddd：" + CamelCaseUtil.toCapitalizeCamelCase("abc_c_ddd"));
-
-        System.out.println("abcCDdd：" + CamelCaseUtil.toUnderlineName("abcCDdd"));
-        System.out.println("abcCDdd：" + CamelCaseUtil.toCamelCase("abcCDdd"));
-        System.out.println("abcCDdd：" + CamelCaseUtil.toCapitalizeCamelCase("abcCDdd"));
+        String str = toCamelCase(s);
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 
 }
