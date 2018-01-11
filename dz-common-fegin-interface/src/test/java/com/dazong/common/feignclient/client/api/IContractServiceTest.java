@@ -1,7 +1,9 @@
 package com.dazong.common.feignclient.client.api;
 
+import com.dazong.common.feign.client.dto.request.CompanyRequest;
 import com.dazong.common.feign.client.dto.request.ProtocolRequest;
 import com.dazong.common.feign.client.dto.response.ProtocolResponse;
+import com.dazong.common.feign.client.dto.response.VipResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,6 +18,8 @@ import com.dazong.common.feign.client.api.IContractService;
 import com.dazong.common.feign.client.dto.request.AgreementRequest;
 import com.dazong.common.feignclient.FeignclientApplication;
 import com.dazong.common.resp.DataResponse;
+
+import java.util.Map;
 
 /**
  * @author yanghui
@@ -55,6 +59,17 @@ public class IContractServiceTest {
         DataResponse<ProtocolResponse> responseDataResponse = this.contractService.checkOwnerIsProtocol(request);
         if (responseDataResponse.isSuccess()) {
             logger.info("result={}", responseDataResponse.getData());
+        }
+    }
+
+    @Test
+    public void testCheckIsVip() {
+        CompanyRequest request = new CompanyRequest();
+        request.setCompanyId(Long.valueOf(100001188));
+        request.setFetchNos("2020000060511");
+        DataResponse<Map<String, VipResponse>> response = this.contractService.checkIsVip(request);
+        if (20271 == response.getCode() && null != response.getData()) {
+            logger.info("result={}", response.getData());
         }
     }
 }
