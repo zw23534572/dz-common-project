@@ -1,7 +1,6 @@
 package com.dazong.common.feignclient.client.api;
 
-import com.dazong.common.feign.client.dto.request.CompanyRequest;
-import com.dazong.common.feign.client.dto.request.ProtocolRequest;
+import com.dazong.common.feign.client.dto.request.*;
 import com.dazong.common.feign.client.dto.response.ProtocolResponse;
 import com.dazong.common.feign.client.dto.response.VipResponse;
 import org.junit.AfterClass;
@@ -15,10 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dazong.common.feign.client.api.IContractService;
-import com.dazong.common.feign.client.dto.request.AgreementRequest;
 import com.dazong.common.feignclient.FeignclientApplication;
 import com.dazong.common.resp.DataResponse;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,6 +70,42 @@ public class IContractServiceTest {
         request.setFetchNos("2020000060511");
         DataResponse<Map<String, VipResponse>> response = this.contractService.checkIsVip(request);
         if (20271 == response.getCode() && null != response.getData()) {
+            logger.info("result={}", response.getData());
+        }
+    }
+
+    @Test
+    public void testSendReceiptChangeCertificate() {
+        List<ReceiptChangeCertificateDetail> list = new ArrayList<>();
+        ReceiptChangeCertificateDetail detail1 = new ReceiptChangeCertificateDetail();
+        detail1.setChangeNum(100);
+        detail1.setChangeWeight(BigDecimal.valueOf(90.8));
+        detail1.setProductName("铜啊");
+        detail1.setSku("CU123");
+        detail1.setSourceReceiptNo(String.valueOf(System.currentTimeMillis()));
+        detail1.setTargetReceiptNo(String.valueOf(System.currentTimeMillis()));
+        list.add(detail1);
+        ReceiptChangeCertificateDetail detail2 = new ReceiptChangeCertificateDetail();
+        detail2.setChangeNum(100);
+        detail2.setChangeWeight(BigDecimal.valueOf(90.8));
+        detail2.setProductName("铜啊");
+        detail2.setSku("CU123");
+        detail2.setSourceReceiptNo(String.valueOf(System.currentTimeMillis()));
+        detail2.setTargetReceiptNo(String.valueOf(System.currentTimeMillis()));
+        list.add(detail2);
+        ReceiptChangeCertificateRequest request = new ReceiptChangeCertificateRequest();
+        request.setList(list);
+        request.setSerialNumber(String.valueOf(System.currentTimeMillis()));
+        request.setRefNo(String.valueOf(System.currentTimeMillis()));
+        request.setBusType(60);
+        request.setBusName("转权");
+        request.setOwnerCode("100001188");
+        request.setOwnerName("平安测试六零零零零九零零五五三一");
+        request.setWarehouseCode("1");
+        request.setWarehouseName("飞马合作仓3.0");
+        request.setRemark("我很吊吗");
+        DataResponse<String> response = this.contractService.sendReceiptChangeCertificate(request);
+        if (20271 == response.getCode()) {
             logger.info("result={}", response.getData());
         }
     }
