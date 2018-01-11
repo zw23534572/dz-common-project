@@ -10,10 +10,10 @@ public class CamelCaseUtilTest {
 
     @Test
     public void camelCaseUtilTest() {
-        String line = "a_bdd_cdd";
+        String line = "a_1bdd_cdd";
         System.out.println(CamelUnderLineUtil.underline2Camel(line));
 
-        String test2 = "aaBcDd";
+        String test2 = "1aa1BcDd";
         System.out.println(CamelUnderLineUtil.camel2Underline(test2));
     }
 

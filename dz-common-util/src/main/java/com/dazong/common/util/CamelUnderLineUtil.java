@@ -8,6 +8,8 @@ package com.dazong.common.util;
  */
 public class CamelUnderLineUtil {
 
+    private static String UNDER_LINE = "_";
+
     private CamelUnderLineUtil() {
     }
 
@@ -21,12 +23,12 @@ public class CamelUnderLineUtil {
         StringBuilder result = new StringBuilder();
         if (line == null || line.isEmpty()) {
             return "";
-        } else if (!line.contains("_")) {
+        } else if (!line.contains(UNDER_LINE)) {
             // 不含下划线，仅将首字母小写
             return line.substring(0, 1).toLowerCase() + line.substring(1);
         }
         // 用下划线将原始字符串分割
-        String[] camels = line.split("_");
+        String[] camels = line.split(UNDER_LINE);
         for (String camel :  camels) {
             // 跳过原始字符串中开头、结尾的下换线或双重下划线
             if (camel.isEmpty()) {
@@ -60,10 +62,10 @@ public class CamelUnderLineUtil {
             for (int i = 1; i < line.length(); i++) {
                 String s = line.substring(i, i + 1);
                 // 在大写字母前添加下划线
-                if (s.equals(s.toUpperCase()) && !Character.isDigit(s.charAt(0))) {
+                if (Character.isUpperCase(s.charAt(0)) && !Character.isDigit(s.charAt(0))) {
                     result.append("_");
                 }
-                // 其他字符直接转成大写
+                // 其他字符直接拼接
                 result.append(s);
             }
         }

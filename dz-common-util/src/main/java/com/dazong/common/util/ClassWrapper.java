@@ -312,7 +312,7 @@ public class ClassWrapper<T> {
                             }
                         }
                     }
-                    throw new Exception();
+                    throw new PlatformException(e, CommonStatus.FAIL, "根据一个字段名了字段类型获取 Setter");
                 }
             }
         } catch (Exception e) {
@@ -475,10 +475,7 @@ public class ClassWrapper<T> {
         if (Modifier.isFinal(f.getModifiers())) {
             return true;
         }
-        if (f.getName().startsWith("this$")) {
-            return true;
-        }
-        return false;
+        return f.getName().startsWith("this$");
     }
 
     /**
@@ -506,7 +503,7 @@ public class ClassWrapper<T> {
     public Method[] getMethods() {
         Class<?> theClass = klass;
         List<Method> list = new LinkedList<>();
-        while (null != theClass && !(theClass == Object.class)) {
+        while (null != theClass && theClass != Object.class) {
             Method[] ms = theClass.getDeclaredMethods();
             for (int i = 0; i < ms.length; i++) {
                 list.add(ms[i]);
@@ -528,7 +525,7 @@ public class ClassWrapper<T> {
     public Method[] getAllDeclaredMethods(Class<?> top) {
         Class<?> cc = klass;
         HashMap<String, Method> map = new HashMap<>();
-        while (null != cc && !(cc == Object.class)) {
+        while (null != cc && cc != Object.class) {
             Method[] fs = cc.getDeclaredMethods();
             for (int i = 0; i < fs.length; i++) {
                 String key = fs[i].getName() + ClassWrapper.getParamDescriptor(fs[i].getParameterTypes());
@@ -576,9 +573,10 @@ public class ClassWrapper<T> {
      *
      * @param obj   对象
      * @param field 字段
-     * @param value 值。如果为 null，字符和数字字段，都会设成 0
+     * @param val 值。如果为 null，字符和数字字段，都会设成 0
      */
-    public void setValue(Object obj, Field field, Object value) {
+    public void setValue(Object obj, Field field, Object val) {
+        Object value = val;
         if (!field.isAccessible()) {
             field.setAccessible(true);
         }
@@ -679,10 +677,7 @@ public class ClassWrapper<T> {
         if (null == type) {
             return false;
         }
-        if (klass == type) {
-            return true;
-        }
-        return false;
+        return klass == type;
     }
 
     /**
@@ -831,8 +826,9 @@ public class ClassWrapper<T> {
         try {
             return ClassWrapper.wrap(type).getPrimitiveWrapClass() == this.getPrimitiveWrapClass();
         } catch (Exception e) {
+
         }
-        return false;
+        return  false;
     }
 
     /**
@@ -871,20 +867,14 @@ public class ClassWrapper<T> {
         return (Object[]) Array.newInstance(pts[pts.length - 1].getComponentType(), 0);
     }
 
-    public static void main(String[] args){
-        System.out.println(ClassWrapper.getTypeParams(DateUtil.class));
-    }
     /**
      * 获取一个类的泛型参数数组，如果这个类没有泛型参数，返回 null
      */
     public static Type[] getTypeParams(Class<?> klass) {
         if (klass == null) {
-            return null;
+            return new Type[0];
         }
         Type superclass = klass.getGenericSuperclass();
-//        if ("java.lang.Object".equals(superclass.toString())) {
-//            return null;
-//        }
         if (superclass instanceof ParameterizedType) {
             return ((ParameterizedType) superclass).getActualTypeArguments();
         }
@@ -981,8 +971,7 @@ public class ClassWrapper<T> {
             sb.append(getTypeDescriptor(pt));
         }
         sb.append(')');
-        String s = sb.toString();
-        return s;
+        return sb.toString();
     }
 
     /**
@@ -1036,8 +1025,7 @@ public class ClassWrapper<T> {
                 return "D";
             } else if (klass == char.class) {
                 return "C";
-            } else
-                /* if(klass == boolean.class) */ {
+            } else{
                 return "Z";
             }
         }
@@ -1065,7 +1053,7 @@ public class ClassWrapper<T> {
      */
     public static boolean isChildOf(Class<?> parent, Class<?> child) {
         Class<?> theClass = child;
-        while (null != theClass && !(theClass == Object.class)) {
+        while (null != theClass && theClass != Object.class) {
             if (theClass.isAssignableFrom(parent)) {
                 return true;
             }

@@ -27,6 +27,10 @@ public class DateUtil {
     public static final String FORMAT_MONTH = "yyyy-MM";
     public static final String FORMAT_TIME = "HH:mm:ss";
 
+    private DateUtil(){
+
+    }
+
     /**
      * 获取当月，yyyy-MM
      *
@@ -185,8 +189,7 @@ public class DateUtil {
     public static int getDatePoor(Date beginDate, Date endDate) {
         // 获得两个时间的毫秒时间差异
         long diff = endDate.getTime() - beginDate.getTime();
-        int lastMin = (int) (diff / 1000 / 60);
-        return lastMin;
+        return  (int) (diff / 1000 / 60);
     }
 
     /**
@@ -209,18 +212,20 @@ public class DateUtil {
      * @return
      */
     public static int getDaySub(Date beginDate, Date endDate) {
+        Date varBegintDate = beginDate;
+        Date varEndDate = endDate;
         long day = 0;
         try {
             SimpleDateFormat format = new SimpleDateFormat(FORMAT_DATE);
             String sdate = format.format(Calendar.getInstance().getTime());
 
             if (beginDate == null) {
-                beginDate = format.parse(sdate);
+                varBegintDate = format.parse(sdate);
             }
             if (endDate == null) {
-                endDate = format.parse(sdate);
+                varEndDate = format.parse(sdate);
             }
-            day = (endDate.getTime() - beginDate.getTime())
+            day = (varEndDate.getTime() - varBegintDate.getTime())
                     / (24 * 60 * 60 * 1000);
         } catch (Exception e) {
             logger.info("计算两个日期相差的天数出错, {}" + e);
@@ -272,7 +277,8 @@ public class DateUtil {
         String dimWeek = "";
         int weekNo = getWeekOfYear(date);
         int year = getYearOfWeek(date);
-        if (weekNo < 10) {
+        int val = 10;
+        if (weekNo < val) {
             dimWeek = String.valueOf(year) + "0" + String.valueOf(weekNo);
         } else {
             dimWeek = String.valueOf(year) + String.valueOf(weekNo);
@@ -415,11 +421,6 @@ public class DateUtil {
         cal.set(Calendar.DAY_OF_MONTH, lastDay);
         SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(cal.getTime());
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        System.out.println(DateUtil.getCurrentDayAsString());
     }
 
 }
