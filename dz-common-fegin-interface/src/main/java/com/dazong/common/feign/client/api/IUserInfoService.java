@@ -90,4 +90,13 @@ public interface IUserInfoService {
      */
     @RequestMapping(value = "/flexibleWarehouse/getWarehouseByName", method = RequestMethod.POST)
     DataResponse<String> getWarehouseByName(@RequestBody WarehouseRequest warehouseRequest);
+
+    /**
+     * 分页查询货主列表
+     *
+     * @param request
+     * @return List<Company>
+     */
+    @RequestMapping(value = "/goodsOwner/list", method = RequestMethod.POST)
+    DataResponse<List<Company>> getGoodsOwnerList(@RequestBody PageRequest request);
 }

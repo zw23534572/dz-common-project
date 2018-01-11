@@ -1,8 +1,10 @@
 package com.dazong.common.feignclient.client.api;
 
 import com.dazong.common.feign.client.api.IUserInfoService;
+import com.dazong.common.feign.client.dto.request.PageRequest;
 import com.dazong.common.feign.client.dto.request.WarehouseRequest;
 import com.dazong.common.feign.client.dto.request.WhiteRequest;
+import com.dazong.common.feign.client.dto.response.Company;
 import com.dazong.common.feign.client.dto.response.WhiteListResponse;
 import com.dazong.common.feignclient.FeignclientApplication;
 import com.dazong.common.resp.DataResponse;
@@ -48,6 +50,19 @@ public class IUserInfoServiceTest {
         DataResponse<String> response = this.iUserInfoService.getWarehouseByName(request);
         if (response.isSuccess()) {
             logger.info("result={}", response.getData());
+        }
+    }
+
+    @Test
+    public void testGetGoodsOwnerList(){
+        PageRequest request = new PageRequest();
+        request.setPage(1);
+        request.setPageSize(10);
+        DataResponse<List<Company>> response = this.iUserInfoService.getGoodsOwnerList(request);
+        if (response.isSuccess()){
+            for (Company item : response.getData()){
+                logger.info("result={}",item);
+            }
         }
     }
 }
