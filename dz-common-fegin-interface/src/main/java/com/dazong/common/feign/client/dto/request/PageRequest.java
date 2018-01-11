@@ -4,8 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author lori.li
+ */
 @Data
-public class PageRequest implements Serializable{
+public class PageRequest implements Serializable {
 
     private Integer page;
 
