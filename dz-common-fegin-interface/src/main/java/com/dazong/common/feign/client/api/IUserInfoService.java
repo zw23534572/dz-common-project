@@ -2,6 +2,7 @@ package com.dazong.common.feign.client.api;
 
 import java.util.List;
 
+import com.dazong.common.feign.client.dto.response.WhiteListReponse;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,7 @@ public interface IUserInfoService {
 	 * @return
 	 */
 	@RequestMapping(value = "/user/get_user_info", method = RequestMethod.POST)
-	public DataResponse<UserInfo> queryUserByUserId(@RequestBody UserRequest userRequest);
+	DataResponse<UserInfo> queryUserByUserId(@RequestBody UserRequest userRequest);
 
 	/**
 	 * <B>方法名称：检查敏感词汇</B><BR>
@@ -42,7 +43,7 @@ public interface IUserInfoService {
 	 * @return
 	 */
 	@RequestMapping(value = "/flex/getFlexWord", method = RequestMethod.POST)
-	public DataResponse<?> checkSensitiveWords(@RequestBody SensitiveRequest sensitiveRequest);
+	DataResponse<?> checkSensitiveWords(@RequestBody SensitiveRequest sensitiveRequest);
 	/**
 	 * <B>方法名称：获取公司</B><BR>
 	 * <B>概要说明：</B><BR>
@@ -50,7 +51,7 @@ public interface IUserInfoService {
 	 * @return
 	 */
 	@RequestMapping(value = "/userapi/getCompanyDetail", method = RequestMethod.POST)
-	public DataResponse<Company> queryCompanyByComId(@RequestBody CompanyRequest companyRequest);
+	DataResponse<Company> queryCompanyByComId(@RequestBody CompanyRequest companyRequest);
 	
 	/**
 	 * <B>方法名称：检查白名单</B><BR>
@@ -59,7 +60,7 @@ public interface IUserInfoService {
 	 * @return
 	 */
 	@RequestMapping(value = "/flex/checkIsWhite", method = RequestMethod.POST)
-	public DataResponse<?> checkIsWhite(@RequestBody WhiteRequest whiteRequest);
+	DataResponse<?> checkIsWhite(@RequestBody WhiteRequest whiteRequest);
 	
 	/**
 	 * <B>方法名称：获取银行卡信息</B><BR>
@@ -68,5 +69,13 @@ public interface IUserInfoService {
 	 * @return
 	 */
 	@RequestMapping(value = "/pc_api/getcbank", method = RequestMethod.POST)
-	public DataResponse<List<BankInfoResponse>> getBankInfo(BankInfoRequest bankInfoRequest);
+	DataResponse<List<BankInfoResponse>> getBankInfo(BankInfoRequest bankInfoRequest);
+
+	/**
+	 * 获取白名单列表
+	 * @param whiteRequest
+	 * @return List<WhiteListReponse>
+	 */
+	@RequestMapping(value = "/flex/getWhiteList", method = RequestMethod.POST)
+	DataResponse<List<WhiteListReponse>> getWhiteList(@RequestBody WhiteRequest whiteRequest);
 }
