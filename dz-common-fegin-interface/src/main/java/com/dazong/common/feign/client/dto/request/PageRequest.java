@@ -8,7 +8,9 @@ import java.io.Serializable;
  * @author lori.li
  */
 @Data
-public class WarehouseRequest implements Serializable {
+public class PageRequest implements Serializable {
 
-    private String warehouseName;
+    private Integer page;
+
+    private Integer pageSize;
 }
