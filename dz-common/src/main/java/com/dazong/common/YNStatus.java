@@ -6,6 +6,9 @@ package com.dazong.common;
  **/
 public enum YNStatus implements IResultStatus {
 
+	/**
+	 * 有效
+	 */
     YES() {
         @Override
         public int getCode() {
@@ -17,6 +20,9 @@ public enum YNStatus implements IResultStatus {
             return "有效";
         }
     },
+    /**
+     * 无效
+     */
     NO() {
         @Override
         public int getCode() {

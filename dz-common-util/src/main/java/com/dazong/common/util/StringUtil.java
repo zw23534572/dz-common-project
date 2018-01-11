@@ -1,6 +1,7 @@
 package com.dazong.common.util;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +17,15 @@ import static org.apache.commons.lang3.StringUtils.split;
  */
 public class StringUtil {
 
-    /** 逗号 */
-    public final static String SEP_COMMA = ",";
+    /**
+     * 逗号
+     */
+    public static final String SEP_COMMA = ",";
+
+    private StringUtil() {
+
+    }
+
     /**
      * 首字母变小写
      *
@@ -25,29 +33,19 @@ public class StringUtil {
      * @return
      */
     public static String firstCharToLowerCase(String str) {
-        char firstChar = str.charAt(0);
-        if (firstChar >= 'A' && firstChar <= 'Z') {
-            char[] arr = str.toCharArray();
-            arr[0] += ('a' - 'A');
-            return new String(arr);
-        }
-        return str;
+        return str.substring(0, 1).toLowerCase() + str.substring(1);
     }
 
     /**
-     * 首字母变大写
+     * 首字母变大写, 利用ASCII编码进行转换
      *
      * @param str
      * @return
      */
     public static String firstCharToUpperCase(String str) {
-        char firstChar = str.charAt(0);
-        if (firstChar >= 'a' && firstChar <= 'z') {
-            char[] arr = str.toCharArray();
-            arr[0] -= ('a' - 'A');
-            return new String(arr);
-        }
-        return str;
+        char[] charArray = str.toCharArray();
+        charArray[0] -= 32;
+        return String.valueOf(charArray);
     }
 
     /**
@@ -242,17 +240,17 @@ public class StringUtil {
     /**
      * 根据一个正则式，将字符串拆分成数组，空元素将被忽略
      *
-     * @param s 字符串
-     * @param regex  正则式
+     * @param s     字符串
+     * @param regex 正则式
      * @return 字符串数组
      */
     public static String[] splitIgnoreBlank(String s, String regex) {
-        return isEmpty(s)?
-                null: CollectionUtil.removeIfEmpty(split(s,regex));
+        return isEmpty(s) ?
+                null : CollectionUtil.removeIfEmpty(split(s, regex));
     }
 
     public static String[] splitIgnoreBlank(String s) {
-        return splitIgnoreBlank(s,StringUtil.SEP_COMMA);
+        return splitIgnoreBlank(s, StringUtil.SEP_COMMA);
     }
 
     /**
@@ -260,14 +258,10 @@ public class StringUtil {
      * <p>
      * 每个元素之间，都会用一个给定的字符分隔
      *
-     * @param offset
-     *            开始元素的下标
-     * @param len
-     *            元素数量
-     * @param c
-     *            分隔符
-     * @param objs
-     *            数组
+     * @param offset 开始元素的下标
+     * @param len    元素数量
+     * @param c      分隔符
+     * @param objs   数组
      * @return 拼合后的字符串
      */
     public static <T> StringBuilder concat(int offset,
@@ -293,10 +287,8 @@ public class StringUtil {
      * <p>
      * 每个元素之间，都会用一个给定的字符分隔
      *
-     * @param c
-     *            分隔符
-     * @param coll
-     *            集合
+     * @param c    分隔符
+     * @param coll 集合
      * @return 拼合后的字符串
      */
     public static <T> StringBuilder concat(Object c, Collection<T> coll) {
@@ -312,7 +304,7 @@ public class StringUtil {
      * <p>
      * 每个元素之间，都会用一个给定的字符分隔
      *
-     * @param c 分隔符
+     * @param c  分隔符
      * @param it 集合
      * @return 拼合后的字符串
      */
@@ -330,23 +322,25 @@ public class StringUtil {
 
     /**
      * 分割字符串为int集合
+     *
      * @param str 要分割的字符串
      * @param sep 连接符
      * @return
      */
     public static List<Integer> splitToIntList(String str, String sep) {
-        return splitToNumberList(str,sep,Integer.class);
+        return splitToNumberList(str, sep, Integer.class);
     }
 
     /**
      * 分割字符串为数字集合
-     * @param str 要分割的字符串
-     * @param sep 分割符
+     *
+     * @param str      要分割的字符串
+     * @param sep      分割符
      * @param numClass 数字类型，目前支持:Integer,Long,Double,BigDecimal,Short,Byte
      * @return
      */
-    public static <T extends  Number> List<T> splitToNumberList(String str,String sep,Class<T> numClass) {
-        String[] strs = splitIgnoreBlank(str,sep);
+    public static <T extends Number> List<T> splitToNumberList(String str, String sep, Class<T> numClass) {
+        String[] strs = splitIgnoreBlank(str, sep);
         if (strs != null) {
             List<T> nums = CollectionUtil.arrayList();
             for (String s : strs) {
@@ -366,7 +360,7 @@ public class StringUtil {
             }
             return nums;
         }
-        return null;
+        return new ArrayList<>();
     }
 
 

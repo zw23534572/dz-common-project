@@ -23,6 +23,7 @@ public class PlatformException extends BaseApplicationException {
         super(code, message, cause);
     }
 
+
     public PlatformException(IResultStatus status, String fmt, Object... args) {
         this(status.getCode(), String.format(fmt, args));
     }
@@ -55,5 +56,12 @@ public class PlatformException extends BaseApplicationException {
      */
     public PlatformException(IResultStatus resultStatus, Throwable cause) {
         super(resultStatus.getCode(), resultStatus.getMessage(), cause);
+    }
+
+    /**
+     * @param resultStatus 枚举状态
+     */
+    public PlatformException(IResultStatus resultStatus) {
+        super(resultStatus.getCode(), resultStatus.getMessage());
     }
 }

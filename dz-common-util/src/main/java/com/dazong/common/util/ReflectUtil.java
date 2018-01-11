@@ -1,5 +1,7 @@
 package com.dazong.common.util;
 
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.Field;
@@ -13,6 +15,10 @@ import java.lang.reflect.Method;
  * @date 2018/01/09
  */
 public class ReflectUtil {
+
+    private ReflectUtil(){
+
+    }
 
     /**
      * 将source对象中的属性值复制到target对象中
@@ -38,7 +44,7 @@ public class ReflectUtil {
                 Object sourceValue = getFieldValueWithGetterMethod(source, sourceClass, fieldName);
                 setFieldValueWithSetterMethod(target, sourceValue, targetClass, targetField);
             } catch (Exception e) {
-                //ignored
+                throw new PlatformException(e, CommonStatus.FAIL,"将source对象中的属性值复制到target对象中");
             }
         }
     }
@@ -76,7 +82,7 @@ public class ReflectUtil {
         try {
             return clazz.getDeclaredMethod(methodName, new Class<?>[]{});
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"获取getter方法");
         }
     }
 
@@ -93,7 +99,7 @@ public class ReflectUtil {
         try {
             return getInheritMethod(clazz, methodName, new Class<?>[]{});
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"获取getter方法");
         }
     }
 
@@ -110,7 +116,7 @@ public class ReflectUtil {
         try {
             return getInheritMethod(clazz, methodName, new Class<?>[]{field.getType()});
         } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"获取getter方法");
         }
     }
 
@@ -131,7 +137,7 @@ public class ReflectUtil {
             if (superClass != null && superClass != Object.class) {
                 return getInheritMethod(superClass, methodName, parameterTypes);
             } else {
-                throw e;
+                throw new PlatformException(e, CommonStatus.FAIL,"获取继承的方法");
             }
         }
     }
@@ -149,9 +155,9 @@ public class ReflectUtil {
         try {
             return method.invoke(object);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"使用getter方法获取属性值");
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"使用getter方法获取属性值");
         }
     }
 
@@ -168,9 +174,9 @@ public class ReflectUtil {
         try {
             return method.invoke(object);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"使用getter方法获取属性值");
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"使用getter方法获取属性值");
         }
     }
 
@@ -188,9 +194,9 @@ public class ReflectUtil {
         try {
             return method.invoke(target, value);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"使用setter方法设置属性值");
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"使用setter方法设置属性值");
         }
     }
 
@@ -209,7 +215,7 @@ public class ReflectUtil {
             try {
                 result = field.get(target);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new PlatformException(e, CommonStatus.FAIL,"利用反射获取指定对象的指定属性");
             }
         }
         return result;
@@ -229,7 +235,7 @@ public class ReflectUtil {
                 field = clazz.getDeclaredField(fieldName);
                 break;
             } catch (NoSuchFieldException e) {
-                //ignored
+                throw new PlatformException(e, CommonStatus.FAIL,"利用反射获取指定对象里面的指定属性");
             }
         }
         return field;
@@ -249,22 +255,13 @@ public class ReflectUtil {
             try {
                 field.set(target, fieldValue);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new PlatformException(e, CommonStatus.FAIL,"利用反射设置指定对象的指定属性为指定的值");
             }
         }
     }
 
     public static void copyProperties(Object source, Object target) {
         BeanUtils.copyProperties(source, target);
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(Md5Util.digest32("3869cd84918b7392b20ebb88b31420891002张三0"));
-        System.out.println(Md5Util.digest("3869cd84918b7392b20ebb88b31420891002张三0"));
-        for (Field f : ReflectUtil.getAllFields(Md5Util.class)) {
-            System.out.println(f);
-        }
     }
 
 }
