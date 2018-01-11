@@ -57,4 +57,11 @@ public class PlatformException extends BaseApplicationException {
     public PlatformException(IResultStatus resultStatus, Throwable cause) {
         super(resultStatus.getCode(), resultStatus.getMessage(), cause);
     }
+
+    /**
+     * @param resultStatus 枚举状态
+     */
+    public PlatformException(IResultStatus resultStatus) {
+        super(resultStatus.getCode(), resultStatus.getMessage());
+    }
 }
