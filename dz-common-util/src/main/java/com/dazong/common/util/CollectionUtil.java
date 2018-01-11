@@ -34,8 +34,9 @@ public class CollectionUtil {
      * @return
      */
     public static <T> T getFirst(List<T> list) {
-        if (isNotEmpty(list))
+        if (isNotEmpty(list)) {
             return list.get(0);
+        }
         return null;
     }
 
@@ -390,6 +391,9 @@ public class CollectionUtil {
             return null;
         }
         T t = first(c);
+        if (isEmpty(c)) {
+            return null;
+        }
         T[] tArray = (T[]) Array.newInstance(t.getClass(), c.size());
         c.toArray(tArray);
         return tArray;

@@ -27,12 +27,6 @@ public class DateUtil {
     public static final String FORMAT_MONTH = "yyyy-MM";
     public static final String FORMAT_TIME = "HH:mm:ss";
 
-    private static final SimpleDateFormat monthFormat = new SimpleDateFormat(FORMAT_MONTH);
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(FORMAT_TIME);
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
-    private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat(FORMAT_DATE_TIME);
-    private static final SimpleDateFormat dateTimeFormatMilli = new SimpleDateFormat(FORMAT_DATE_TIME_MILLI);
-
     /**
      * 获取当月，yyyy-MM
      *
@@ -40,6 +34,7 @@ public class DateUtil {
      */
     public static String getCurrentMonthAsString() {
         Calendar c = Calendar.getInstance();
+        SimpleDateFormat monthFormat = new SimpleDateFormat(FORMAT_MONTH);
         return monthFormat.format(c.getTime());
     }
 
@@ -50,6 +45,7 @@ public class DateUtil {
      */
     public static String getCurrentDayAsString() {
         Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(c.getTime());
     }
 
@@ -60,6 +56,7 @@ public class DateUtil {
      */
     public static String getCurrentMilliAsString() {
         Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateTimeFormatMilli = new SimpleDateFormat(FORMAT_DATE_TIME_MILLI);
         return dateTimeFormatMilli.format(c.getTime());
     }
 
@@ -117,6 +114,7 @@ public class DateUtil {
         if (null == date) {
             return "";
         }
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(date);
     }
 
@@ -130,6 +128,7 @@ public class DateUtil {
         if (null == date) {
             return "";
         }
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(FORMAT_DATE_TIME);
         return dateTimeFormat.format(date);
     }
 
@@ -353,6 +352,7 @@ public class DateUtil {
         c.setTime(date);
         // Monday
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(c.getTime());
     }
 
@@ -368,6 +368,7 @@ public class DateUtil {
         c.setTime(date);
         // Sunday
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek() + 6);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(c.getTime());
     }
 
@@ -395,6 +396,7 @@ public class DateUtil {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month - 1);
         cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DATE));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(cal.getTime());
     }
 
@@ -411,6 +413,7 @@ public class DateUtil {
         cal.set(Calendar.MONTH, month - 1);
         int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(cal.getTime());
     }
 

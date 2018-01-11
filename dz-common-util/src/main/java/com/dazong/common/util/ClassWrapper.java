@@ -60,8 +60,7 @@ public class ClassWrapper<T> {
 
         if (CollectionUtil.isEmpty(paramTypes)) {
             try {
-                T t = (T) klass.newInstance();
-                return t;
+               return (T) klass.newInstance();
             } catch (Exception e) {
                 throw new PlatformException(e, CommonStatus.FAIL, "Can't new instance of '%s',please check the source code.", klass.getName());
             }
@@ -209,8 +208,8 @@ public class ClassWrapper<T> {
      */
     public Method getGetter(String fieldName) throws NoSuchMethodException {
         try {
-            String fn = StringUtils.capitalize(fieldName);
             try {
+                String fn = StringUtils.capitalize(fieldName);
                 try {
                     return klass.getMethod("get" + fn);
                 } catch (NoSuchMethodException e) {
@@ -224,7 +223,7 @@ public class ClassWrapper<T> {
                 return klass.getMethod(fieldName);
             }
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL, "Fail to find getter for [%s]->[%s]" , klass.getName(), fieldName);
+            throw new PlatformException(e, CommonStatus.FAIL, "Fail to find getter for [%s]->[%s]", klass.getName(), fieldName);
         }
     }
 
@@ -695,7 +694,7 @@ public class ClassWrapper<T> {
      * @return 是否相等
      */
     public boolean is(String className) {
-        return klass.getName().equals(className);
+       return className.equals(klass.getName());
     }
 
     /**
@@ -874,6 +873,9 @@ public class ClassWrapper<T> {
         return (Object[]) Array.newInstance(pts[pts.length - 1].getComponentType(), 0);
     }
 
+    public static void main(String[] args){
+        System.out.println(ClassWrapper.getTypeParams(DateUtil.class));
+    }
     /**
      * 获取一个类的泛型参数数组，如果这个类没有泛型参数，返回 null
      */
@@ -882,9 +884,9 @@ public class ClassWrapper<T> {
             return null;
         }
         Type superclass = klass.getGenericSuperclass();
-        if ("java.lang.Object".equals(superclass)) {
-            return null;
-        }
+//        if ("java.lang.Object".equals(superclass.toString())) {
+//            return null;
+//        }
         if (superclass instanceof ParameterizedType) {
             return ((ParameterizedType) superclass).getActualTypeArguments();
         }
