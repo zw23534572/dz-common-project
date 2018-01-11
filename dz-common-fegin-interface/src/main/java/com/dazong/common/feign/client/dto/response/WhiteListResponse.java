@@ -6,10 +6,10 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- *  @author lori.li
+ * @author lori.li
  */
 @Data
-public class WhiteListReponse implements Serializable{
+public class WhiteListResponse implements Serializable {
 
     /**
      * 公司ID

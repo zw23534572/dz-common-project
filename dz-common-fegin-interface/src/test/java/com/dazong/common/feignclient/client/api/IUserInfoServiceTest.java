@@ -1,8 +1,9 @@
 package com.dazong.common.feignclient.client.api;
 
 import com.dazong.common.feign.client.api.IUserInfoService;
+import com.dazong.common.feign.client.dto.request.WarehouseRequest;
 import com.dazong.common.feign.client.dto.request.WhiteRequest;
-import com.dazong.common.feign.client.dto.response.WhiteListReponse;
+import com.dazong.common.feign.client.dto.response.WhiteListResponse;
 import com.dazong.common.feignclient.FeignclientApplication;
 import com.dazong.common.resp.DataResponse;
 import org.junit.Test;
@@ -26,17 +27,27 @@ public class IUserInfoServiceTest {
     private IUserInfoService iUserInfoService;
 
     @Test
-    public void testGetWhiteList(){
+    public void testGetWhiteList() {
         WhiteRequest whiteRequest = new WhiteRequest();
         List<Long> list = new ArrayList<>();
         list.add(Long.valueOf(200162187));
         list.add(Long.valueOf(100001188));
         whiteRequest.setCompanyIds(list);
-        DataResponse<List<WhiteListReponse>> response = this.iUserInfoService.getWhiteList(whiteRequest);
-        if (response.isSuccess()){
-            for (WhiteListReponse item : response.getData()){
-                logger.info("companyID={},status={}",item.getCompanyID(),item.getStatus());
+        DataResponse<List<WhiteListResponse>> response = this.iUserInfoService.getWhiteList(whiteRequest);
+        if (response.isSuccess()) {
+            for (WhiteListResponse item : response.getData()) {
+                logger.info("companyID={},status={}", item.getCompanyID(), item.getStatus());
             }
+        }
+    }
+
+    @Test
+    public void testGetWarehouseByName() {
+        WarehouseRequest request = new WarehouseRequest();
+        request.setWarehouseName("飞马佛山库");
+        DataResponse<String> response = this.iUserInfoService.getWarehouseByName(request);
+        if (response.isSuccess()) {
+            logger.info("result={}", response.getData());
         }
     }
 }
