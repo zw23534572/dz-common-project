@@ -3,7 +3,7 @@ package com.dazong.common.cache.constants;
 /**
  * @author: DanielLi
  * @Date: 2018/1/10
- * @Description:
+ * @Description:缓存框架类型
  */
 public enum CacheType {
 

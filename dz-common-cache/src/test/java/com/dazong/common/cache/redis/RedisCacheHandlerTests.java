@@ -5,13 +5,14 @@ import com.dazong.common.cache.manager.CacheFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author: DanielLi
@@ -19,14 +20,14 @@ import static junit.framework.TestCase.*;
  * @Description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/spring-redis.xml")
+@ContextConfiguration("/spring-config.xml")
 public class RedisCacheHandlerTests {
 
     @Autowired
     CacheFactory cacheFactory;
 
     @Test
-    public void saveList() {
+    public void testDelete() {
         List<String> strs2 = new ArrayList<String>();
         strs2.add("1");
         strs2.add("2");
@@ -35,6 +36,15 @@ public class RedisCacheHandlerTests {
 //        cacheHandler.saveList("test:list:string", strs2);
 //        List<String> strs = cacheHandler.getList("test:list:string",String.class);
 //        equals(strs,strs2);
+    }
+    @Test
+    public void testSaveString(){
+        cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).saveString("name", "lshl");
+    }
+    @Test
+    public void getSaveString(){
+        String name = cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).getString("name");
+        assert ( name.equals("lshl"));
     }
 //
 //    @Autowired

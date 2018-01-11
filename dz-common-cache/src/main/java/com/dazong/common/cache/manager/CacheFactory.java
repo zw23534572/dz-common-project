@@ -11,15 +11,17 @@ import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author: DanielLi
  * @Date: 2018/1/10
- * @Description:
+ * @Description:创建缓存处理框架的工厂，负责维护缓存处理类的生命周期
  */
 @Singleton
+@Service
 public class CacheFactory {
-    private static final Logger ROOT_LOGGER = LoggerFactory.getLogger(CacheFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(CacheFactory.class);
 
     @Autowired
     RedisCacheHandler redisCacheHandler;
@@ -37,8 +39,10 @@ public class CacheFactory {
                 cacheHandler = redisCacheHandler;
                 break;
             case CACHE_MEMCACHE:
+                cacheHandler = memcacheHandler;
                 break;
             case CACHE_LOCALCACHE:
+                cacheHandler = localCacheHandler;
                 break;
             default:
                 throw new CacheException("请选择需要使用的缓存框架");

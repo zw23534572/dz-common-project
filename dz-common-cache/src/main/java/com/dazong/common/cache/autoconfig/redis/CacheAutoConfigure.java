@@ -1,0 +1,76 @@
+package com.dazong.common.cache.autoconfig.redis;
+
+
+import com.dazong.common.cache.core.impl.RedisCacheHandler;
+import com.dazong.common.cache.manager.CacheFactory;
+import com.dazong.common.cache.serialize.FSTObjectSerializer;
+import com.dazong.common.cache.serialize.FSTRedisSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.JedisPoolConfig;
+
+/**
+ * cache自动化配置
+ * <p>
+ * Created by tianyu on 2017/8/30.
+ */
+@Configuration
+@ConditionalOnClass({CacheFactory.class})
+public class CacheAutoConfigure {
+
+    @Value("${spring.redis.host}")
+    private String hostName;
+    @Value("${spring.redis.password}")
+    private String password;
+    @Value("${spring.redis.port}")
+    private Integer port;
+    @Value("${spring.redis.database}")
+    private int database;
+
+    @Bean
+    @ConditionalOnMissingBean({CacheFactory.class})
+    public RedisCacheHandler cacheHandler(@Autowired RedisTemplate redisTemplate) {
+        RedisCacheHandler cacheHandler = new RedisCacheHandler();
+        cacheHandler.setObjectSerializer(new FSTObjectSerializer());
+        cacheHandler.setRedisTemplate(redisTemplate);
+        return cacheHandler;
+    }
+
+
+    @Bean
+    public RedisTemplate redisTemplate() {
+        RedisTemplate template = new RedisTemplate();
+        template.setConnectionFactory(getConnectionFactory());
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new FSTRedisSerializer());
+        return template;
+    }
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.redis")
+    public JedisConnectionFactory getConnectionFactory() {
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        factory.setHostName(hostName);
+        factory.setPassword(password);
+        factory.setPort(port);
+        factory.setDatabase(database);
+        JedisPoolConfig config = getRedisConfig();
+        factory.setPoolConfig(config);
+        return factory;
+    }
+
+
+    @Bean
+    @ConfigurationProperties(prefix = "spring.redis")
+    public JedisPoolConfig getRedisConfig() {
+        return new JedisPoolConfig();
+    }
+}
