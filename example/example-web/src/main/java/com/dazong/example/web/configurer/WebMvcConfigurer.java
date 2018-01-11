@@ -1,11 +1,11 @@
-package com.dazong.example.web.web.web.configurer;
+package com.dazong.example.web.configurer;
 
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dazong.common.web.JsonMappingExceptionResolver;
-import com.dazong.example.web.web.web.interceptor.UserInterceptor;
+import com.dazong.example.web.interceptor.UserInterceptor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

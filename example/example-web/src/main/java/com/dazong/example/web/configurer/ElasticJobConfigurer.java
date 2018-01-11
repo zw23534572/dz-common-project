@@ -1,4 +1,4 @@
-package com.dazong.example.web.web.web.configurer;
+package com.dazong.example.web.configurer;
 
 
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;

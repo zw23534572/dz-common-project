@@ -1,4 +1,4 @@
-package com.dazong.example.web.web.service.common.impl;
+package com.dazong.example.service.common.impl;
 
 import com.dazong.common.feign.client.api.IUserInfoService;
 import com.dazong.common.feign.client.dto.request.UserRequest;

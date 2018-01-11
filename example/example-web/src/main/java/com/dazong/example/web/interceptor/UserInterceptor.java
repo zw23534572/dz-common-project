@@ -1,4 +1,4 @@
-package com.dazong.example.web.web.web.interceptor;
+package com.dazong.example.web.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.dazong.common.feign.client.api.IUserInfoService;
@@ -68,6 +68,7 @@ public class UserInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object o, Exception e) throws Exception {
-		//不需要扩展，所以说明都不做
+		//请求完成时，删除线程中的用户信息
+		EnvironmentCache.remove();
 	}
 }

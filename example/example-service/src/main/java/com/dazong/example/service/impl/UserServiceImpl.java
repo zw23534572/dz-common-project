@@ -1,8 +1,9 @@
-package com.dazong.example.web.web.impl;
+package com.dazong.example.service.impl;
 
 import com.dazong.common.idempotent.Idempotent;
-import com.dazong.example.web.web.UserService;
-import com.dazong.example.web.web.service.common.impl.HttpClientServiceImpl;
+import com.dazong.example.service.UserService;
+import com.dazong.example.service.common.impl.HttpClientServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

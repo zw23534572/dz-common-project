@@ -1,4 +1,4 @@
-package com.dazong.example.web.web.web.configurer;
+package com.dazong.example.web.configurer;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
