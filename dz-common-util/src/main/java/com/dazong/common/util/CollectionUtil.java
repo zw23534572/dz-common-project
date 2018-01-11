@@ -391,7 +391,7 @@ public class CollectionUtil {
             return null;
         }
         T t = first(c);
-        if (isEmpty(c)) {
+        if (isEmpty(t)) {
             return null;
         }
         T[] tArray = (T[]) Array.newInstance(t.getClass(), c.size());

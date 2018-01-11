@@ -34,13 +34,13 @@ public class ClassWrapper<T> {
         try {
             cls = (Class<T>) Class.forName(type);
         } catch (ClassNotFoundException e) {
-
+            throw new PlatformException(e, CommonStatus.FAIL, "wrapByName");
         }
         return wrap(cls);
     }
 
     public static <T> ClassWrapper<T> wrap(Class<T> cls) {
-        return new ClassWrapper<T>(cls);
+        return new ClassWrapper(cls);
     }
 
     @SuppressWarnings("unchecked")
@@ -60,7 +60,7 @@ public class ClassWrapper<T> {
 
         if (CollectionUtil.isEmpty(paramTypes)) {
             try {
-               return (T) klass.newInstance();
+               return klass.newInstance();
             } catch (Exception e) {
                 throw new PlatformException(e, CommonStatus.FAIL, "Can't new instance of '%s',please check the source code.", klass.getName());
             }
@@ -208,8 +208,8 @@ public class ClassWrapper<T> {
      */
     public Method getGetter(String fieldName) throws NoSuchMethodException {
         try {
+            String fn = StringUtils.capitalize(fieldName);
             try {
-                String fn = StringUtils.capitalize(fieldName);
                 try {
                     return klass.getMethod("get" + fn);
                 } catch (NoSuchMethodException e) {
@@ -333,10 +333,11 @@ public class ClassWrapper<T> {
      * @return Bool 型的 Setter 的名字。如果字段名以 "is"开头，会被截去
      */
     public static String getBooleanSetterName(String fieldName) {
-        if (fieldName.startsWith("is")) {
-            fieldName = fieldName.substring(2);
+        String str = fieldName;
+        if (str.startsWith("is")) {
+            str = fieldName.substring(2);
         }
-        return new StringBuilder("set").append(StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder("set").append(StringUtils.capitalize(str)).toString();
     }
 
     /**
@@ -385,7 +386,7 @@ public class ClassWrapper<T> {
      */
     public Method[] findSetters(String fieldName) {
         String mName = "set" + StringUtils.capitalize(fieldName);
-        ArrayList<Method> ms = new ArrayList<Method>();
+        ArrayList<Method> ms = new ArrayList<>();
         for (Method m : this.klass.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) || m.getParameterTypes().length != 1) {
                 continue;
@@ -407,7 +408,7 @@ public class ClassWrapper<T> {
     public Field getField(String name) {
         Class<?> theClass = klass;
         Field f;
-        while (null != theClass && !(theClass == Object.class)) {
+        while (null != theClass && theClass != Object.class) {
             try {
                 f = theClass.getDeclaredField(name);
                 return f;
@@ -444,7 +445,7 @@ public class ClassWrapper<T> {
      * @return 字段数组
      */
     public <AT extends Annotation> Field[] getFields(Class<AT> ann) {
-        List<Field> fields = new LinkedList<Field>();
+        List<Field> fields = new LinkedList<>();
         for (Field f : this.getFields()) {
             if (null != f.getAnnotation(ann)) {
                 fields.add(f);
@@ -485,14 +486,11 @@ public class ClassWrapper<T> {
      */
     public Field[] getFields() {
         Class<?> theClass = klass;
-        Map<String, Field> list = new HashMap<String, Field>();
-        while (null != theClass && !(theClass == Object.class)) {
+        Map<String, Field> list = new HashMap<>();
+        while (null != theClass && theClass != Object.class) {
             Field[] fs = theClass.getDeclaredFields();
             for (int i = 0; i < fs.length; i++) {
-                if (isIgnoredField(fs[i])) {
-                    continue;
-                }
-                if (list.containsKey(fs[i].getName())) {
+                if (isIgnoredField(fs[i]) || list.containsKey(fs[i].getName())) {
                     continue;
                 }
                 list.put(fs[i].getName(), fs[i]);
@@ -507,7 +505,7 @@ public class ClassWrapper<T> {
      */
     public Method[] getMethods() {
         Class<?> theClass = klass;
-        List<Method> list = new LinkedList<Method>();
+        List<Method> list = new LinkedList<>();
         while (null != theClass && !(theClass == Object.class)) {
             Method[] ms = theClass.getDeclaredMethods();
             for (int i = 0; i < ms.length; i++) {
@@ -529,7 +527,7 @@ public class ClassWrapper<T> {
      */
     public Method[] getAllDeclaredMethods(Class<?> top) {
         Class<?> cc = klass;
-        HashMap<String, Method> map = new HashMap<String, Method>();
+        HashMap<String, Method> map = new HashMap<>();
         while (null != cc && !(cc == Object.class)) {
             Method[] fs = cc.getDeclaredMethods();
             for (int i = 0; i < fs.length; i++) {
@@ -556,7 +554,7 @@ public class ClassWrapper<T> {
      * @return 所有静态方法
      */
     public Method[] getStaticMethods() {
-        List<Method> list = new LinkedList<Method>();
+        List<Method> list = new LinkedList<>();
         for (Method m : klass.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) && Modifier.isPublic(m.getModifiers())) {
                 list.add(m);
