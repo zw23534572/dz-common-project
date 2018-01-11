@@ -1,6 +1,7 @@
 package com.dazong.common.feignclient.client.api;
 
 import com.dazong.common.feign.client.api.IUserInfoService;
+import com.dazong.common.feign.client.dto.request.BankInfoRequest;
 import com.dazong.common.feign.client.dto.request.PageRequest;
 import com.dazong.common.feign.client.dto.request.WarehouseRequest;
 import com.dazong.common.feign.client.dto.request.WhiteRequest;
@@ -54,15 +55,25 @@ public class IUserInfoServiceTest {
     }
 
     @Test
-    public void testGetGoodsOwnerList(){
+    public void testGetGoodsOwnerList() {
         PageRequest request = new PageRequest();
         request.setPage(1);
         request.setPageSize(10);
         DataResponse<List<Company>> response = this.iUserInfoService.getGoodsOwnerList(request);
-        if (response.isSuccess()){
-            for (Company item : response.getData()){
-                logger.info("result={}",item);
+        if (response.isSuccess()) {
+            for (Company item : response.getData()) {
+                logger.info("result={}", item);
             }
+        }
+    }
+
+    @Test
+    public void testGetGoodsOwnerDetail() {
+        BankInfoRequest request = new BankInfoRequest();
+        request.setCompanyId(Long.valueOf(100001188));
+        DataResponse<Company> response = this.iUserInfoService.getGoodsOwnerDetail(request);
+        if (response.isSuccess()) {
+            logger.info("result={}", response.getData());
         }
     }
 }

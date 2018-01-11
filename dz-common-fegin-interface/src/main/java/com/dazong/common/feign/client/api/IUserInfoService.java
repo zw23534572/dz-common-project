@@ -99,4 +99,13 @@ public interface IUserInfoService {
      */
     @RequestMapping(value = "/goodsOwner/list", method = RequestMethod.POST)
     DataResponse<List<Company>> getGoodsOwnerList(@RequestBody PageRequest request);
+
+    /**
+     * 查询货主详情
+     *
+     * @param request
+     * @return Company
+     */
+    @RequestMapping(value = "/goodsOwner/detail", method = RequestMethod.POST)
+    DataResponse<Company> getGoodsOwnerDetail(@RequestBody BankInfoRequest request);
 }
