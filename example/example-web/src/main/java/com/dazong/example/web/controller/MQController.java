@@ -1,4 +1,4 @@
-package com.dazong.example.web.web.web.controller;
+package com.dazong.example.web.controller;
 
 import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
 import com.dazong.common.mq.domian.DZMessage;

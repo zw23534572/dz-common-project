@@ -1,4 +1,4 @@
-package com.dazong.example.web.web;
+package com.dazong.example.service;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Null;
