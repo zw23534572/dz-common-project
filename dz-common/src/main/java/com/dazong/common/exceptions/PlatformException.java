@@ -23,6 +23,7 @@ public class PlatformException extends BaseApplicationException {
         super(code, message, cause);
     }
 
+
     public PlatformException(IResultStatus status, String fmt, Object... args) {
         this(status.getCode(), String.format(fmt, args));
     }
