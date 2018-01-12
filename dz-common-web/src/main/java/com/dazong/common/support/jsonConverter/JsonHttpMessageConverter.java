@@ -1,10 +1,10 @@
-package com.dazong.common.support;
+package com.dazong.common.support.jsonConverter;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dazong.common.resp.CommonResponse;
 import com.dazong.common.resp.DataResponse;
+import com.dazong.common.util.FastJsonUtil;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -25,29 +25,11 @@ import java.util.List;
 public class JsonHttpMessageConverter extends FastJsonHttpMessageConverter {
 
     /**
-     * SerializerFeature.PrettyFormat -json 格式化
-     * SerializerFeature.WriteDateUseDateFormat -时间格式转化
-     * SerializerFeature.WriteMapNullValue -保留空的字段
-     * SerializerFeature.WriteNullStringAsEmpty -String null -> ""
-     * SerializerFeature.WriteNullNumberAsZero -Number null -> 0
-     */
-    private SerializerFeature[] serializerFeatures = new SerializerFeature[]{
-            SerializerFeature.PrettyFormat,
-            SerializerFeature.WriteDateUseDateFormat,
-            SerializerFeature.WriteMapNullValue,
-            SerializerFeature.WriteNullStringAsEmpty,
-            SerializerFeature.WriteNullNumberAsZero};
-
-    public SerializerFeature[] getSerializerFeatures() {
-        return this.serializerFeatures;
-    }
-
-    /**
      * 申明fastjson转换的格式
      */
-    public void init() {
+    public JsonHttpMessageConverter(){
         FastJsonConfig config = new FastJsonConfig();
-        config.setSerializerFeatures(this.getSerializerFeatures());
+        config.setSerializerFeatures(FastJsonUtil.getSerializerFeatures());
         this.setFastJsonConfig(config);
         this.setDefaultCharset(Charset.forName("UTF-8"));
 
