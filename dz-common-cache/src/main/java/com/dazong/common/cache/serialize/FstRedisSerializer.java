@@ -9,10 +9,10 @@ import org.springframework.data.redis.serializer.SerializationException;
  * @date: 2018/1/11
  * @description:
  */
-public class FSTRedisSerializer implements RedisSerializer {
+public class FstRedisSerializer implements RedisSerializer {
     private static final FSTConfiguration FST = FSTConfiguration.createDefaultConfiguration();
 
-    public FSTRedisSerializer() {
+    public FstRedisSerializer() {
     }
 
     @Override

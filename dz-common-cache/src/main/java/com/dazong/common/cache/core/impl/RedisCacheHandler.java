@@ -1,6 +1,6 @@
 package com.dazong.common.cache.core.impl;
 
-import com.dazong.common.cache.serialize.FSTObjectSerializer;
+import com.dazong.common.cache.serialize.FstObjectSerializer;
 import com.dazong.common.cache.serialize.ObjectSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -38,7 +38,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Override
     public void afterPropertiesSet() throws Exception {
         if (objectSerializer == null){
-            objectSerializer = new FSTObjectSerializer();
+            objectSerializer = new FstObjectSerializer();
         }
     }
 
@@ -48,7 +48,6 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
     @Override
     public void saveString(final String key,final String str) {
-
         if(!StringUtils.isNotBlank(key)){
             return;
         }
@@ -83,7 +82,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             return;
         }
 
-        final Map<byte[],byte[]> map = new HashMap<>();
+        final Map<byte[],byte[]> map = new HashMap<>(10);
         for (Map.Entry<String,?> entry : data.entrySet()) {
             map.put(entry.getKey().getBytes(),objectSerializer.serialize(entry.getValue()));
         }
@@ -190,11 +189,9 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
     @Override
     public <T> T getMapItem(final String key,final String itemKey,final Class<T> type) {
-
         Validate.notNull(key);
         Validate.notNull(itemKey);
         Validate.notNull(type);
-
         return redisTemplate.execute(new RedisCallback<T>() {
             @Override
             public T doInRedis(RedisConnection connection) throws DataAccessException {
@@ -212,7 +209,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             public Map<String, T> doInRedis(RedisConnection connection) throws DataAccessException {
                 Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
                 if (value != null && !value.isEmpty()) {
-                    Map<String,T> map = new HashMap<>();
+                    Map<String,T> map = new HashMap<>(10);
                     for (Map.Entry<byte[],byte[]> entry : value.entrySet()) {
                         String itemKey = new String(entry.getKey());
                         T itemValue = objectSerializer.deserialize(entry.getValue(),type);

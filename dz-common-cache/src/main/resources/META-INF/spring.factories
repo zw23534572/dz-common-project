@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.dazong.common.cache.autoconfig.CacheAutoConfigure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.dazong.common.autoconfig.RedisAutoConfigure,\
+  com.dazong.common.autoconfig.MemcacheAutoConfigure,com.dazong.common.autoconfig.LocalCacheAutoConfigure

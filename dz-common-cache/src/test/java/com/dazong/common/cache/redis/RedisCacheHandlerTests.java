@@ -5,7 +5,6 @@ import com.dazong.common.cache.manager.CacheFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,12 +19,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @Description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/spring-config.xml")
+@ContextConfiguration("/dz-common-cache.xml")
 public class RedisCacheHandlerTests {
 
     @Autowired
     CacheFactory cacheFactory;
 
+    @Test
+    public void testGetDefaultHandler(){
+        cacheFactory.getDefaultCacheHandler();
+    }
     @Test
     public void testDelete() {
         List<String> strs2 = new ArrayList<String>();

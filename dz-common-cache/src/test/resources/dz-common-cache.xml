@@ -8,5 +8,7 @@
    <!--<import resource="spring-redis.xml"></import>-->
     <context:property-placeholder location="redis.properties"></context:property-placeholder>
 
-    <bean id="cacheAutoConfigure" class="com.dazong.common.cache.autoconfig.redis.CacheAutoConfigure"></bean>
+    <bean id="memcacheAutoConfigure" class="com.dazong.common.autoconfig.MemcacheAutoConfigure"></bean>
+    <bean id="redisAutoConfigure" class="com.dazong.common.autoconfig.RedisAutoConfigure"></bean>
+    <bean id="localCacheAutoConfigure" class="com.dazong.common.autoconfig.LocalCacheAutoConfigure"></bean>
 </beans>

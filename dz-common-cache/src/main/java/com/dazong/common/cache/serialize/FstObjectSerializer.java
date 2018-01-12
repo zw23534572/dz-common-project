@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
  * @author Sam
  * @version 1.0.0
  */
-public class FSTObjectSerializer extends AbstractObjectSerializer implements ObjectSerializer {
+public class FstObjectSerializer extends AbstractObjectSerializer implements ObjectSerializer {
 
     private static final FSTConfiguration FST = FSTConfiguration.createDefaultConfiguration();
 

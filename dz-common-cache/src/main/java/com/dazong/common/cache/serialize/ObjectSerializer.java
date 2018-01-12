@@ -16,6 +16,7 @@ public interface ObjectSerializer {
     /**
      * 反序列化一个对象
      * @param bytes 字节数组
+     * @param type 对象类型
      * @return
      */
     <T> T deserialize(byte[] bytes, Class<T> type);

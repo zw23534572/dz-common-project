@@ -10,17 +10,17 @@ public enum CacheType {
     /**
      * Redis缓存框架
      */
-    CACHE_REDIS(1,"Redis缓存框架"),
+    CACHE_REDIS(1,"RedisAutoConfigure"),
 
     /**
      * Memcache缓存框架
      */
-    CACHE_MEMCACHE(2,"Redis缓存框架"),
+    CACHE_MEMCACHE(2,"MemcacheAutoConfigure"),
 
     /**
      * Local缓存框架
      */
-    CACHE_LOCALCACHE(3,"Redis缓存框架");
+    CACHE_LOCALCACHE(3,"LocalCacheAutoConfigure");
 
     private CacheType(Integer type, String typeDesc){
         this.type = type;

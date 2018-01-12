@@ -1,7 +1,7 @@
 package com.dazong.common.cache.manager;
 
 import com.dazong.common.cache.constants.CacheType;
-import com.dazong.common.cache.core.*;
+import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.core.impl.AbstractCacheHandler;
 import com.dazong.common.cache.core.impl.LocalCacheHandler;
 import com.dazong.common.cache.core.impl.MemcacheHandler;
@@ -11,6 +11,8 @@ import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +22,7 @@ import org.springframework.stereotype.Service;
  */
 @Singleton
 @Service
-public class CacheFactory {
+public class CacheFactory extends ApplicationObjectSupport {
     private static final Logger logger = LoggerFactory.getLogger(CacheFactory.class);
 
     @Autowired
@@ -32,6 +34,11 @@ public class CacheFactory {
     @Autowired
     LocalCacheHandler localCacheHandler;
 
+    /**
+     * 获取缓存处理器
+     * @param cacheType 缓存枚举配置
+     * @return
+     */
     public ICacheHandler getCacheHandler(CacheType cacheType){
         AbstractCacheHandler cacheHandler = null;
         switch (cacheType){
@@ -51,10 +58,25 @@ public class CacheFactory {
     }
 
     /**
-     * 获取默认缓存处理器，目前是Redis，可以根据
+     * 获取默认缓存处理器，根据自动注入缓存配置Bean的顺序来进行选择
+     * 最先注入的缓存bean则为默认缓存处理器
      * @return
      */
     public ICacheHandler getDefaultCacheHandler(){
-        return getCacheHandler(CacheType.CACHE_REDIS);
+        String[] arrayBean = getApplicationContext().getBeanNamesForAnnotation(Configuration.class);
+        if(arrayBean.length == 0){
+            throw new CacheException("请按照使用说明配置项目");
+        }
+        String beanFirst = arrayBean[0];
+        if(beanFirst.equalsIgnoreCase(CacheType.CACHE_REDIS.getTypeDesc())){
+            return getCacheHandler(CacheType.CACHE_REDIS);
+        }
+        if(beanFirst.equalsIgnoreCase(CacheType.CACHE_MEMCACHE.getTypeDesc())){
+            return getCacheHandler(CacheType.CACHE_MEMCACHE);
+        }
+        if(beanFirst.equalsIgnoreCase(CacheType.CACHE_LOCALCACHE.getTypeDesc())){
+            return getCacheHandler(CacheType.CACHE_LOCALCACHE);
+        }
+        throw new CacheException("暂时不支持你配置的缓存框架");
     }
 }
