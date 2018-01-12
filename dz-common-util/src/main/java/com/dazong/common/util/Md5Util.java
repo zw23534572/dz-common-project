@@ -1,5 +1,7 @@
 package com.dazong.common.util;
 
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.security.MessageDigest;
@@ -16,15 +18,20 @@ public class Md5Util {
 
     protected static final Logger logger = LoggerFactory.getLogger(Md5Util.class);
 
-    private static MessageDigest __md;
-    private static Lock __md5Lock = new ReentrantLock();
+    private static MessageDigest md;
+    private static Lock md5Lock = new ReentrantLock();
+
+    private Md5Util(){
+
+    }
 
     public static String digest32(String encryptStr) {
         MessageDigest md5;
+        String encrypt;
         try {
             md5 = MessageDigest.getInstance("MD5");
             byte[] md5Bytes = md5.digest(encryptStr.getBytes("utf-8"));
-            StringBuffer hexValue = new StringBuffer();
+            StringBuilder hexValue = new StringBuilder();
             for (int i = 0; i < md5Bytes.length; i++) {
                 int val = ((int) md5Bytes[i]) & 0xff;
                 if (val < 16) {
@@ -32,11 +39,11 @@ public class Md5Util {
                 }
                 hexValue.append(Integer.toHexString(val));
             }
-            encryptStr = hexValue.toString();
+            encrypt = hexValue.toString();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"digest32");
         }
-        return encryptStr;
+        return encrypt;
     }
 
     /**
@@ -57,22 +64,22 @@ public class Md5Util {
         }
         try {
             byte[] digest;
-            __md5Lock.lock();
+            md5Lock.lock();
             try {
-                if (__md == null) {
+                if (md == null) {
                     try {
-                        __md = MessageDigest.getInstance("MD5");
+                        md = MessageDigest.getInstance("MD5");
                     } catch (Exception e) {
                         logger.warn("Get Md5Util instance fail.", e);
                         return null;
                     }
                 }
 
-                __md.reset();
-                __md.update(data.getBytes("ISO_8859_1"));
-                digest = __md.digest();
+                md.reset();
+                md.update(data.getBytes("ISO_8859_1"));
+                digest = md.digest();
             } finally {
-                __md5Lock.unlock();
+                md5Lock.unlock();
             }
             return bytesToString(digest, localBase);
         } catch (Exception e) {
@@ -82,7 +89,7 @@ public class Md5Util {
     }
 
     private static String bytesToString(byte[] bytes, int base) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
             int bi = 0xff & bytes[i];
             int c = '0' + (bi / base) % base;
@@ -97,11 +104,6 @@ public class Md5Util {
             buf.append((char) c);
         }
         return buf.toString();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Md5Util.digest32("3869cd84918b7392b20ebb88b31420891002张三0"));
-        System.out.println(Md5Util.digest("3869cd84918b7392b20ebb88b31420891002张三0"));
     }
 
 }

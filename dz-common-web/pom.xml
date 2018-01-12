@@ -14,40 +14,39 @@
 	<properties>
 		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
 	</properties>
-	<dependencies>
 
+	<dependencies>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-web-pom</artifactId>
 			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
-
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
 			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
-
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-dubbo-pom</artifactId>
 			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
-		
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-activemq-pom</artifactId>
 			<version>${dz-pom.version}</version>
 			<type>pom</type>
 		</dependency>
-
 		<dependency>
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common</artifactId>
-			<version>4.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common-util</artifactId>
 		</dependency>
 	</dependencies>
 

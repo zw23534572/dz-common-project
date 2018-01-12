@@ -9,8 +9,14 @@ import java.util.Map.Entry;
 
 /**
  * 集合相关处理工具类
+ *
+ * @author zisong.wang
  */
 public class CollectionUtil {
+
+    private CollectionUtil(){
+
+    }
 
     /**
      * object.toString，如果对象为空则返回空串
@@ -59,7 +65,7 @@ public class CollectionUtil {
      * @return
      */
     public static Map<String, String> string2Map(String string, String keySplitStr, String entrySplitStr) {
-        Map<String, String> map = CollectionUtil.hashMap();
+        Map<String, String> map = new HashMap<>();
         if (StringUtil.isNotBlank(string)) {
             String[] groups = string.split(entrySplitStr);
             for (String group : groups) {
@@ -107,7 +113,7 @@ public class CollectionUtil {
      */
     public static <K, V> Map<K, V> map(Class<K> kClass, Class<V> vClass, Object... keyValues) {
 
-        Map<K, V> m = hashMap();
+        Map<K, V> m = new HashMap<>();
         int i = 1;
         Object preObj = null;
         for (Object o : keyValues) {
@@ -133,7 +139,7 @@ public class CollectionUtil {
      * @return
      */
     public static Map<Object, Object> mapByAarray(Object... keyValues) {
-        Map<Object, Object> m = hashMap();
+        Map<Object, Object> m = new HashMap<>();
         int i = 1;
         Object key = null;
         for (Object value : keyValues) {
@@ -162,7 +168,7 @@ public class CollectionUtil {
             }
             return list;
         }
-        return null;
+        return arrayList();
     }
 
     /**
@@ -254,7 +260,7 @@ public class CollectionUtil {
      * @return
      */
     public static Map<String, Object> removeEmptyFromMap(Map<String, Object> map) {
-        Map<String, Object> mapTemp = new HashMap<String, Object>();
+        Map<String, Object> mapTemp = new HashMap<>();
         Iterator<?> iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             @SuppressWarnings("rawtypes")
@@ -300,17 +306,6 @@ public class CollectionUtil {
     }
 
     /**
-     * 创建一个新的hashmap
-     *
-     * @param <K> key 类型
-     * @param <V> value 类型
-     * @return
-     */
-    public static <K, V> Map<K, V> hashMap() {
-        return new HashMap<>();
-    }
-
-    /**
      * 返回一个hastSet
      *
      * @param <T>
@@ -329,8 +324,9 @@ public class CollectionUtil {
      */
     public static <T> Set<T> asHastSet(T... objs) {
         Set<T> set = hastSet();
-        for (T obj : objs)
+        for (T obj : objs) {
             set.add(obj);
+        }
         return set;
     }
 
@@ -391,7 +387,7 @@ public class CollectionUtil {
             return null;
         }
         T t = first(c);
-        if (isEmpty(c)) {
+        if (isEmpty(t)) {
             return null;
         }
         T[] tArray = (T[]) Array.newInstance(t.getClass(), c.size());
@@ -407,7 +403,7 @@ public class CollectionUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> T first(Collection<T> c) {
-        return isNotEmpty(c) ? (T) CollectionUtils.get(c, 0) : null;
+        return isNotEmpty(c) ? CollectionUtils.get(c, 0) : null;
     }
 
     /**
@@ -443,7 +439,7 @@ public class CollectionUtil {
         if (isEmpty(list)) {
             return null;
         }
-        Map<String, V> map = hashMap();
+        Map<String, V> map = new HashMap<>();
         for (V v : list) {
             String[] comboProperty = StringUtil.splitIgnoreBlank(keyProperty, ",");
             StringBuilder key = new StringBuilder();

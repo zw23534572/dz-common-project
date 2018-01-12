@@ -8,7 +8,9 @@ import java.io.Serializable;
  * @author lori.li
  */
 @Data
-public class WarehouseRequest implements Serializable {
+public class ProtocolRequest implements Serializable {
 
-    private String warehouseName;
+    private String ownerCode;
+
+    private String warehouseCode;
 }
