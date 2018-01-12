@@ -54,7 +54,6 @@
 
 2、在spring配置文件加入：
 ```xml
-<import resource="classpath*:/META-INF/dz-common-mq.xml" />
 <!--如果项目为非springboot，则需要再加载这个bean，是springboot项目，不需要配置这个-->
 <bean id="mqAutoConfiguration" class="com.dazong.common.mq.MQAutoConfiguration" />
 ```
