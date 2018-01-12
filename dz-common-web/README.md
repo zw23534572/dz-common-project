@@ -53,7 +53,7 @@ public class StartupServer {
 }
 ```
 
-#### 使用1：统一异常拦截
+### 使用1：统一异常拦截
 
 测试代码
 
@@ -79,7 +79,7 @@ public List<String> test2() {
 
 > 访问http://localhost/test2 接口时，异常信息自动封装成json返回。
 
-#### 使用2：统一正常封包
+### 使用2：统一正常封包
 
 测试代码
 
@@ -115,7 +115,7 @@ public List<String> test() {
 >
 > 这样好处是，数据封装的操作交给了dz-common-web.
 
-#### 使用3：项目检测
+### 使用3：项目检测
 
 声明：启动类注解``@EnableDzSimpleMonitor``,其中包含```项目检测```
 

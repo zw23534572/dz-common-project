@@ -1,8 +1,8 @@
 package com.dazong.example.web.web;
 
 import com.dazong.common.feign.client.dto.response.UserInfo;
+import com.dazong.example.StartupServer;
 import com.dazong.example.service.UserService;
-import com.dazong.example.web.StartupServer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
