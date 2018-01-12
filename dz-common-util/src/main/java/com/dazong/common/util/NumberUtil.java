@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 /**
- * Decimal工具类
+ * Number数字类型工具类
  * 提供：精度加减乘除
  *
  * @author zisong.wang
  * @date 2018/01/09
  */
-public class DecimalUtil {
+public class NumberUtil {
 
     /**
      * 默认除法运算精度
@@ -22,7 +22,7 @@ public class DecimalUtil {
      */
     private static String scaleStr = "小数位数必须为大于等于0的正整数";
 
-    private DecimalUtil(){
+    private NumberUtil(){
 
     }
 

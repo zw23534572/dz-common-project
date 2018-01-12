@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
  * @since 1.0.0
  */
 public class ClassWrapper<T> {
+    public static final String PREFIX_IS = "is";
     private Class<T> klass;
 
     private ClassWrapper(Class<T> cls) {
@@ -58,9 +59,9 @@ public class ClassWrapper<T> {
     public T newOne(Object... args) {
         Class[] paramTypes = ClassWrapper.getTypes(args);
 
-        if (CollectionUtil.isEmpty(paramTypes)) {
+        if (CommonUtil.isEmpty(paramTypes)) {
             try {
-               return klass.newInstance();
+                return klass.newInstance();
             } catch (Exception e) {
                 throw new PlatformException(e, CommonStatus.FAIL, "Can't new instance of '%s',please check the source code.", klass.getName());
             }
@@ -123,9 +124,9 @@ public class ClassWrapper<T> {
      * @param ann
      * @return
      */
-    public <AT extends Annotation> Method[] getMethods(Class<AT> ann) {
+    public <T extends Annotation> Method[] getMethods(Class<T> ann) {
         Method[] methods = getMethods();
-        List<Method> methodList = CollectionUtil.arrayList();
+        List<Method> methodList = CommonUtil.arrayList();
         for (Method m : methods) {
             if (m.getAnnotation(ann) != null) {
                 methodList.add(m);
@@ -137,12 +138,12 @@ public class ClassWrapper<T> {
     /**
      * 根据Annotation和方法名查找某个方法，如果出现有重载方法则只返回第一找到的
      *
-     * @param <AT>
+     * @param <T>
      * @param methodName
      * @param ann
      * @return
      */
-    public <AT extends Annotation> Method getMethod(String methodName, Class<AT> ann) {
+    public <T extends Annotation> Method getMethod(String methodName, Class<T> ann) {
         Method[] methods = getMethods(ann);
         for (Method m : methods) {
             if (StringUtil.equals(methodName, m.getName())) {
@@ -174,10 +175,10 @@ public class ClassWrapper<T> {
         Constructor isme = null;
         for (Constructor c : creators) {
             Class[] types = c.getParameterTypes();
-            if (CollectionUtil.isEmpty(paramTypes) && CollectionUtil.isEmpty(types)) {
+            if (CommonUtil.isEmpty(paramTypes) && CommonUtil.isEmpty(types)) {
                 isme = c;
                 break;
-            } else if (CollectionUtil.isNotEmpty(types) && types.length == paramTypes.length) {
+            } else if (CommonUtil.isNotEmpty(types) && types.length == paramTypes.length) {
                 boolean equals = true;
                 for (int i = 0, len = types.length; i < len; i++) {
                     if (!isChildOf(types[i], paramTypes[i])) {
@@ -268,7 +269,7 @@ public class ClassWrapper<T> {
                 return klass.getMethod("set" + StringUtils.capitalize(field.getName()), field.getType());
             } catch (Exception e) {
                 try {
-                    if (field.getName().startsWith("is")
+                    if (field.getName().startsWith(PREFIX_IS)
                             && ClassWrapper.wrap(field.getType()).is(boolean.class)) {
                         return klass.getMethod("set" + field.getName().substring(2),
                                 field.getType());
@@ -294,31 +295,37 @@ public class ClassWrapper<T> {
     public Method getSetter(String fieldName, Class<?> paramType) throws NoSuchMethodException {
         try {
             String setterName = getSetterName(fieldName);
-            try {
-                return klass.getMethod(setterName, paramType);
-            } catch (Exception e) {
-                try {
-                    return klass.getMethod(fieldName, paramType);
-                } catch (Exception e1) {
-                    ClassWrapper<?> type = ClassWrapper.wrap(paramType);
-                    for (Method method : klass.getMethods()) {
-                        if (method.getParameterTypes().length == 1) {
-                            if (method.getName().equals(setterName)
-                                    || method.getName().equals(fieldName)) {
-                                if (null == paramType
-                                        || type.canCastToDirectly(method.getParameterTypes()[0])) {
-                                    return method;
-                                }
-                            }
-                        }
+            Method varMethod = getMethodByName(setterName, paramType);
+            if (varMethod == null) {
+                varMethod = getMethodByName(fieldName, paramType);
+            }
+
+            if (varMethod == null) {
+                ClassWrapper<?> type = ClassWrapper.wrap(paramType);
+                for (Method method : klass.getMethods()) {
+                    boolean flag1 = method.getParameterTypes().length == 1;
+                    boolean flag2 = method.getName().equals(setterName) || method.getName().equals(fieldName);
+                    boolean flag3 = null == paramType || type.canCastToDirectly(method.getParameterTypes()[0]);
+                    if (flag1 && flag2 && flag3) {
+                        return method;
                     }
-                    throw new PlatformException(e, CommonStatus.FAIL, "根据一个字段名了字段类型获取 Setter");
                 }
             }
+            throw new PlatformException(CommonStatus.FAIL, "根据一个字段名了字段类型获取 Setter");
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "Fail to find setter for [%s]->[%s(%s)]", klass.getName(), fieldName, paramType.getName());
         }
+
     }
+
+    private Method getMethodByName(String name, Class<?> paramType) {
+        try {
+            return klass.getMethod(name, paramType);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
+
 
     /**
      * @param fieldName 字段名
@@ -334,7 +341,7 @@ public class ClassWrapper<T> {
      */
     public static String getBooleanSetterName(String fieldName) {
         String str = fieldName;
-        if (str.startsWith("is")) {
+        if (str.startsWith(PREFIX_IS)) {
             str = fieldName.substring(2);
         }
         return new StringBuilder("set").append(StringUtils.capitalize(str)).toString();
@@ -353,10 +360,11 @@ public class ClassWrapper<T> {
      * @return Bool 型的 Getter 的名字。以 "is"开头
      */
     public static String getBooleanGetterName(String fieldName) {
-        if (fieldName.startsWith("is")) {
-            fieldName = fieldName.substring(2);
+        String tmpFieldName = fieldName;
+        if (fieldName.startsWith(PREFIX_IS)) {
+            tmpFieldName = fieldName.substring(PREFIX_IS.length());
         }
-        return new StringBuilder("is").append(StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder(PREFIX_IS).append(StringUtils.capitalize(tmpFieldName)).toString();
     }
 
 
@@ -426,7 +434,7 @@ public class ClassWrapper<T> {
      * @return 字段
      * @throws NoSuchFieldException
      */
-    public <AT extends Annotation> Field getField(Class<AT> ann) throws NoSuchFieldException {
+    public <T extends Annotation> Field getField(Class<T> ann) {
         for (Field field : this.getFields()) {
             if (null != field.getAnnotation(ann)) {
                 return field;
@@ -444,7 +452,7 @@ public class ClassWrapper<T> {
      * @param ann 注解类型
      * @return 字段数组
      */
-    public <AT extends Annotation> Field[] getFields(Class<AT> ann) {
+    public <T extends Annotation> Field[] getFields(Class<T> ann) {
         List<Field> fields = new LinkedList<>();
         for (Field f : this.getFields()) {
             if (null != f.getAnnotation(ann)) {
@@ -455,7 +463,7 @@ public class ClassWrapper<T> {
     }
 
     public List<Field> getFieldsByType(Class<?> type) {
-        List<Field> list = CollectionUtil.arrayList();
+        List<Field> list = CommonUtil.arrayList();
         Field[] fields = klass.getDeclaredFields();
         if (fields != null) {
             for (int i = 0; i < fields.length; i++) {
@@ -483,7 +491,7 @@ public class ClassWrapper<T> {
      */
     public Field[] getFields() {
         Class<?> theClass = klass;
-        Map<String, Field> list = new HashMap<>();
+        Map<String, Field> list = new HashMap<>(50);
         while (null != theClass && theClass != Object.class) {
             Field[] fs = theClass.getDeclaredFields();
             for (int i = 0; i < fs.length; i++) {
@@ -524,7 +532,7 @@ public class ClassWrapper<T> {
      */
     public Method[] getAllDeclaredMethods(Class<?> top) {
         Class<?> cc = klass;
-        HashMap<String, Method> map = new HashMap<>();
+        HashMap<String, Method> map = new HashMap<>(50);
         while (null != cc && cc != Object.class) {
             Method[] fs = cc.getDeclaredMethods();
             for (int i = 0; i < fs.length; i++) {
@@ -573,7 +581,7 @@ public class ClassWrapper<T> {
      *
      * @param obj   对象
      * @param field 字段
-     * @param val 值。如果为 null，字符和数字字段，都会设成 0
+     * @param val   值。如果为 null，字符和数字字段，都会设成 0
      */
     public void setValue(Object obj, Field field, Object val) {
         Object value = val;
@@ -687,7 +695,7 @@ public class ClassWrapper<T> {
      * @return 是否相等
      */
     public boolean is(String className) {
-       return className.equals(klass.getName());
+        return className.equals(klass.getName());
     }
 
     /**
@@ -818,17 +826,17 @@ public class ClassWrapper<T> {
         if (type.isAssignableFrom(klass)) {
             return true;
         }
-        if (klass.isPrimitive() && type.isPrimitive()) {
-            if (this.isPrimitiveNumber() && ClassWrapper.wrap(type).isPrimitiveNumber()) {
-                return true;
-            }
+        boolean flag = klass.isPrimitive() && type.isPrimitive() && this.isPrimitiveNumber() && ClassWrapper.wrap(type).isPrimitiveNumber();;
+        if (flag) {
+            return true;
         }
+
         try {
             return ClassWrapper.wrap(type).getPrimitiveWrapClass() == this.getPrimitiveWrapClass();
         } catch (Exception e) {
 
         }
-        return  false;
+        return false;
     }
 
     /**
@@ -993,14 +1001,14 @@ public class ClassWrapper<T> {
 
     @SuppressWarnings("unchecked")
     public static <T> Class<T>[] getTypes(T... objs) {
-        List<Class<T>> clsList = CollectionUtil.arrayList();
+        List<Class<T>> clsList = CommonUtil.arrayList();
         for (T o : objs) {
             if (o != null) {
                 clsList.add((Class<T>) o.getClass());
             }
         }
 
-        return CollectionUtil.toArray(clsList);
+        return CommonUtil.toArray(clsList);
     }
 
     /**
@@ -1025,7 +1033,7 @@ public class ClassWrapper<T> {
                 return "D";
             } else if (klass == char.class) {
                 return "C";
-            } else{
+            } else {
                 return "Z";
             }
         }

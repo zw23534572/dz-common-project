@@ -3,9 +3,12 @@ package com.dazong.common.util;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.ArgumetException;
 import com.dazong.common.exceptions.BusinessException;
+import com.dazong.common.exceptions.PlatformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
+
+import static org.apache.commons.lang3.Validate.notNull;
 
 /**
  * 断言工具类，用于检查传入的参数是否合法等功能
@@ -13,11 +16,11 @@ import org.springframework.util.ObjectUtils;
  * @author zhouwei
  * @date 2018/01/09
  */
-public class AssertUtil {
+public class Assert {
 
-    protected static Logger logger = LoggerFactory.getLogger(AssertUtil.class);
+    protected static Logger logger = LoggerFactory.getLogger(Assert.class);
 
-    private AssertUtil(){}
+    private Assert(){}
 
     /**
      * 判断对象是否为空，为空抛异常
@@ -30,11 +33,28 @@ public class AssertUtil {
         }
     }
 
+    /**
+     * 判断对象是否为空，为空抛自定义异常
+     * @param o
+     * @param filedName
+     */
     public static void isEmpty(Object o, String filedName) {
         if (ObjectUtils.isEmpty(o)) {
             String errMsg = filedName + "不能为空";
             logger.warn("required warn:{} ", errMsg);
             throw new BusinessException(CommonStatus.ILLEGAL_PARAM.getCode(), errMsg);
+        }
+    }
+    
+    /**
+     * 判断是否为空，为空抛异常
+     * @param objs
+     */
+    public static void isNotEmpty(Object...objs) {
+        for (Object obj : objs) {
+            if(obj == null) {
+                throw new PlatformException(CommonStatus.ILLEGAL_PARAM,String.format("对象不能为空", obj));
+            }
         }
     }
 
