@@ -20,11 +20,10 @@
 
 2、在spring配置文件加入：
 ```xml
-<import resource="classpath*:/META-INF/dz-common-cache.xml" />
 <!--如果项目为非springboot，则需要再加载这个bean，是springboot项目，不需要配置这个-->
-<bean id="cacheAutoConfigure" class="com.dazong.common.cache.autoconfig.redis.CacheAutoConfigure" />
-```
-
+  <bean id="redisAutoConfigure" class="com.dazong.common.autoconfig.RedisAutoConfigure"></bean>
+  ```
+  
 
 4、使用方式
 ```java

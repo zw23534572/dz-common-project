@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @Description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/dz-common-cache.xml")
+@ContextConfiguration("/META-INF/dz-common-cache.xml")
 public class RedisCacheHandlerTests {
 
     @Autowired
