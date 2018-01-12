@@ -18,74 +18,80 @@ import java.util.Map;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/META-INF/dz-common-cache.xml")
-public class RedisCacheHandlerTests implements ICacheHandler{
+public class RedisCacheHandlerTests{
 
     @Autowired
     CacheFactory cacheFactory;
 
-    @Override
-    public void saveString(String key, String str) {
-        
+    @Test
+    public void saveString() {
+        String keyTemp = "name";
+        String valueOri = "daniel";
+
+        cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri);
+        String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
+
+        assert (valueOri.equals(valueResult));
     }
 
-    @Override
-    public void saveObject(String key, Object object) {
+    @Test
+    public void saveObject() {
+        String keyTemp = "name";
 
+        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, cacheFactory);
+        CacheFactory valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, CacheFactory.class);
+
+        assert (cacheFactory.equals(valueTemp));
     }
 
-    @Override
-    public void saveMap(String key, Map<String, ?> data) {
-
-    }
-
-    @Override
-    public void saveMapItem(String key, String itemKey, Object value) {
-
-    }
-
-    @Override
-    public void saveList(String key, List data) {
-
-    }
-
-    @Override
-    public void saveListItem(String key, Object object) {
-
-    }
-
-    @Override
-    public void delete(String key) {
-
-    }
-
-    @Override
-    public void deleteMapItem(String key, String itemKey) {
+    @Test
+    public void saveMap() {
 
     }
 
     @Test
-    public String getString(String key) {
-        return null;
+    public void saveMapItem() {
+
     }
 
-    @Override
-    public <T> T getObject(String key, Class<T> clazz) {
-        return null;
+    @Test
+    public void saveList() {
+
     }
 
-    @Override
-    public <T> T getMapItem(String key, String itemKey, Class<T> type) {
-        return null;
+    @Test
+    public void saveListItem() {
+
     }
 
-    @Override
-    public <T> Map<String, T> getMap(String key, Class<T> type) {
-        return null;
+    @Test
+    public void delete() {
+
     }
 
-    @Override
-    public <T> List<T> getList(String key, Class<T> type) {
-        return null;
+    @Test
+    public void deleteMapItem() {
+
+    }
+
+    @Test
+    public void getString() {
+    }
+
+    @Test
+    public void getObject() {
+    }
+
+    @Test
+    public void getMapItem() {
+    }
+
+    @Test
+    public void getMap() {
+    }
+
+    @Test
+    public void getList() {
     }
 
 
