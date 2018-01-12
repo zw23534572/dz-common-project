@@ -1,6 +1,7 @@
 package com.dazong.common.feignclient.client.api;
 
-import com.dazong.common.feign.client.api.IUpService;
+import com.dazong.common.feign.client.api.IUploadService;
+import com.dazong.common.feign.client.utils.UploadUtils;
 import com.dazong.common.feignclient.FeignclientApplication;
 import com.dazong.common.resp.DataResponse;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -19,14 +20,14 @@ import java.io.File;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FeignclientApplication.class)
-public class IUpServiceTest {
+public class IUploadServiceTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(IUpServiceTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(IUploadServiceTest.class);
 
     @Autowired
-    private IUpService upService;
+    private IUploadService upService;
 
-    @Test
+//    @Test
     public void testUpload() {
         File file = new File("C:\\Users\\lori.li\\Desktop\\123.jpg");
         String time = String.valueOf(System.currentTimeMillis());
@@ -47,5 +48,12 @@ public class IUpServiceTest {
 
     private String createSign(String time, String configName) {
         return DigestUtils.md5Hex("config_name" + "time" + configName + time + "fmdz.2015");
+    }
+
+//    @Test
+    public void testUploadUtils1(){
+        File file = new File("C:\\Users\\lori.li\\Desktop\\123.jpg");
+        DataResponse<String> response = UploadUtils.upload(file);
+        logger.info("result={}", response);
     }
 }

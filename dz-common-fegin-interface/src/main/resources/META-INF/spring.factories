@@ -3,4 +3,4 @@ com.dazong.common.feign.client.config.AutoAuthConfiguration,\
 com.dazong.common.feign.client.config.AutoContractConfiguration,\
 com.dazong.common.feign.client.config.AutoPushapiConfiguration,\
 com.dazong.common.feign.client.config.AutoUserapiConfiguration,\
-com.dazong.common.feign.client.config.AutoUpConfiguration
+com.dazong.common.feign.client.config.AutoUploadConfiguration

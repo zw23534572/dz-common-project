@@ -14,15 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(name = "${feignclient.up.serviceId}",
         url = "${feignclient.up.url}",
         configuration = XmlAndFastJsonConfiguration.class)
-public interface IUpService {
+public interface IUploadService {
 
     /**
      * 调用PHP上传文件接口
      * 此接口需要进行数字签名，PHP未公开此接口，所以目前需要自己实现一套数字签名并把参数传给PHP
      * 使用方法见UT
+     * 建议PHP提供数字签名的接口；
+     * 返回的文件地址缺少域名，域名为：https://i.dazong.com，使用者自己组装
+     * 建议PHP直接返回完整的文件地址
      *
      * @param param
-     * @return
+     * @return DataResponse<String>
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     DataResponse<String> upload(MultiValueMap<String, Object> param);
