@@ -1,6 +1,7 @@
 package com.dazong.common.util;
 
 
+import com.dazong.common.util.reflect.ClassWrapper;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.lang.reflect.Array;
@@ -12,9 +13,9 @@ import java.util.Map.Entry;
  *
  * @author zisong.wang
  */
-public class CollectionUtil {
+public class CommonUtil {
 
-    private CollectionUtil(){
+    private CommonUtil(){
 
     }
 

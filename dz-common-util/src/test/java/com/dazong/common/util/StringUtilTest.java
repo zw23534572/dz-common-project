@@ -14,4 +14,14 @@ public class StringUtilTest {
         System.out.println(StringUtil.firstCharToUpperCase("aBcded"));
     }
 
+    @Test
+    public void camelCaseUtilTest() {
+        String line = "a_1bdd_cdd";
+        System.out.println(StringUtil.underline2Camel(line));
+
+        String test2 = "1aa1BcDd";
+        System.out.println(StringUtil.camel2Underline(test2));
+    }
+
+
 }
