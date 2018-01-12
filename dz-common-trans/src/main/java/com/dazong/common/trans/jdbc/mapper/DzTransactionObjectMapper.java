@@ -10,6 +10,13 @@ import com.dazong.common.trans.support.DzTransactionObject;
  *
  */
 public interface DzTransactionObjectMapper {
+	
+	/**
+	 * <B>方法名称：如果不存在则创建表</B><BR>
+	 * <B>概要说明：</B><BR>
+	 */
+	void createTableIfNotExists();
+	
 	/**
 	 * 通过事务id删除一条记录
 	 * @param uid
