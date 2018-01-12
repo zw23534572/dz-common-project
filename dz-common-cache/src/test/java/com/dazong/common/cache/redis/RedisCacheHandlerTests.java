@@ -1,6 +1,6 @@
 package com.dazong.common.cache.redis;
 
-import com.dazong.common.cache.constants.CacheType;
+import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Map;
 
 /**
  * @author: DanielLi
@@ -20,37 +18,79 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/META-INF/dz-common-cache.xml")
-public class RedisCacheHandlerTests {
+public class RedisCacheHandlerTests implements ICacheHandler{
 
     @Autowired
     CacheFactory cacheFactory;
 
-    @Test
-    public void testGetDefaultHandler(){
-        cacheFactory.getDefaultCacheHandler();
+    @Override
+    public void saveString(String key, String str) {
+        
     }
-    @Test
-    public void testDelete() {
-        List<String> strs2 = new ArrayList<String>();
-        strs2.add("1");
-        strs2.add("2");
-        cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).delete("test:list:string");
-//        cacheHandler.delete("test:list:string");
-//        cacheHandler.saveList("test:list:string", strs2);
-//        List<String> strs = cacheHandler.getList("test:list:string",String.class);
-//        equals(strs,strs2);
+
+    @Override
+    public void saveObject(String key, Object object) {
+
     }
-    @Test
-    public void testSaveString(){
-        cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).saveString("name", "lshl");
+
+    @Override
+    public void saveMap(String key, Map<String, ?> data) {
+
     }
-    @Test
-    public void getSaveString(){
-        String name = cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).getString("name");
-        assert ( name.equals("lshl"));
+
+    @Override
+    public void saveMapItem(String key, String itemKey, Object value) {
+
     }
+
+    @Override
+    public void saveList(String key, List data) {
+
+    }
+
+    @Override
+    public void saveListItem(String key, Object object) {
+
+    }
+
+    @Override
+    public void delete(String key) {
+
+    }
+
+    @Override
+    public void deleteMapItem(String key, String itemKey) {
+
+    }
+
+    @Test
+    public String getString(String key) {
+        return null;
+    }
+
+    @Override
+    public <T> T getObject(String key, Class<T> clazz) {
+        return null;
+    }
+
+    @Override
+    public <T> T getMapItem(String key, String itemKey, Class<T> type) {
+        return null;
+    }
+
+    @Override
+    public <T> Map<String, T> getMap(String key, Class<T> type) {
+        return null;
+    }
+
+    @Override
+    public <T> List<T> getList(String key, Class<T> type) {
+        return null;
+    }
+
+
 //
-//    @Autowired
+//    @Test
 //    CacheHandler cacheHandler;
 //
 //    @Test

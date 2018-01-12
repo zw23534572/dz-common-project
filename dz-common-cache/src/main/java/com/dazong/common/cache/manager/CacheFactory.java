@@ -41,6 +41,7 @@ public class CacheFactory extends ApplicationObjectSupport {
      */
     public ICacheHandler getCacheHandler(CacheType cacheType){
         AbstractCacheHandler cacheHandler = null;
+        String msgException = "请选择需要使用的缓存框架";
         switch (cacheType){
             case CACHE_REDIS:
                 cacheHandler = redisCacheHandler;
@@ -52,7 +53,7 @@ public class CacheFactory extends ApplicationObjectSupport {
                 cacheHandler = localCacheHandler;
                 break;
             default:
-                throw new CacheException("请选择需要使用的缓存框架");
+                throw new CacheException(msgException);
         }
         return cacheHandler;
     }
@@ -64,6 +65,7 @@ public class CacheFactory extends ApplicationObjectSupport {
      */
     public ICacheHandler getDefaultCacheHandler(){
         String[] arrayBean = getApplicationContext().getBeanNamesForAnnotation(Configuration.class);
+
         if(arrayBean.length == 0){
             throw new CacheException("请按照使用说明配置项目");
         }
@@ -77,6 +79,7 @@ public class CacheFactory extends ApplicationObjectSupport {
         if(beanFirst.equalsIgnoreCase(CacheType.CACHE_LOCALCACHE.getTypeDesc())){
             return getCacheHandler(CacheType.CACHE_LOCALCACHE);
         }
-        throw new CacheException("暂时不支持你配置的缓存框架");
+        String msgException = "暂时不支持你配置的缓存框架";
+        throw new CacheException(msgException);
     }
 }
