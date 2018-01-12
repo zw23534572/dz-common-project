@@ -1,19 +1,24 @@
-package com.dazong.cc.common.util.io;
+package com.dazong.common.util.io;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 
+/**
+ *  @author zisong.wang
+ *  @date 2018/01/12
+ */
 public abstract class NutResource {
 
+    @Override
     public boolean equals(Object obj) {
-    	if (obj == null)
-    		return false;
-        if (this == obj)
+        if (obj == null) {
+            return false;
+        }
+        if (this == obj) {
             return true;
-        if (obj instanceof NutResource)
-            return this.toString().equals(obj.toString());
-        return false;
+        }
+        return obj instanceof NutResource && this.toString().equals(obj.toString());
     }
 
     /**使用完毕后,务必关闭*/
@@ -25,9 +30,10 @@ public abstract class NutResource {
 
     /**使用完毕后,务必关闭*/
     public Reader getReader() throws IOException {
-        return Streams.utf8r(getInputStream());
+        return StreamUtil.utf8r(getInputStream());
     }
 
+    @Override
     public int hashCode() {
         return null == name ? "NULL".hashCode() : name.hashCode();
     }
@@ -37,6 +43,7 @@ public abstract class NutResource {
         return this;
     }
 
+    @Override
     public String toString() {
         return String.format("NutResource[%s]", name);
     }

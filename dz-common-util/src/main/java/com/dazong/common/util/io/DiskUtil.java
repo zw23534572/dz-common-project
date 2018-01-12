@@ -1,10 +1,10 @@
 package com.dazong.common.util.io;
 
-
-
-import com.dazong.cc.common.util.Charsets;
-import com.dazong.cc.common.util.Strings;
-import com.dazong.cc.common.util.reflect.ClassWrapper;
+import com.dazong.common.util.CharsetUtil;
+import com.dazong.common.util.StringUtil;
+import com.dazong.common.util.reflect.ClassWrapper;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -19,7 +19,12 @@ import java.util.LinkedList;
  * @author zozoh(zozohtnt@gmail.com)
  * @author bonyfish(mc02cxj@gmail.com)
  */
-public abstract class Disks {
+public abstract class DiskUtil {
+
+
+    public static final String SYMBOL_SLASH_STR = "/";
+    public static final char SYMBOL_SLASH_CHR = '/';
+    public static final char SYMBOL_WAVE_CHR = '~';
 
     /**
      * 一个 Vistor 模式的目录深层遍历
@@ -39,9 +44,11 @@ public abstract class Disks {
             re++;
         } else if (f.isDirectory()) {
             File[] fs = null == filter ? f.listFiles() : f.listFiles(filter);
-            if (fs != null)
-                for (File theFile : fs)
+            if (fs != null) {
+                for (File theFile : fs) {
                     re += visitFile(theFile, fv, filter);
+                }
+            }
         }
         return re;
     }
@@ -57,12 +64,15 @@ public abstract class Disks {
      */
     public static String getRelativePath(File base, File file) {
         String pathBase = base.getAbsolutePath();
-        if (base.isDirectory())
-            pathBase += "/";
+        if (base.isDirectory()) {
+            pathBase += SYMBOL_SLASH_STR;
+            
+        }
 
         String pathFile = file.getAbsolutePath();
-        if (file.isDirectory())
-            pathFile += "/";
+        if (file.isDirectory()) {
+            pathFile += SYMBOL_SLASH_STR;
+        }
 
         return getRelativePath(pathBase, pathFile);
     }
@@ -77,27 +87,31 @@ public abstract class Disks {
      * @return 相对于基础路径对象的相对路径
      */
     public static String getRelativePath(String base, String path) {
-        String[] bb = Strings.splitIgnoreBlank(getCanonicalPath(base),
+        String[] bb = StringUtil.splitIgnoreBlank(getCanonicalPath(base),
                                                "[\\\\/]");
-        String[] ff = Strings.splitIgnoreBlank(getCanonicalPath(path),
+        String[] ff = StringUtil.splitIgnoreBlank(getCanonicalPath(path),
                                                "[\\\\/]");
         int len = Math.min(bb.length, ff.length);
         int pos = 0;
-        for (; pos < len; pos++)
-            if (!bb[pos].equals(ff[pos]))
+        for (; pos < len; pos++) {
+            if (!bb[pos].equals(ff[pos])) {
                 break;
+            }
+        }
 
-        if (len == pos && bb.length == ff.length)
+        if (len == pos && bb.length == ff.length) {
             return "./";
+        }
 
         int dir = 1;
-        if (base.endsWith("/"))
+        if (base.endsWith(SYMBOL_SLASH_STR)) {
             dir = 0;
+        }
 
-        StringBuilder sb = new StringBuilder(Strings.repeat("../", bb.length
+        StringBuilder sb = new StringBuilder(StringUtils.repeat("../", bb.length
                                                                 - pos
                                                                 - dir));
-        return sb.append(Strings.concat(pos, ff.length - pos, '/', ff)).toString();
+        return sb.append(StringUtil.concat(pos, ff.length - pos, SYMBOL_SLASH_CHR, ff)).toString();
     }
 
     /**
@@ -108,23 +122,26 @@ public abstract class Disks {
      * @return 整理后的路径
      */
     public static String getCanonicalPath(String path) {
-        if (Strings.isBlank(path))
+        if (Strings.isBlank(path)) {
             return path;
-        String[] pa = Strings.splitIgnoreBlank(path, "[\\\\/]");
+        }
+        String[] pa = StringUtil.splitIgnoreBlank(path, "[\\\\/]");
         LinkedList<String> paths = new LinkedList<String>();
         for (String s : pa) {
             if ("..".equals(s)) {
-                if (paths.size() > 0)
+                if (paths.size() > 0) {
                     paths.removeLast();
+                }
                 continue;
             } else {
                 paths.add(s);
             }
         }
         
-        if (path.charAt(0) == '/')
-            return Strings.concat("/", paths).insert(0, '/').toString();
-        return Strings.concat("/", paths).toString();
+        if (path.charAt(0) == SYMBOL_SLASH_CHR) {
+            return StringUtil.concat(SYMBOL_SLASH_STR, paths).insert(0, SYMBOL_SLASH_CHR).toString();
+        }
+        return StringUtil.concat(SYMBOL_SLASH_STR, paths).toString();
     }
 
     /**
@@ -153,7 +170,7 @@ public abstract class Disks {
     public static String absolute(String path) {
         return absolute(path,
                         ClassWrapper.getClassLoader(),
-                        Charsets.defaultEncoding());
+                        CharsetUtil.defaultEncoding());
     }
 
     /**
@@ -171,24 +188,29 @@ public abstract class Disks {
                                   ClassLoader klassLoader,
                                   String enc) {
         path = normalize(path, enc);
-        if (Strings.isEmpty(path))
+        if (Strings.isEmpty(path)) {
             return null;
+        }
 
         File f = new File(path);
         if (!f.exists()) {
             URL url = null;
             try {
                 url = klassLoader.getResource(path);
-                if (null == url)
+                if (null == url) {
                     url = Thread.currentThread()
-                                .getContextClassLoader()
-                                .getResource(path);
-                if (null == url)
+                            .getContextClassLoader()
+                            .getResource(path);
+                }
+                if (null == url) {
                     url = ClassLoader.getSystemResource(path);
+                }
             }
             catch (Throwable e) {}
-            if (null != url)
-                return normalize(url.getPath(), Charsets.UTF8);// 通过URL获取String,一律使用UTF-8编码进行解码
+            if (null != url) {
+                // 通过URL获取String,一律使用UTF-8编码进行解码
+                return normalize(url.getPath(), CharsetUtil.UTF8);
+            }
             return null;
         }
         return path;
@@ -202,7 +224,7 @@ public abstract class Disks {
      * @return 正常化后的路径
      */
     public static String normalize(String path) {
-        return normalize(path, Charsets.defaultEncoding());
+        return normalize(path, CharsetUtil.defaultEncoding());
     }
 
     /**
@@ -215,10 +237,12 @@ public abstract class Disks {
      * @return 正常化后的路径
      */
     public static String normalize(String path, String enc) {
-        if (Strings.isEmpty(path))
+        if (Strings.isEmpty(path)) {
             return null;
-        if (path.charAt(0) == '~')
-            path = Disks.home() + path.substring(1);
+        }
+        if (path.charAt(0) == SYMBOL_WAVE_CHR) {
+            path = DiskUtil.home() + path.substring(1);
+        }
         try {
             return URLDecoder.decode(path, enc);
         }
@@ -243,19 +267,24 @@ public abstract class Disks {
                                        final String suffix,
                                        final boolean deep,
                                        final FileVisitor fv) {
-        File d = Files.findFile(path);
-        if (null == d)
+        File d = FileUtil.findFile(path);
+        if (null == d) {
             return;
+        }
         visitFile(d, new FileVisitor() {
+            @Override
             public void visit(File f) {
-                if (f.isDirectory())
+                if (f.isDirectory()) {
                     return;
+                }
                 fv.visit(f);
             }
         }, new FileFilter() {
+            @Override
             public boolean accept(File f) {
-                if (f.isDirectory())
+                if (f.isDirectory()) {
                     return deep;
+                }
                 return !f.getName().startsWith(".")
                        && f.getName().endsWith(suffix);
             }

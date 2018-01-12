@@ -1,4 +1,4 @@
-package com.dazong.common.util;
+package com.dazong.common.util.reflect;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;

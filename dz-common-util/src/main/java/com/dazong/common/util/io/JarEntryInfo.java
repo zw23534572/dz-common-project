@@ -1,7 +1,11 @@
-package com.dazong.cc.common.util.io;
+package com.dazong.common.util.io;
 
 import java.io.IOException;
 
+/**
+ * @author
+ * @date 2018/01/12
+ */
 public class JarEntryInfo {
 
     public String getEntryName() {

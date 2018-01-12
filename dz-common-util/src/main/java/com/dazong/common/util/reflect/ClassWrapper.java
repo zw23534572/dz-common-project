@@ -1,7 +1,9 @@
-package com.dazong.common.util;
+package com.dazong.common.util.reflect;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
+import com.dazong.common.util.CommonUtil;
+import com.dazong.common.util.StringUtil;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 

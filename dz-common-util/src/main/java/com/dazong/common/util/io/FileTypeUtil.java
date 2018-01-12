@@ -1,14 +1,15 @@
 package com.dazong.common.util.io;
 
-import com.dazong.cc.common.util.Commons;
-import com.dazong.cc.common.util.Strings;
-import com.dazong.cc.common.util.Throwables;
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
+import com.dazong.common.util.StringUtil;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -19,9 +20,13 @@ import java.util.Map;
  * @author Sam 
  *
  */
-public class FileType {
+public class FileTypeUtil {
 
-	public static FileType of(String path) {
+	private FileTypeUtil(){
+
+	}
+
+	public static FileTypeUtil of(String path) {
 		return of(new File(path));
 	}
 
@@ -31,8 +36,8 @@ public class FileType {
 	 * @param file
 	 * @return
 	 */
-	public static FileType of(File file) {
-		return of(Streams.fileIn(file));
+	public static FileTypeUtil of(File file) {
+		return of(StreamUtil.fileIn(file));
 	}
 	
 	/**
@@ -40,16 +45,16 @@ public class FileType {
 	 * @param ins
 	 * @return
 	 */
-	public static FileType of(InputStream ins) {
+	public static FileTypeUtil of(InputStream ins) {
 		if (ins != null) {
 			byte[] fileHeader = new byte[10];
 			try {
 				ins.read(fileHeader, 0, fileHeader.length);
 				return of(fileHeader);
 			} catch (IOException e) {
-				throw Throwables.wrapThrow(e);
+				throw new PlatformException(e, CommonStatus.FAIL,"创建一个文件类型");
 			} finally {
-				Streams.safeClose(ins);
+				StreamUtil.safeClose(ins);
 			}
 		}
 		return null;
@@ -60,7 +65,7 @@ public class FileType {
 	 * @param fileHeader
 	 * @return
 	 */
-	public static FileType of(byte[] fileHeader) {
+	public static FileTypeUtil of(byte[] fileHeader) {
 
 		if (fileHeader == null || fileHeader.length <= 0) {
 			return null;
@@ -87,7 +92,7 @@ public class FileType {
 				break;
 			}
 		}
-		return new FileType(typeCode, magicCode);
+		return new FileTypeUtil(typeCode, magicCode);
 	}
 	
 	
@@ -101,7 +106,7 @@ public class FileType {
 	 */
 	private String fileMagicCode;
 
-	protected FileType(String fileTypeCode, String fileMagicCode) {
+	protected FileTypeUtil(String fileTypeCode, String fileMagicCode) {
 		super();
 		this.fileTypeName = fileTypeCode;
 		this.fileMagicCode = fileMagicCode;
@@ -164,9 +169,10 @@ public class FileType {
 	}
 	
 	public boolean isEXE() {
-		return Strings.equals(this.fileTypeName, "exe");
+		return StringUtil.equals(this.fileTypeName, "exe");
 	}
 	
+	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
@@ -203,7 +209,7 @@ public class FileType {
 	
 	private final static String MSOFFICE_REGEX = "doc|docx";
 
-	private final static Map<String, String> FILE_MAGIC_HEADERS = Commons.hashMap();
+	private final static Map<String, String> FILE_MAGIC_HEADERS = new HashMap<>();
 
 	static {
 		FILE_MAGIC_HEADERS.put("ffd8ff", "jpg");
@@ -250,7 +256,8 @@ public class FileType {
 		FILE_MAGIC_HEADERS.put("49545346030000006000", "chm");
 		FILE_MAGIC_HEADERS.put("04000000010000001300", "mxp");
 		FILE_MAGIC_HEADERS.put("504b0304140006000800", "docx");
-		FILE_MAGIC_HEADERS.put("d0cf11e0a1b11ae10000", "wps");// WPS(wps、et、dps)
+		// WPS(wps、et、dps)
+		FILE_MAGIC_HEADERS.put("d0cf11e0a1b11ae10000", "wps");
 		FILE_MAGIC_HEADERS.put("6431303a637265617465", "torrent");
 		FILE_MAGIC_HEADERS.put("6D6F6F76", "mov");
 		FILE_MAGIC_HEADERS.put("FF575043", "wpd");
@@ -260,12 +267,5 @@ public class FileType {
 		FILE_MAGIC_HEADERS.put("E3828596", "pwl");
 		FILE_MAGIC_HEADERS.put("2E7261FD", "ram");
 	}
-	
-	public static void main(String[] args) throws IOException {
-		String path = "c:\\users.properties";
-				//"C:\\Users\\Administrator\\Pictures\\images\\btnbg.jpg";
-		
-		FileType ft = FileType.of(Streams.readBytesAndClose(Streams.fileIn(path)));
-		System.out.println(ft);
-	}
+
 }

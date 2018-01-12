@@ -1,5 +1,8 @@
 package com.dazong.common.util.codec;
 
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
+import com.dazong.common.util.CommonUtil;
 import org.apache.commons.codec.binary.Base64;
 import sun.misc.BASE64Encoder;
 
@@ -14,9 +17,9 @@ import java.util.Map;
  * @author Sam
  * @version 1.0.0
  */
-public class RSA {
+public class RsaUtil {
 
-    public static final String ALGORITHM_RSA = "RSA";
+    public static final String ALGORITHM_RSA = "RsaUtil";
     public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
     public static final int KEY_SIZE = 1024;
@@ -24,8 +27,8 @@ public class RSA {
     public static final String PUBLIC_KEY = "public_key";
     public static final String PRIVATE_KEY = "private_key";
 
-    private RSA(){
-        
+    private RsaUtil(){
+
     }
 
     /**
@@ -178,7 +181,7 @@ public class RSA {
         String publicKeyBase64 = new BASE64Encoder().encode(publicKeyBytes);
         String privateKeyBase64 = new BASE64Encoder().encode(privateKeyBytes);
 
-        return Commons.map(PUBLIC_KEY,publicKeyBase64,PRIVATE_KEY,privateKeyBase64);
+        return CommonUtil.map(PUBLIC_KEY,publicKeyBase64,PRIVATE_KEY,privateKeyBase64);
     }
 
     public static StringKeyPair generateStringKeyPair() {
@@ -209,7 +212,7 @@ public class RSA {
             keyPairGen.initialize(keyLen);
             return keyPairGen.generateKeyPair();
         } catch (NoSuchAlgorithmException e) {
-            throw Throwables.wrapThrow(e);
+            throw new PlatformException(e, CommonStatus.FAIL,"创建一对密钥对");
         }
     }
 }

@@ -1,10 +1,12 @@
 /**
  * Copyright (c) 2005-2012 springside.org.cn
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.dazong.common.util.codec;
 
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
 import org.apache.commons.codec.binary.Hex;
 
 import java.io.IOException;
@@ -15,116 +17,112 @@ import java.security.SecureRandom;
 
 /**
  * 支持SHA-1/MD5消息摘要的工具类.
- * 
+ *
  * 返回ByteSource，可进一步被编码为Hex, Base64或UrlSafeBase64
- * 
+ *
  * @author calvin
  */
-public class Digests {
+public class DigestUtil {
 
-	private Digests(){
+    private DigestUtil() {
 
-	}
-	
-	/** 加密次数 */
-	public static final int HASH_INTERATIONS = 1024;
-	/** 加密算法 */
-	public static final String HASH_ALGORITHM = "SHA-256";
-	/** MD5 */
-	public static final String MD5 = "MD5";
+    }
 
-	private static SecureRandom random = new SecureRandom();
+    /** 加密次数 */
+    public static final int HASH_INTERATIONS = 1024;
+    /** 加密算法 */
+    public static final String HASH_ALGORITHM = "SHA-256";
+    /** MD5 */
+    public static final String MD5 = "MD5";
 
-	/**
-	 * 对输入字符串进行sha1散列.
-	 */
-	public static byte[] sha1(byte[] input) {
-		return digest(input, HASH_ALGORITHM, null, 1);
-	}
+    private static SecureRandom random = new SecureRandom();
 
-	public static byte[] sha1(byte[] input, byte[] salt) {
-		return digest(input, HASH_ALGORITHM, salt, 1);
-	}
+    /**
+     * 对输入字符串进行sha1散列.
+     */
+    public static byte[] sha1(byte[] input) {
+        return digest(input, HASH_ALGORITHM, null, 1);
+    }
 
-	public static byte[] sha1(byte[] input, byte[] salt, int iterations) {
-		return digest(input, HASH_ALGORITHM, salt, iterations);
-	}
+    public static byte[] sha1(byte[] input, byte[] salt) {
+        return digest(input, HASH_ALGORITHM, salt, 1);
+    }
 
-	/**
-	 * 对字符串进行散列, 支持md5与sha1算法.
-	 */
-	private static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
-		try {
-			MessageDigest digest = MessageDigest.getInstance(algorithm);
+    public static byte[] sha1(byte[] input, byte[] salt, int iterations) {
+        return digest(input, HASH_ALGORITHM, salt, iterations);
+    }
 
-			if (salt != null) {
-				digest.update(salt);
-			}
+    /**
+     * 对字符串进行散列, 支持md5与sha1算法.
+     */
+    private static byte[] digest(byte[] input, String algorithm, byte[] salt, int iterations) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
 
-			byte[] result = digest.digest(input);
+            if (salt != null) {
+                digest.update(salt);
+            }
 
-			for (int i = 1; i < iterations; i++) {
-				digest.reset();
-				result = digest.digest(result);
-			}
-			return result;
-		} catch (GeneralSecurityException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            byte[] result = digest.digest(input);
 
-	/**
-	 * 生成随机的Byte[]作为salt.
-	 * 
-	 * @param numBytes byte数组的大小
-	 */
-	public static byte[] generateSalt(int numBytes) {
-    	if(numBytes <= 0) {
-    	    throw new RuntimeException("numBytes argument must be a positive integer (1 or larger)");
-    	}
-		byte[] bytes = new byte[numBytes];
-		random.nextBytes(bytes);
-		return bytes;
-	}
+            for (int i = 1; i < iterations; i++) {
+                digest.reset();
+                result = digest.digest(result);
+            }
+            return result;
+        } catch (GeneralSecurityException e) {
+            throw new PlatformException(e, CommonStatus.FAIL, "对字符串进行散列, 支持md5与sha1算法.");
+        }
+    }
 
-	/**
-	 * 对文件进行md5散列.
-	 */
-	public static byte[] md5(InputStream input) throws IOException {
-		return digest(input, MD5);
-	}
+    /**
+     * 生成随机的Byte[]作为salt.
+     *
+     * @param numBytes byte数组的大小
+     */
+    public static byte[] generateSalt(int numBytes) {
+        if (numBytes <= 0) {
+            throw new PlatformException(CommonStatus.FAIL.getCode(), "numBytes argument must be a positive integer (1 or larger)");
+        }
+        byte[] bytes = new byte[numBytes];
+        random.nextBytes(bytes);
+        return bytes;
+    }
 
-	/**
-	 * 对文件进行sha1散列.
-	 */
-	public static byte[] sha1(InputStream input) throws IOException {
-		return digest(input, HASH_ALGORITHM);
-	}
+    /**
+     * 对文件进行md5散列.
+     */
+    public static byte[] md5(InputStream input) throws IOException {
+        return digest(input, MD5);
+    }
 
-	private static byte[] digest(InputStream input, String algorithm) throws IOException {
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
-			int bufferLength = 8 * 1024;
-			byte[] buffer = new byte[bufferLength];
-			int read = input.read(buffer, 0, bufferLength);
+    /**
+     * 对文件进行sha1散列.
+     */
+    public static byte[] sha1(InputStream input) throws IOException {
+        return digest(input, HASH_ALGORITHM);
+    }
 
-			while (read > -1) {
-				messageDigest.update(buffer, 0, read);
-				read = input.read(buffer, 0, bufferLength);
-			}
+    private static byte[] digest(InputStream input, String algorithm) throws IOException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
+            int bufferLength = 8 * 1024;
+            byte[] buffer = new byte[bufferLength];
+            int read = input.read(buffer, 0, bufferLength);
 
-			return messageDigest.digest();
-		} catch (GeneralSecurityException e) {
-			throw new RuntimeException(e);
-		}
-	}
+            while (read > -1) {
+                messageDigest.update(buffer, 0, read);
+                read = input.read(buffer, 0, bufferLength);
+            }
 
-	public static String md5Hex(InputStream inputStream) throws IOException {
-		return Hex.encodeHexString(md5(inputStream));
-	}
+            return messageDigest.digest();
+        } catch (GeneralSecurityException e) {
+            throw new PlatformException(e, CommonStatus.FAIL, " digest");
+        }
+    }
 
-
-
-
+    public static String md5Hex(InputStream inputStream) throws IOException {
+        return Hex.encodeHexString(md5(inputStream));
+    }
 
 }

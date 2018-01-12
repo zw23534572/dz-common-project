@@ -3,13 +3,16 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * 
- * $Id: Encoders.java 1211 2010-09-10 16:20:45Z calvinxiu $
+ * $Id: EncoderUtil.java 1211 2010-09-10 16:20:45Z calvinxiu $
  */
 package com.dazong.common.util.codec;
 
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -24,10 +27,10 @@ import java.net.URLEncoder;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class Encoders {
+public class EncoderUtil {
 
-	private Encoders(){
-		
+	private EncoderUtil(){
+
 	}
 
 	private static final String DEFAULT_URL_ENCODING = "UTF-8";
@@ -46,7 +49,7 @@ public class Encoders {
 		try {
 			return Hex.decodeHex(input.toCharArray());
 		} catch (DecoderException e) {
-			throw new IllegalStateException("Hex Decoder exception", e);
+			throw new PlatformException(e, CommonStatus.FAIL,"Hex Decoder exception");
 		}
 	}
 
@@ -78,7 +81,7 @@ public class Encoders {
 		try {
 			return URLEncoder.encode(input, DEFAULT_URL_ENCODING);
 		} catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException("Unsupported Charsets Exception", e);
+			throw new PlatformException(e, CommonStatus.FAIL,"Unsupported Charsets Exception");
 		}
 	}
 
@@ -89,35 +92,35 @@ public class Encoders {
 		try {
 			return URLDecoder.decode(input, DEFAULT_URL_ENCODING);
 		} catch (UnsupportedEncodingException e) {
-			throw new IllegalArgumentException("Unsupported Charsets Exception", e);
+			throw new PlatformException(e, CommonStatus.FAIL,"Unsupported Charsets Exception");
 		}
 	}
 
-//	/**
-//	 * Html 转码.
-//	 */
-//	public static String htmlEscape(String html) {
-//		return StringEscapeUtils.escapeHtml(html);
-//	}
-//
-//	/**
-//	 * Html 解码.
-//	 */
-//	public static String htmlUnescape(String htmlEscaped) {
-//		return StringEscapeUtils.unescapeHtml(htmlEscaped);
-//	}
-//
-//	/**
-//	 * Xml 转码.
-//	 */
-//	public static String xmlEscape(String xml) {
-//		return StringEscapeUtils.escapeXml(xml);
-//	}
-//
-//	/**
-//	 * Xml 解码.
-//	 */
-//	public static String xmlUnescape(String xmlEscaped) {
-//		return StringEscapeUtils.unescapeXml(xmlEscaped);
-//	}
+	/**
+	 * Html 转码.
+	 */
+	public static String htmlEscape(String html) {
+		return StringEscapeUtils.escapeHtml(html);
+	}
+
+	/**
+	 * Html 解码.
+	 */
+	public static String htmlUnescape(String htmlEscaped) {
+		return StringEscapeUtils.unescapeHtml(htmlEscaped);
+	}
+
+	/**
+	 * Xml 转码.
+	 */
+	public static String xmlEscape(String xml) {
+		return StringEscapeUtils.escapeXml(xml);
+	}
+
+	/**
+	 * Xml 解码.
+	 */
+	public static String xmlUnescape(String xmlEscaped) {
+		return StringEscapeUtils.unescapeXml(xmlEscaped);
+	}
 }
