@@ -7,8 +7,9 @@ import com.dazong.common.resp.DataResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -19,7 +20,7 @@ import java.io.File;
 /**
  * @author lori.li
  */
-public class UploadUtils {
+public class UploadUtils implements ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(UploadUtils.class);
 
@@ -35,10 +36,8 @@ public class UploadUtils {
 
     private static ApplicationContext applicationContext;
 
-    @Autowired
-    private static IUploadService uploadService;
-
     public static DataResponse<String> upload(File file) {
+        IUploadService uploadService = applicationContext.getBean(IUploadService.class);
         String time = String.valueOf(System.currentTimeMillis());
         //生成数字签名
         String sign = createSign(time, CONFIG_NAME_VALUE);
@@ -91,5 +90,10 @@ public class UploadUtils {
             if (null != f)
                 f.deleteOnExit();
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        UploadUtils.applicationContext = applicationContext;
     }
 }

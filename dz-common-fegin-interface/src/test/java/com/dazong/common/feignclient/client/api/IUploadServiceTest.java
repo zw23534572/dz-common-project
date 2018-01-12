@@ -51,7 +51,7 @@ public class IUploadServiceTest {
     }
 
 //    @Test
-    public void testUploadUtils1(){
+    public void testUploadUtils1() {
         File file = new File("C:\\Users\\lori.li\\Desktop\\123.jpg");
         DataResponse<String> response = UploadUtils.upload(file);
         logger.info("result={}", response);

@@ -23,6 +23,8 @@ public interface IUploadService {
      * 建议PHP提供数字签名的接口；
      * 返回的文件地址缺少域名，域名为：https://i.dazong.com，使用者自己组装
      * 建议PHP直接返回完整的文件地址
+     * <p>
+     * 请注意：现提供了上传工具类UploadUtils，不用关心数字签名及域名,
      *
      * @param param
      * @return DataResponse<String>
