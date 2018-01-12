@@ -1,10 +1,10 @@
-package com.dazong.example.web;
+package com.dazong.example;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.dazong.common.ApplicationInfo;
 import com.dazong.common.annotation.EnableValiadtor;
-import com.dazong.common.web.monitor.SimpleMonitorServlet;
 
+import com.dazong.common.support.monitor.SimpleMonitorServlet;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ import javax.annotation.PreDestroy;
 @EnableTransactionManagement
 @SpringBootApplication
 @ImportResource(locations = { "classpath:application-bean.xml" })
-@ComponentScan({ "com.dazong.example", "com.dazong.common.aop" })
+@ComponentScan({ "com.dazong.example"})
 @MapperScan("com.dazong.example.dao.mapper*")
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
 public class StartupServer {

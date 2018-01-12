@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jms.core.JmsTemplate;
 
@@ -30,8 +31,9 @@ import java.sql.SQLException;
 
 /**
  * @author huqichao
- * @create 2017-10-30 19:25
+ * @date 2017-10-30 19:25
  **/
+@ImportResource({"/META-INF/dz-common-mq.xml"})
 public class MQAutoConfiguration implements ApplicationContextAware {
 
     private Logger logger = LoggerFactory.getLogger(MQAutoConfiguration.class);
