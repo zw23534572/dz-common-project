@@ -4,8 +4,11 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author lori.li
+ */
 @Data
-public class ProtocolRequest implements Serializable{
+public class ProtocolRequest implements Serializable {
 
     private String ownerCode;
 
