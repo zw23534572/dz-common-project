@@ -27,11 +27,9 @@ public class DateUtil {
     public static final String FORMAT_MONTH = "yyyy-MM";
     public static final String FORMAT_TIME = "HH:mm:ss";
 
-    private static final SimpleDateFormat monthFormat = new SimpleDateFormat(FORMAT_MONTH);
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat(FORMAT_TIME);
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
-    private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat(FORMAT_DATE_TIME);
-    private static final SimpleDateFormat dateTimeFormatMilli = new SimpleDateFormat(FORMAT_DATE_TIME_MILLI);
+    private DateUtil(){
+
+    }
 
     /**
      * 获取当月，yyyy-MM
@@ -40,6 +38,7 @@ public class DateUtil {
      */
     public static String getCurrentMonthAsString() {
         Calendar c = Calendar.getInstance();
+        SimpleDateFormat monthFormat = new SimpleDateFormat(FORMAT_MONTH);
         return monthFormat.format(c.getTime());
     }
 
@@ -50,6 +49,7 @@ public class DateUtil {
      */
     public static String getCurrentDayAsString() {
         Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(c.getTime());
     }
 
@@ -60,6 +60,7 @@ public class DateUtil {
      */
     public static String getCurrentMilliAsString() {
         Calendar c = Calendar.getInstance();
+        SimpleDateFormat dateTimeFormatMilli = new SimpleDateFormat(FORMAT_DATE_TIME_MILLI);
         return dateTimeFormatMilli.format(c.getTime());
     }
 
@@ -117,6 +118,7 @@ public class DateUtil {
         if (null == date) {
             return "";
         }
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(date);
     }
 
@@ -130,6 +132,7 @@ public class DateUtil {
         if (null == date) {
             return "";
         }
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat(FORMAT_DATE_TIME);
         return dateTimeFormat.format(date);
     }
 
@@ -186,8 +189,7 @@ public class DateUtil {
     public static int getDatePoor(Date beginDate, Date endDate) {
         // 获得两个时间的毫秒时间差异
         long diff = endDate.getTime() - beginDate.getTime();
-        int lastMin = (int) (diff / 1000 / 60);
-        return lastMin;
+        return  (int) (diff / 1000 / 60);
     }
 
     /**
@@ -210,18 +212,20 @@ public class DateUtil {
      * @return
      */
     public static int getDaySub(Date beginDate, Date endDate) {
+        Date varBegintDate = beginDate;
+        Date varEndDate = endDate;
         long day = 0;
         try {
             SimpleDateFormat format = new SimpleDateFormat(FORMAT_DATE);
             String sdate = format.format(Calendar.getInstance().getTime());
 
             if (beginDate == null) {
-                beginDate = format.parse(sdate);
+                varBegintDate = format.parse(sdate);
             }
             if (endDate == null) {
-                endDate = format.parse(sdate);
+                varEndDate = format.parse(sdate);
             }
-            day = (endDate.getTime() - beginDate.getTime())
+            day = (varEndDate.getTime() - varBegintDate.getTime())
                     / (24 * 60 * 60 * 1000);
         } catch (Exception e) {
             logger.info("计算两个日期相差的天数出错, {}" + e);
@@ -273,7 +277,8 @@ public class DateUtil {
         String dimWeek = "";
         int weekNo = getWeekOfYear(date);
         int year = getYearOfWeek(date);
-        if (weekNo < 10) {
+        int val = 10;
+        if (weekNo < val) {
             dimWeek = String.valueOf(year) + "0" + String.valueOf(weekNo);
         } else {
             dimWeek = String.valueOf(year) + String.valueOf(weekNo);
@@ -353,6 +358,7 @@ public class DateUtil {
         c.setTime(date);
         // Monday
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(c.getTime());
     }
 
@@ -368,6 +374,7 @@ public class DateUtil {
         c.setTime(date);
         // Sunday
         c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek() + 6);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(c.getTime());
     }
 
@@ -395,6 +402,7 @@ public class DateUtil {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, month - 1);
         cal.set(Calendar.DAY_OF_MONTH, cal.getMinimum(Calendar.DATE));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(cal.getTime());
     }
 
@@ -411,12 +419,8 @@ public class DateUtil {
         cal.set(Calendar.MONTH, month - 1);
         int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         cal.set(Calendar.DAY_OF_MONTH, lastDay);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
         return dateFormat.format(cal.getTime());
-    }
-
-    public static void main(String[] args) {
-        System.out.println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        System.out.println(DateUtil.getCurrentDayAsString());
     }
 
 }

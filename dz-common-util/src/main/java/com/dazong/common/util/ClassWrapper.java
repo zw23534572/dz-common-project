@@ -34,13 +34,13 @@ public class ClassWrapper<T> {
         try {
             cls = (Class<T>) Class.forName(type);
         } catch (ClassNotFoundException e) {
-
+            throw new PlatformException(e, CommonStatus.FAIL, "wrapByName");
         }
         return wrap(cls);
     }
 
     public static <T> ClassWrapper<T> wrap(Class<T> cls) {
-        return new ClassWrapper<T>(cls);
+        return new ClassWrapper(cls);
     }
 
     @SuppressWarnings("unchecked")
@@ -60,8 +60,7 @@ public class ClassWrapper<T> {
 
         if (CollectionUtil.isEmpty(paramTypes)) {
             try {
-                T t = (T) klass.newInstance();
-                return t;
+               return klass.newInstance();
             } catch (Exception e) {
                 throw new PlatformException(e, CommonStatus.FAIL, "Can't new instance of '%s',please check the source code.", klass.getName());
             }
@@ -224,7 +223,7 @@ public class ClassWrapper<T> {
                 return klass.getMethod(fieldName);
             }
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL, "Fail to find getter for [%s]->[%s]" , klass.getName(), fieldName);
+            throw new PlatformException(e, CommonStatus.FAIL, "Fail to find getter for [%s]->[%s]", klass.getName(), fieldName);
         }
     }
 
@@ -313,7 +312,7 @@ public class ClassWrapper<T> {
                             }
                         }
                     }
-                    throw new Exception();
+                    throw new PlatformException(e, CommonStatus.FAIL, "根据一个字段名了字段类型获取 Setter");
                 }
             }
         } catch (Exception e) {
@@ -334,10 +333,11 @@ public class ClassWrapper<T> {
      * @return Bool 型的 Setter 的名字。如果字段名以 "is"开头，会被截去
      */
     public static String getBooleanSetterName(String fieldName) {
-        if (fieldName.startsWith("is")) {
-            fieldName = fieldName.substring(2);
+        String str = fieldName;
+        if (str.startsWith("is")) {
+            str = fieldName.substring(2);
         }
-        return new StringBuilder("set").append(StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder("set").append(StringUtils.capitalize(str)).toString();
     }
 
     /**
@@ -386,7 +386,7 @@ public class ClassWrapper<T> {
      */
     public Method[] findSetters(String fieldName) {
         String mName = "set" + StringUtils.capitalize(fieldName);
-        ArrayList<Method> ms = new ArrayList<Method>();
+        ArrayList<Method> ms = new ArrayList<>();
         for (Method m : this.klass.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) || m.getParameterTypes().length != 1) {
                 continue;
@@ -408,7 +408,7 @@ public class ClassWrapper<T> {
     public Field getField(String name) {
         Class<?> theClass = klass;
         Field f;
-        while (null != theClass && !(theClass == Object.class)) {
+        while (null != theClass && theClass != Object.class) {
             try {
                 f = theClass.getDeclaredField(name);
                 return f;
@@ -445,7 +445,7 @@ public class ClassWrapper<T> {
      * @return 字段数组
      */
     public <AT extends Annotation> Field[] getFields(Class<AT> ann) {
-        List<Field> fields = new LinkedList<Field>();
+        List<Field> fields = new LinkedList<>();
         for (Field f : this.getFields()) {
             if (null != f.getAnnotation(ann)) {
                 fields.add(f);
@@ -475,10 +475,7 @@ public class ClassWrapper<T> {
         if (Modifier.isFinal(f.getModifiers())) {
             return true;
         }
-        if (f.getName().startsWith("this$")) {
-            return true;
-        }
-        return false;
+        return f.getName().startsWith("this$");
     }
 
     /**
@@ -486,14 +483,11 @@ public class ClassWrapper<T> {
      */
     public Field[] getFields() {
         Class<?> theClass = klass;
-        Map<String, Field> list = new HashMap<String, Field>();
-        while (null != theClass && !(theClass == Object.class)) {
+        Map<String, Field> list = new HashMap<>();
+        while (null != theClass && theClass != Object.class) {
             Field[] fs = theClass.getDeclaredFields();
             for (int i = 0; i < fs.length; i++) {
-                if (isIgnoredField(fs[i])) {
-                    continue;
-                }
-                if (list.containsKey(fs[i].getName())) {
+                if (isIgnoredField(fs[i]) || list.containsKey(fs[i].getName())) {
                     continue;
                 }
                 list.put(fs[i].getName(), fs[i]);
@@ -508,8 +502,8 @@ public class ClassWrapper<T> {
      */
     public Method[] getMethods() {
         Class<?> theClass = klass;
-        List<Method> list = new LinkedList<Method>();
-        while (null != theClass && !(theClass == Object.class)) {
+        List<Method> list = new LinkedList<>();
+        while (null != theClass && theClass != Object.class) {
             Method[] ms = theClass.getDeclaredMethods();
             for (int i = 0; i < ms.length; i++) {
                 list.add(ms[i]);
@@ -530,8 +524,8 @@ public class ClassWrapper<T> {
      */
     public Method[] getAllDeclaredMethods(Class<?> top) {
         Class<?> cc = klass;
-        HashMap<String, Method> map = new HashMap<String, Method>();
-        while (null != cc && !(cc == Object.class)) {
+        HashMap<String, Method> map = new HashMap<>();
+        while (null != cc && cc != Object.class) {
             Method[] fs = cc.getDeclaredMethods();
             for (int i = 0; i < fs.length; i++) {
                 String key = fs[i].getName() + ClassWrapper.getParamDescriptor(fs[i].getParameterTypes());
@@ -557,7 +551,7 @@ public class ClassWrapper<T> {
      * @return 所有静态方法
      */
     public Method[] getStaticMethods() {
-        List<Method> list = new LinkedList<Method>();
+        List<Method> list = new LinkedList<>();
         for (Method m : klass.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) && Modifier.isPublic(m.getModifiers())) {
                 list.add(m);
@@ -579,9 +573,10 @@ public class ClassWrapper<T> {
      *
      * @param obj   对象
      * @param field 字段
-     * @param value 值。如果为 null，字符和数字字段，都会设成 0
+     * @param val 值。如果为 null，字符和数字字段，都会设成 0
      */
-    public void setValue(Object obj, Field field, Object value) {
+    public void setValue(Object obj, Field field, Object val) {
+        Object value = val;
         if (!field.isAccessible()) {
             field.setAccessible(true);
         }
@@ -682,10 +677,7 @@ public class ClassWrapper<T> {
         if (null == type) {
             return false;
         }
-        if (klass == type) {
-            return true;
-        }
-        return false;
+        return klass == type;
     }
 
     /**
@@ -695,7 +687,7 @@ public class ClassWrapper<T> {
      * @return 是否相等
      */
     public boolean is(String className) {
-        return klass.getName().equals(className);
+       return className.equals(klass.getName());
     }
 
     /**
@@ -834,8 +826,9 @@ public class ClassWrapper<T> {
         try {
             return ClassWrapper.wrap(type).getPrimitiveWrapClass() == this.getPrimitiveWrapClass();
         } catch (Exception e) {
+
         }
-        return false;
+        return  false;
     }
 
     /**
@@ -879,12 +872,9 @@ public class ClassWrapper<T> {
      */
     public static Type[] getTypeParams(Class<?> klass) {
         if (klass == null) {
-            return null;
+            return new Type[0];
         }
         Type superclass = klass.getGenericSuperclass();
-        if ("java.lang.Object".equals(superclass)) {
-            return null;
-        }
         if (superclass instanceof ParameterizedType) {
             return ((ParameterizedType) superclass).getActualTypeArguments();
         }
@@ -981,8 +971,7 @@ public class ClassWrapper<T> {
             sb.append(getTypeDescriptor(pt));
         }
         sb.append(')');
-        String s = sb.toString();
-        return s;
+        return sb.toString();
     }
 
     /**
@@ -1036,8 +1025,7 @@ public class ClassWrapper<T> {
                 return "D";
             } else if (klass == char.class) {
                 return "C";
-            } else
-                /* if(klass == boolean.class) */ {
+            } else{
                 return "Z";
             }
         }
@@ -1065,7 +1053,7 @@ public class ClassWrapper<T> {
      */
     public static boolean isChildOf(Class<?> parent, Class<?> child) {
         Class<?> theClass = child;
-        while (null != theClass && !(theClass == Object.class)) {
+        while (null != theClass && theClass != Object.class) {
             if (theClass.isAssignableFrom(parent)) {
                 return true;
             }
