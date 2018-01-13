@@ -5,7 +5,6 @@
 ### 简介
 缓存框架，目前支持Redis缓存和本地缓存
 
-时序图
 
 ### 使用说明
 1、在pom.xml文件引入dz-common-cache
@@ -20,7 +19,7 @@
 
 2、在spring配置文件加入：
 ```xml
-<!--如果项目为非springboot，则需要再加载这个bean，是springboot项目，不需要配置这个-->
+<!--如果项目为非springboot，则需要再加载这个bean，是springboot项目，不需要配置-->
   <bean id="redisAutoConfigure" class="com.dazong.common.autoconfig.RedisAutoConfigure"></bean>
   ```
   
@@ -31,13 +30,19 @@
 CacheFactory cacheFactory;
 ```
 ```java
-    @Test
-    public void testDelete() {
-        List<String> strs2 = new ArrayList<String>();
-        strs2.add("1");
-        strs2.add("2");
-        cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).delete("test:list:string");
-        }
+   @Test
+    public void saveObject() {
+        String keyTemp = "name";
+
+        Person personOri = new Person();
+        personOri.setName("daniel");
+        personOri.setAge(18);
+
+        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri);
+        Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
+
+        assert (personOri.equals(valueTemp));
+    }
 ```
 
 
