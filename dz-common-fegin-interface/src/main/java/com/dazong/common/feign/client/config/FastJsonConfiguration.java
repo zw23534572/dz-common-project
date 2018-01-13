@@ -14,7 +14,7 @@ import org.springframework.cloud.netflix.feign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class FastJsonConfiguration {
         supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         converter.setSupportedMediaTypes(supportedMediaTypes);
 
-        XmlAwareFormHttpMessageConverter converter1 = new XmlAwareFormHttpMessageConverter();
+        AllEncompassingFormHttpMessageConverter converter1 = new AllEncompassingFormHttpMessageConverter();
         final HttpMessageConverters converters = new HttpMessageConverters(converter, converter1);
         messageConverters = new ObjectFactory<HttpMessageConverters>() {
             @Override
