@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author: DanielLi
  * @Date: 2018/1/10
@@ -59,7 +62,7 @@ public class CacheFactory extends ApplicationObjectSupport {
     }
 
     /**
-     * 获取默认缓存处理器，根据自动注入缓存配置Bean的顺序来进行选择
+     * 获取默认缓存处理器，根据自动注入缓存配置Bean的顺序来进行选择,由用户自定义
      * 最先注入的缓存bean则为默认缓存处理器
      * @return
      */
