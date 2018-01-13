@@ -5,7 +5,6 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
@@ -48,7 +47,7 @@ public class FastJsonConfiguration {
         final HttpMessageConverters converters = new HttpMessageConverters(converter, converter1);
         messageConverters = new ObjectFactory<HttpMessageConverters>() {
             @Override
-            public HttpMessageConverters getObject() throws BeansException {
+            public HttpMessageConverters getObject() {
                 return converters;
             }
         };
