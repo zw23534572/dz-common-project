@@ -35,7 +35,7 @@ public class IUploadServiceTest {
 
     @Test
     public void testUpload() {
-        File file = this.createFile();
+        File file = this.createFile("testUpload");
         String time = String.valueOf(System.currentTimeMillis());
         String configName = "qualitybook";
         //生成数字签名
@@ -59,7 +59,7 @@ public class IUploadServiceTest {
 
     @Test
     public void testUploadUtils1() {
-        File file = this.createFile();
+        File file = this.createFile("testUploadUtils1");
         DataResponse<String> response = UploadUtils.upload(file);
         this.delFile(file);
         logger.info("result={}", response);
@@ -67,18 +67,18 @@ public class IUploadServiceTest {
 
     @Test
     public void testUploadUtils2() throws Exception {
-        File file = this.createFile();
+        File file = this.createFile("testUploadUtils2");
         FileInputStream inputStream = new FileInputStream(file);
-        MultipartFile multipartFile = new MockMultipartFile("temp.txt", inputStream);
+        MultipartFile multipartFile = new MockMultipartFile("tempMultipartFile.txt", inputStream);
         DataResponse<String> response = UploadUtils.upload(multipartFile);
         this.delFile(file);
         logger.info("result={}", response);
     }
 
-    private File createFile() {
+    private File createFile(String fileName) {
         String context = "Lori test1";
         String base64 = Base64Utils.encodeToString(context.getBytes());
-        File file = new File("/temp.txt");
+        File file = new File("/" + fileName + ".txt");
         ByteArrayInputStream in = null;
         try (FileOutputStream out = new FileOutputStream(file)) {
             if (!file.exists()) {
