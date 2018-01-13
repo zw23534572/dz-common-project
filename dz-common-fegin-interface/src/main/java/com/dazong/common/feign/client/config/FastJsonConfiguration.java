@@ -1,10 +1,9 @@
 package com.dazong.common.feign.client.config;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dazong.common.feign.client.utils.ConverterUtils;
+import feign.codec.Decoder;
+import feign.codec.Encoder;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -15,13 +14,6 @@ import org.springframework.cloud.netflix.feign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-
-import feign.codec.Decoder;
-import feign.codec.Encoder;
 
 /**
  *  @author luobw

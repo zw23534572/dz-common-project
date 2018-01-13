@@ -1,10 +1,9 @@
 package com.dazong.common.feign.client.dto.request;
 
-import java.math.BigDecimal;
-
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import java.math.BigDecimal;
 
 /**
  *  @author yanghui

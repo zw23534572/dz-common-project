@@ -1,11 +1,9 @@
 package com.dazong.common.feign.client.dto.response;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 

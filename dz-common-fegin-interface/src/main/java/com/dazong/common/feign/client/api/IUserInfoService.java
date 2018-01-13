@@ -1,19 +1,18 @@
 package com.dazong.common.feign.client.api;
 
-import java.util.List;
-
+import com.dazong.common.feign.client.config.FastJsonConfiguration;
 import com.dazong.common.feign.client.dto.request.*;
+import com.dazong.common.feign.client.dto.response.BankInfoResponse;
+import com.dazong.common.feign.client.dto.response.Company;
+import com.dazong.common.feign.client.dto.response.UserInfo;
 import com.dazong.common.feign.client.dto.response.WhiteListResponse;
+import com.dazong.common.resp.DataResponse;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.dazong.common.feign.client.config.FastJsonConfiguration;
-import com.dazong.common.feign.client.dto.response.BankInfoResponse;
-import com.dazong.common.feign.client.dto.response.Company;
-import com.dazong.common.feign.client.dto.response.UserInfo;
-import com.dazong.common.resp.DataResponse;
+import java.util.List;
 
 /**
  * @author yanghui

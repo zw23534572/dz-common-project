@@ -1,8 +1,8 @@
 package com.dazong.common.feign.client.dto.request;
 
-import java.util.List;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 

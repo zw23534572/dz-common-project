@@ -1,8 +1,11 @@
 package com.dazong.common.feignclient.client.api;
 
+import com.dazong.common.feign.client.api.IContractService;
 import com.dazong.common.feign.client.dto.request.*;
 import com.dazong.common.feign.client.dto.response.ProtocolResponse;
 import com.dazong.common.feign.client.dto.response.VipResponse;
+import com.dazong.common.feignclient.FeignclientApplication;
+import com.dazong.common.resp.DataResponse;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,10 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import com.dazong.common.feign.client.api.IContractService;
-import com.dazong.common.feignclient.FeignclientApplication;
-import com.dazong.common.resp.DataResponse;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
