@@ -3,6 +3,7 @@ package com.dazong.common.feign.client.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.dazong.common.feign.client.utils.ConverterUtils;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import org.springframework.beans.BeansException;
@@ -30,19 +31,7 @@ public class XmlAndFastJsonConfiguration {
     private ObjectFactory<HttpMessageConverters> messageConverters;
 
     public XmlAndFastJsonConfiguration() {
-        FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-        FastJsonConfig config = new FastJsonConfig();
-        config.setSerializerFeatures(SerializerFeature.WriteDateUseDateFormat,
-                SerializerFeature.WriteMapNullValue,
-                SerializerFeature.WriteNullStringAsEmpty,
-                SerializerFeature.WriteNullNumberAsZero);
-        config.setCharset(Charset.forName("UTF-8"));
-        converter.setFastJsonConfig(config);
-
-        List<MediaType> supportedMediaTypes = new ArrayList<>();
-        supportedMediaTypes.add(MediaType.TEXT_HTML);
-        supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
-        converter.setSupportedMediaTypes(supportedMediaTypes);
+        FastJsonHttpMessageConverter converter = ConverterUtils.createFastJsonHttpMessageConverter(MediaType.TEXT_HTML,MediaType.APPLICATION_JSON_UTF8);
         XmlAwareFormHttpMessageConverter converter1 = new XmlAwareFormHttpMessageConverter();
         final HttpMessageConverters converters = new HttpMessageConverters(converter, converter1);
         messageConverters = new ObjectFactory<HttpMessageConverters>() {

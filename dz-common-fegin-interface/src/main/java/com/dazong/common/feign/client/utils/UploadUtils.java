@@ -31,20 +31,18 @@ public class UploadUtils implements ApplicationContextAware {
 
     private static final String TIME = "time";
 
-    private static final String PASSWORD_SALT = "fmdz.2015";
+    private static final String SALT = "fmdz.2015";
 
-    private static final String FILE_PATH_DOMAIN = "https://i.dazong.com";
-
-    private static ApplicationContext applicationContext;
+    private static ApplicationContext context;
 
     public static DataResponse<String> upload(File file) {
-        IUploadService uploadService = applicationContext.getBean(IUploadService.class);
+        IUploadService uploadService = context.getBean(IUploadService.class);
         String time = String.valueOf(System.currentTimeMillis());
         //生成数字签名
         String sign = createSign(time, CONFIG_NAME_VALUE);
         MultiValueMap<String, Object> map = createMultiMap(file, time, CONFIG_NAME_VALUE, sign);
         DataResponse<String> response = uploadService.upload(map);
-        response.setMsg(FILE_PATH_DOMAIN + response.getMsg());
+        response.setMsg("https://i.dazong.com" + response.getMsg());
         return response;
     }
 
@@ -53,7 +51,7 @@ public class UploadUtils implements ApplicationContextAware {
     }
 
     private static String createSign(String time, String configName) {
-        return DigestUtils.md5Hex(CONFIG_NAME_KEY + TIME + configName + time + PASSWORD_SALT);
+        return DigestUtils.md5Hex(CONFIG_NAME_KEY + TIME + configName + time + SALT);
     }
 
     private static MultiValueMap<String, Object> createMultiMap(File file, String time, String configNameValue, String sign) {
@@ -93,6 +91,6 @@ public class UploadUtils implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        UploadUtils.applicationContext = applicationContext;
+        context = applicationContext;
     }
 }

@@ -4,6 +4,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dazong.common.feign.client.utils.ConverterUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,18 +32,7 @@ public class FastJsonConfiguration {
 	private ObjectFactory<HttpMessageConverters> messageConverters;
 
 	public FastJsonConfiguration() {
-		FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
-		FastJsonConfig config = new FastJsonConfig();
-		config.setSerializerFeatures(SerializerFeature.WriteDateUseDateFormat,
-				SerializerFeature.WriteMapNullValue,
-				SerializerFeature.WriteNullStringAsEmpty,
-				SerializerFeature.WriteNullNumberAsZero);
-		config.setCharset(Charset.forName("UTF-8"));
-		converter.setFastJsonConfig(config);
-
-		List<MediaType> supportedMediaTypes = new ArrayList<>();
-		supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
-		converter.setSupportedMediaTypes(supportedMediaTypes);
+		FastJsonHttpMessageConverter converter = ConverterUtils.createFastJsonHttpMessageConverter(null,MediaType.APPLICATION_JSON_UTF8);
 		final HttpMessageConverters converters = new HttpMessageConverters(converter);
 		messageConverters = new ObjectFactory<HttpMessageConverters>() {
 			@Override
