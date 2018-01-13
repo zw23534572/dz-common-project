@@ -12,11 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FeignclientApplication.class)
@@ -27,7 +30,7 @@ public class IUploadServiceTest {
     @Autowired
     private IUploadService upService;
 
-//    @Test
+    //        @Test
     public void testUpload() {
         File file = new File("C:\\Users\\lori.li\\Desktop\\123.jpg");
         String time = String.valueOf(System.currentTimeMillis());
@@ -50,10 +53,19 @@ public class IUploadServiceTest {
         return DigestUtils.md5Hex("config_name" + "time" + configName + time + "fmdz.2015");
     }
 
-//    @Test
+    //        @Test
     public void testUploadUtils1() {
         File file = new File("C:\\Users\\lori.li\\Desktop\\123.jpg");
         DataResponse<String> response = UploadUtils.upload(file);
+        logger.info("result={}", response);
+    }
+
+    //    @Test
+    public void testUploadUtils2() throws Exception {
+        File file = new File("C:\\Users\\lori.li\\Desktop\\123.jpg");
+        FileInputStream inputStream = new FileInputStream(file);
+        MultipartFile multipartFile = new MockMultipartFile("temp.jpg", inputStream);
+        DataResponse<String> response = UploadUtils.upload(multipartFile);
         logger.info("result={}", response);
     }
 }

@@ -5,6 +5,7 @@ import com.dazong.common.exceptions.BusinessException;
 import com.dazong.common.feign.client.api.IUploadService;
 import com.dazong.common.resp.DataResponse;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -41,7 +42,7 @@ public class UploadUtils implements ApplicationContextAware {
         String time = String.valueOf(System.currentTimeMillis());
         //生成数字签名
         String sign = createSign(time, CONFIG_NAME_VALUE);
-        MultiValueMap<String, Object> map = createMultiMap(file, null, time, CONFIG_NAME_VALUE, sign);
+        MultiValueMap<String, Object> map = createMultiMap(file, time, CONFIG_NAME_VALUE, sign);
         DataResponse<String> response = uploadService.upload(map);
         response.setMsg(FILE_PATH_DOMAIN + response.getMsg());
         return response;
@@ -55,16 +56,11 @@ public class UploadUtils implements ApplicationContextAware {
         return DigestUtils.md5Hex(CONFIG_NAME_KEY + TIME + configName + time + PASSWORD_SALT);
     }
 
-    private static MultiValueMap<String, Object> createMultiMap(File file, MultipartFile multipartFile, String time, String configNameValue, String sign) {
-        if (null == file && null == multipartFile) {
+    private static MultiValueMap<String, Object> createMultiMap(File file, String time, String configNameValue, String sign) {
+        if (null == file) {
             throw new BusinessException(CommonStatus.ILLEGAL_PARAM);
         }
-        FileSystemResource resource;
-        if (null != file) {
-            resource = new FileSystemResource(file);
-        } else {
-            resource = new FileSystemResource(getFileByMultipartFile(multipartFile));
-        }
+        FileSystemResource resource = new FileSystemResource(file);
         MultiValueMap<String, Object> param = new LinkedMultiValueMap<>();
         param.add("file", resource);
         param.add(TIME, time);
@@ -75,6 +71,9 @@ public class UploadUtils implements ApplicationContextAware {
 
     private static File getFileByMultipartFile(MultipartFile multipartFile) {
         String fullFileName = multipartFile.getOriginalFilename();
+        if (StringUtils.isBlank(fullFileName)) {
+            fullFileName = multipartFile.getName();
+        }
         int point = fullFileName.lastIndexOf('.');
         String fileExtName = fullFileName.substring(point + 1, fullFileName.length());
         String fileName = fullFileName.substring(0, point) + System.currentTimeMillis();
