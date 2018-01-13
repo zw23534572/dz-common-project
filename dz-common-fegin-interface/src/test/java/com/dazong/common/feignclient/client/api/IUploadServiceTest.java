@@ -68,4 +68,9 @@ public class IUploadServiceTest {
         DataResponse<String> response = UploadUtils.upload(multipartFile);
         logger.info("result={}", response);
     }
+
+    @Test
+    public void test() {
+        //防止打包报错；上面的test都注释掉了，因为在服务器上文件不存在
+    }
 }
