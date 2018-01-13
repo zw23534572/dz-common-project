@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/META-INF/dz-common-cache.xml")
+@ContextConfiguration("/META-INF/dz-common-cache-test.xml")
 public class CatchFactoryTest {
 
     @Autowired

@@ -1,15 +1,12 @@
 package com.dazong.common.cache.redis;
 
-import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
+import com.dazong.common.cache.redis.domain.Person;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author: DanielLi
@@ -17,7 +14,7 @@ import java.util.Map;
  * @Description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/META-INF/dz-common-cache.xml")
+@ContextConfiguration("/META-INF/dz-common-cache-test.xml")
 public class RedisCacheHandlerTests{
 
     @Autowired
@@ -38,10 +35,14 @@ public class RedisCacheHandlerTests{
     public void saveObject() {
         String keyTemp = "name";
 
-        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, cacheFactory);
-        CacheFactory valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, CacheFactory.class);
+        Person personOri = new Person();
+        personOri.setName("daniel");
+        personOri.setAge(18);
 
-        assert (cacheFactory.equals(valueTemp));
+        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri);
+        Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
+
+        assert (personOri.equals(valueTemp));
     }
 
     @Test
