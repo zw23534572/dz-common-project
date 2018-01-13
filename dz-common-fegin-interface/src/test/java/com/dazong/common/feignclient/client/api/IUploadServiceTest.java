@@ -78,7 +78,7 @@ public class IUploadServiceTest {
     private File createFile(String fileName) {
         String context = "Lori test1";
         String base64 = Base64Utils.encodeToString(context.getBytes());
-        File file = new File("/" + fileName + ".txt");
+        File file = new File("/temp/" + fileName + ".txt");
         ByteArrayInputStream in = null;
         try (FileOutputStream out = new FileOutputStream(file)) {
             if (!file.exists()) {
