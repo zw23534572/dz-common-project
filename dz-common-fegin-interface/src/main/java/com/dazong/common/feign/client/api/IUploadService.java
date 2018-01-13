@@ -1,6 +1,6 @@
 package com.dazong.common.feign.client.api;
 
-import com.dazong.common.feign.client.config.XmlAndFastJsonConfiguration;
+import com.dazong.common.feign.client.config.FastJsonConfiguration;
 import com.dazong.common.resp.DataResponse;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @FeignClient(name = "${feignclient.up.serviceId}",
         url = "${feignclient.up.url}",
-        configuration = XmlAndFastJsonConfiguration.class)
+        configuration = FastJsonConfiguration.class)
 public interface IUploadService {
 
     /**

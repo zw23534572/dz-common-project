@@ -84,8 +84,9 @@ public class UploadUtils implements ApplicationContextAware {
             logger.error("转换文件异常={}", e);
             throw new BusinessException(CommonStatus.FAIL.getCode(), "文件转换失败");
         } finally {
-            if (null != f)
+            if (null != f) {
                 f.deleteOnExit();
+            }
         }
     }
 
