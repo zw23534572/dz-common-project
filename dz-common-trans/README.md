@@ -127,7 +127,7 @@ public class TransactionEntity {
 }
 ```
 
-* 由于带有@DzTransactional的方法会把参数都序列化成json存入mysql,目前该列的长度为2048,所以参数不要传入超大对象
+* 由于带有@AutoRetry的方法会把参数都序列化成json存入mysql,目前该列的长度为2048,所以参数不要传入超大对象
 
 ### 相关设计原理
 
