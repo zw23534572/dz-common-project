@@ -4,7 +4,7 @@
 
 ## 使用说明
 
-目前使用了springboot的相关特性，故只适应springboot项目适应，如果需要在普通spring项目使用需要兼容回来，
+目前使用了springboot的相关特性，故只适应springboot项目适应，如果需要在普通spring项目使用需要兼容回来
 
 ### 引入
 
@@ -37,7 +37,7 @@ public class Application {
 事务注解AutoRetry,带有此注解的方法会启用事务,如果抛出了需要retry的异常后会有服务去不断的重试这个方法直到成功,保证数据最终一致性.如下:
 
 ```java
-@DzTransactional
+@AutoRetry
 public void testBussinessIdAnno(@BussinessIdParam("bussinessId") DzTransactionObject o, String s){
     System.out.println("执行测试业务参数注解:" + o.getBussinessId());
     throw new TestException(o.getBussinessId());
@@ -121,7 +121,6 @@ public class TransactionEntity {
     public void testDoTransaction(Integer i, String s) {
         ....       
     }
-
     public void test(){
         this.testDoTransaction(1, "1");
     }
@@ -132,5 +131,5 @@ public class TransactionEntity {
 
 ### 相关设计原理
 
-* 1、分布式系统数据一致性问题：https://git.dazong.com/TradeDept/DeptDoc/blob/master/%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6%E6%B1%A0/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98.md
-* 2、dz-transaction设计：https://git.dazong.com/TradeDept/DeptDoc/blob/master/%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6%E6%B1%A0/dz-transaction%E8%AE%BE%E8%AE%A1.md
+* [分布式系统数据一致性问题](https://git.dazong.com/TradeDept/DeptDoc/blob/master/%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6%E6%B1%A0/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98.md)
+* [dz-transaction设计](https://git.dazong.com/TradeDept/DeptDoc/blob/master/%E6%8A%80%E6%9C%AF%E7%A0%94%E7%A9%B6%E6%B1%A0/dz-transaction%E8%AE%BE%E8%AE%A1.md)
