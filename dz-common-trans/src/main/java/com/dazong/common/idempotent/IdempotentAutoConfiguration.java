@@ -1,9 +1,12 @@
 package com.dazong.common.idempotent;
 
-import com.dazong.common.idempotent.dao.IdempotentDao;
+import com.dazong.common.idempotent.dao.IdempotentMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -12,12 +15,13 @@ import org.springframework.context.annotation.Import;
  */
 @Import(IdempotentAspect.class)
 @MapperScan("com.dazong.common.idempotent.dao")
+@ConditionalOnBean(annotation = EnableIdempotent.class)
 public class IdempotentAutoConfiguration implements InitializingBean {
     @Autowired
-    private IdempotentDao idempotentDao;
+    private IdempotentMapper idempotentMapper;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        idempotentDao.createTableIfNotExists();
+        idempotentMapper.createTableIfNotExists();
     }
 }
