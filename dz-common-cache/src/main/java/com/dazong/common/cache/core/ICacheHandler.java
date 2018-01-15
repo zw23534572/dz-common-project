@@ -15,21 +15,21 @@ public interface ICacheHandler {
      * @param key
      * @param str
      */
-    public void saveString(final String key,final String str) ;
+    public void saveString(final String key, final String value, final int expireMilliseconds) ;
 
     /**
      * 保存对象
      * @param key
      * @param object
      */
-    public void saveObject(final String key, final Object object) ;
+    public void saveObject(final String key, final Object object, final int expireMilliseconds) ;
 
     /**
      * 保存Map对象
      * @param key
      * @param data
      */
-    public void saveMap(final String key,final Map<String, ?> data);
+    public void saveMap(final String key,final Map<String, ?> data, final int expireMilliseconds);
 
     /**
      * 保存Map对象的某个key
@@ -37,21 +37,21 @@ public interface ICacheHandler {
      * @param itemKey
      * @param value
      */
-    public void saveMapItem(final String key,final String itemKey,final Object value);
+    public void saveMapItem(final String key,final String itemKey,final Object value, final int expireMilliseconds);
 
     /**
      * 保存List
      * @param key
      * @param data
      */
-    public void saveList(final String key,final List data);
+    public void saveList(final String key,final List data, final int expireMilliseconds);
 
     /**
      * 保存List
      * @param key
      * @param object
      */
-    public void saveListItem(final String key,final Object object);
+    public void saveListItem(final String key,final Object object, final int expireMilliseconds);
 
     /**
      * 删除key

@@ -6,14 +6,12 @@ package com.dazong.common.cache.constants;
  * @Description:
  */
 public interface IExpire {
+    int EXPIRE_MAX = Integer.MAX_VALUE;
 
-    int NO = -1;
+    int ONE_MILL_SECOND = 1;
+    int ONE_SEC = 1000 * ONE_MILL_SECOND;
 
-    int FOREVER = 0;
-
-    int ONE_SEC = 1;
-
-    int FIVE_SEC = 4 * ONE_SEC;
+    int FIVE_SEC = 5 * ONE_SEC;
 
     int TEN_SEC = 2 * FIVE_SEC;
 

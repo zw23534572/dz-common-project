@@ -12,32 +12,32 @@ import java.util.Map;
  */
 public abstract class AbstractCacheHandler implements ICacheHandler {
     @Override
-    public void saveString(String key, String str) {
+    public void saveString(String key, String value, final int expireMilliseconds) {
 
     }
 
     @Override
-    public void saveObject(String key, Object object) {
+    public void saveObject(String key, Object object, final int expireMilliseconds) {
 
     }
 
     @Override
-    public void saveMap(String key, Map<String, ?> data) {
+    public void saveMap(String key, Map<String, ?> data, final int expireMilliseconds) {
 
     }
 
     @Override
-    public void saveMapItem(String key, String itemKey, Object value) {
+    public void saveMapItem(String key, String itemKey, Object value, final int expireMilliseconds) {
 
     }
 
     @Override
-    public void saveList(String key, List data) {
+    public void saveList(String key, List data, final int expireMilliseconds) {
 
     }
 
     @Override
-    public void saveListItem(String key, Object object) {
+    public void saveListItem(String key, Object object, final int expireMilliseconds) {
 
     }
 
