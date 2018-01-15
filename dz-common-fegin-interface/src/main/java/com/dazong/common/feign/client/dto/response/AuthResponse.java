@@ -1,8 +1,8 @@
 package com.dazong.common.feign.client.dto.response;
 
-import java.util.Map;
-
 import lombok.Data;
+
+import java.util.Map;
 
 /**
  *  @author yanghui

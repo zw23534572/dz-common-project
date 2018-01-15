@@ -9,6 +9,10 @@
 		<version>1.5-SNAPSHOT</version>
 	</parent>
 
+	<properties>
+		<dz.common.version>4.0.0-SNAPSHOT</dz.common.version>
+		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
+	</properties>
 
 	<groupId>com.dazong.common</groupId>
 	<artifactId>dz-common-parent</artifactId>
@@ -16,8 +20,10 @@
 	<packaging>pom</packaging>
 	<description>dazong project manager</description>
 	<name>dz-common-parent</name>
+
 	<modules>
 		<module>dz-common</module>
+		<module>dz-common-util</module>
 		<module>dz-common-cache</module>
 		<module>dz-common-fileserver</module>
 		<module>dz-common-lock</module>
@@ -26,8 +32,59 @@
 		<module>dz-common-web</module>
 		<module>dz-common-fegin-interface</module>
 		<module>example</module>
-	</modules>
-	
+    </modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-cache</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-fegin-interface</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-fileserver</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-lock</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-mq</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-trans</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-util</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-web</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
+		</dependencies>
+
+	</dependencyManagement>
+
 	<distributionManagement>
 		<repository>
 			<id>central</id>

@@ -67,7 +67,7 @@ dz-pom(基础pom)
 考虑到我们走的是分布式、微服务路线，服务端操作文件，应该全部是分布式文件，
 但当前环境，java项目没有直接去操作文件，所有直接以仓储cc-commons-fileserver（实现了fastdfs文件操作）为蓝本吸收
 
-6、dz-common-fegin-interface 分装可以在多系统共用的http接口，例如请求php的用户信息等
+6、dz-common-fegin-interface 封装可以在多系统共用的http接口，例如请求php的用户信息等
 以 https://git.dazong.com/TradeDept/feginclient 为蓝本
 
 
@@ -98,11 +98,12 @@ https://git.dazong.com/TradeDept/elasticjob-spring-boot-starter
 | dz-common-fileserver |官旭、臧斌|
 | dz-common-fegin-interface |紫依|
 | dz-common-web |周伟|
-| dz-common-cache |审霖|
+| dz-common-cache |审霖、周剑|
 | dz-common-elasticjob-starter |杨辉|
-| dz-project-example |all developer|使用示例，相关特性、用法，都加到这个项目，此项目为标准模板
+| dz-common-util |汪自送|
+| example |all developer|使用示例，相关特性、用法，都加到这个项目，此项目为标准模板
 | auto-create-project|其超|自动创建项目，自动创建业务项目
-| 单号服务|俊雄|自动创建项目，自动创建业务项目
+| 单号服务|俊雄、锦宣|自动创建项目，自动创建业务项目
 
 # 基本流程（部门开发规范简略版）
 ```
