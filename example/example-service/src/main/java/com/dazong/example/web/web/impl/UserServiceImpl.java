@@ -1,6 +1,7 @@
 package com.dazong.example.web.web.impl;
 
 import com.dazong.common.idempotent.Idempotent;
+import com.dazong.common.trans.annotation.AutoRetry;
 import com.dazong.example.web.web.UserService;
 import com.dazong.example.web.web.service.common.impl.HttpClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Idempotent("#userInfo.userId")
+	@AutoRetry
 	public DataResponse<UserInfo> saveUser(UserInfo userInfo) {
 		System.out.println("保存userInfo = [" + userInfo + "]");
 		return new DataResponse<>(userInfo);
