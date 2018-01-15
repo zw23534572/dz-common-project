@@ -5,6 +5,8 @@ import com.dazong.common.util.StringUtil;
 import com.dazong.common.util.reflect.ClassWrapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -21,10 +23,14 @@ import java.util.LinkedList;
  */
 public abstract class DiskUtil {
 
+    private DiskUtil(){
+    }
 
-    public static final String SYMBOL_SLASH_STR = "/";
-    public static final char SYMBOL_SLASH_CHR = '/';
-    public static final char SYMBOL_WAVE_CHR = '~';
+    protected static Logger logger = LoggerFactory.getLogger(DiskUtil.class);
+    private static final String SYMBOL_SLASH_STR = "/";
+    private static final char SYMBOL_SLASH_CHR = '/';
+    private static final char SYMBOL_WAVE_CHR = '~';
+    private static final String SYMBOL_REGEX = "[\\\\/]";
 
     /**
      * 一个 Vistor 模式的目录深层遍历
@@ -88,9 +94,9 @@ public abstract class DiskUtil {
      */
     public static String getRelativePath(String base, String path) {
         String[] bb = StringUtil.splitIgnoreBlank(getCanonicalPath(base),
-                                               "[\\\\/]");
+                SYMBOL_REGEX);
         String[] ff = StringUtil.splitIgnoreBlank(getCanonicalPath(path),
-                                               "[\\\\/]");
+                SYMBOL_REGEX);
         int len = Math.min(bb.length, ff.length);
         int pos = 0;
         for (; pos < len; pos++) {
@@ -125,11 +131,11 @@ public abstract class DiskUtil {
         if (Strings.isBlank(path)) {
             return path;
         }
-        String[] pa = StringUtil.splitIgnoreBlank(path, "[\\\\/]");
-        LinkedList<String> paths = new LinkedList<String>();
+        String[] pa = StringUtil.splitIgnoreBlank(path, SYMBOL_REGEX);
+        LinkedList<String> paths = new LinkedList<>();
         for (String s : pa) {
             if ("..".equals(s)) {
-                if (paths.size() > 0) {
+                if (!paths.isEmpty()) {
                     paths.removeLast();
                 }
                 continue;
@@ -206,10 +212,12 @@ public abstract class DiskUtil {
                     url = ClassLoader.getSystemResource(path);
                 }
             }
-            catch (Throwable e) {}
+            catch (Exception e) {
+                logger.info("获取一个路径的绝对路径。如果该路径不存在，则返回null,{}",e);
+            }
             if (null != url) {
                 // 通过URL获取String,一律使用UTF-8编码进行解码
-                return normalize(url.getPath(), CharsetUtil.UTF8);
+                return normalize(url.getPath(), CharsetUtil.CODING_UTF8);
             }
             return null;
         }

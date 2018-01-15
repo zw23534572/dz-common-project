@@ -3,6 +3,8 @@ package com.dazong.common.util.io;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.CharsetUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -15,6 +17,8 @@ import java.util.zip.ZipInputStream;
  * @date 2018/01/12
  */
 public class StreamUtil {
+
+    protected static Logger logger = LoggerFactory.getLogger(StreamUtil.class);
 
     private StreamUtil() {
     }
@@ -333,6 +337,7 @@ public class StreamUtil {
             try {
                 fa.flush();
             } catch (IOException e) {
+                logger.info("安全刷新一个可刷新的对象，可接受 null; {}", e);
             }
         }
     }
@@ -408,16 +413,15 @@ public class StreamUtil {
             File f = FileUtil.findFile(path);
             if (null != f) {
                 try {
-                    ins = _input(f);
+                    ins = input(f);
                 } catch (IOException e) {
+                    logger.info("根据一个文件路径建立一个输入流; {}", e);
                 }
             }
         }
         if (null == ins) {
             // TODO 考虑一下,应该抛异常呢?还是返回null呢?
-
-            throw new RuntimeException(new FileNotFoundException(path));
-            // return null;
+            throw new PlatformException(new FileNotFoundException(path), CommonStatus.FAIL, "根据一个文件路径建立一个输入流");
         }
         return buff(ins);
     }
@@ -430,7 +434,7 @@ public class StreamUtil {
      */
     public static InputStream fileIn(File file) {
         try {
-            return buff(_input(file));
+            return buff(input(file));
         } catch (IOException e) {
             throw new PlatformException(e, CommonStatus.FAIL, "根据一个文件路径建立一个输入流");
         }
@@ -552,7 +556,7 @@ public class StreamUtil {
     /**
      * 获取File对象输入流,即使在Jar文件中一样工作良好!! <b>强烈推荐</b>
      */
-    protected static InputStream _input(File file) throws IOException {
+    protected static InputStream input(File file) throws IOException {
         if (file.exists()) {
             return new FileInputStream(file);
         }
@@ -581,30 +585,38 @@ public class StreamUtil {
                 }
             }
         } catch (IOException e) {
+            logger.info("makeJarNutResource, {}", e);
         }
         return null;
     }
 
     public static NutResource makeJarNutResource(final String jarPath,
-                                                 final String entryName, final String base) throws IOException {
+                                                 final String entryName, final String base) {
         NutResource nutResource = new NutResource() {
 
             @Override
             public InputStream getInputStream() throws IOException {
-                ZipInputStream zis = makeZipInputStream(jarPath);
-                ZipEntry ens = null;
-                while (null != (ens = zis.getNextEntry())) {
-                    if (ens.getName().equals(entryName)) {
-                        return zis;
+                try (ZipInputStream zis = makeZipInputStream(jarPath);) {
+                    ZipEntry ens = null;
+                    while (null != (ens = zis.getNextEntry())) {
+                        if (ens.getName().equals(entryName)) {
+                            return zis;
+                        }
                     }
+                    throw new PlatformException(CommonStatus.FAIL, "makeJarNutResource");
                 }
-                throw new PlatformException(CommonStatus.FAIL, "makeJarNutResource");
             }
 
             @Override
             public int hashCode() {
                 return (jarPath + ":" + entryName).hashCode();
             }
+
+            @Override
+            public boolean equals(Object obj) {
+                return super.equals(obj);
+            }
+
         };
         if (entryName.equals(base)) {
             nutResource.setName(entryName);
@@ -626,14 +638,10 @@ public class StreamUtil {
     }
 
     public static void appendWriteAndClose(File f, String text) {
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(f, true);
+        try(FileWriter fw = new FileWriter(f, true);) {
             fw.write(text);
         } catch (IOException e) {
             throw new PlatformException(e, CommonStatus.FAIL, "appendWriteAndClose");
-        } finally {
-            safeClose(fw);
         }
 
     }

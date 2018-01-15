@@ -7,6 +7,7 @@ import com.dazong.common.util.CommonUtil;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,7 @@ public class BeanUtil extends BeanUtils {
      */
     public static <T> List<T> copyObjects(List sourceObjects, Class<T> targetObjectClass, String... withOutFields) {
         if (CommonUtil.isEmpty(sourceObjects)) {
-            return null;
+            return new ArrayList<>();
         }
         List<T> targetObjects = CommonUtil.arrayList(sourceObjects.size());
         for (Iterator iter = sourceObjects.iterator(); iter.hasNext(); ) {

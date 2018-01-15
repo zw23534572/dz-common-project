@@ -16,6 +16,8 @@ import java.util.Map;
  */
 public abstract class SignatureUtil {
 
+    private SignatureUtil(){}
+
     /**
      * 签名前要对参数进行排序
      * @param sortedParams
@@ -23,7 +25,7 @@ public abstract class SignatureUtil {
      */
     public static String getSignContent(Map<String, String> sortedParams) {
         StringBuilder content = new StringBuilder();
-        List<String> keys = new ArrayList<String>(sortedParams.keySet());
+        List<String> keys = new ArrayList<>(sortedParams.keySet());
         Collections.sort(keys);
         int index = 0;
         for (int i = 0; i < keys.size(); i++) {

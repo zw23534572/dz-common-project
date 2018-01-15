@@ -123,7 +123,7 @@ public class FileUtil {
             return;
         }
         if (f.isDirectory()) {
-            throw new PlatformException(CommonStatus.FAIL, "Directory '%s' can not be write as File", f);
+            throw new PlatformException(CommonStatus.FAIL, "Directory '%s' can not be write as File 1", f);
         }
 
         try {
@@ -250,10 +250,8 @@ public class FileUtil {
         int l = 0;
         int r = len;
         for (int i = r - 1; i > 0; i--) {
-            if (r == len) {
-                if (path.charAt(i) == '.') {
+            if (r == len && path.charAt(i) == '.') {
                     r = i;
-                }
             }
             if (path.charAt(i) == '/' || path.charAt(i) == '\\') {
                 l = i + 1;
@@ -460,12 +458,21 @@ public class FileUtil {
     /**
      * 获取输出流
      *
-     * @param path  文件路径
-     * @param klass 参考的类， -- 会用这个类的 ClassLoader
-     * @param enc   文件路径编码
+     * @param path 文件路径
      * @return 输出流
      */
-    public static InputStream findFileAsStream(String path, Class<?> klass, String enc) {
+    public static InputStream findFileAsStream(String path) {
+        return findFileAsStream(path, FileUtil.class);
+    }
+
+    /**
+     * 获取输出流
+     *
+     * @param path  文件路径
+     * @param klass 参考的类， -- 会用这个类的 ClassLoader
+     * @return 输出流
+     */
+    public static InputStream findFileAsStream(String path, Class<?> klass) {
         File f = new File(path);
         if (f.exists()) {
             try {
@@ -484,38 +491,6 @@ public class FileUtil {
             }
         }
         return ClassLoader.getSystemResourceAsStream(path);
-    }
-
-    /**
-     * 获取输出流
-     *
-     * @param path 文件路径
-     * @param enc  文件路径编码
-     * @return 输出流
-     */
-    public static InputStream findFileAsStream(String path, String enc) {
-        return findFileAsStream(path, FileUtil.class, enc);
-    }
-
-    /**
-     * 获取输出流
-     *
-     * @param path  文件路径
-     * @param klass 参考的类， -- 会用这个类的 ClassLoader
-     * @return 输出流
-     */
-    public static InputStream findFileAsStream(String path, Class<?> klass) {
-        return findFileAsStream(path, klass, CharsetUtil.defaultEncoding());
-    }
-
-    /**
-     * 获取输出流
-     *
-     * @param path 文件路径
-     * @return 输出流
-     */
-    public static InputStream findFileAsStream(String path) {
-        return findFileAsStream(path, FileUtil.class, CharsetUtil.defaultEncoding());
     }
 
     /**
@@ -575,7 +550,7 @@ public class FileUtil {
             return false;
         }
         if (!dir.isDirectory()) {
-            throw new RuntimeException("\"" + dir.getAbsolutePath() + "\" should be a directory!");
+            throw new PlatformException(CommonStatus.FAIL,"\"" + dir.getAbsolutePath() + "\" should be a directory!");
         }
         File[] files = dir.listFiles();
         boolean re = false;
@@ -885,7 +860,7 @@ public class FileUtil {
      * @return 子目录数组
      */
     public static File[] scanDirs(File dir) {
-        ArrayList<File> list = new ArrayList<File>();
+        ArrayList<File> list = new ArrayList<>();
         list.add(dir);
         scanDirs(dir, list);
         return list.toArray(new File[list.size()]);
@@ -965,7 +940,7 @@ public class FileUtil {
     }
 
     public static List<String> readLines(File f) {
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         BufferedReader br = null;
         try {
             br = StreamUtil.buffr(StreamUtil.fileInr(f));
