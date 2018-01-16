@@ -2,7 +2,6 @@ package com.dazong.common.cache.redis;
 
 import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
-import com.dazong.common.cache.core.impl.RedisCacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
 import com.dazong.common.cache.redis.domain.Person;
 import org.junit.Test;
@@ -12,17 +11,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.awaitility.Awaitility.await;
+import static junit.framework.TestCase.*;
 
 /**
  * @author: DanielLi
