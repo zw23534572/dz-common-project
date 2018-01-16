@@ -66,6 +66,7 @@
 			<version>${message-platform.version}</version>
 		</dependency>
 		<dependency>
+
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-springboot-pom</artifactId>
 			<version>${dz.pom.version}</version>
