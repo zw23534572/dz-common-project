@@ -8,8 +8,6 @@ import com.dazong.common.cache.core.impl.MemcacheHandler;
 import com.dazong.common.cache.core.impl.RedisCacheHandler;
 import com.dazong.common.cache.exception.CacheException;
 import groovy.lang.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
