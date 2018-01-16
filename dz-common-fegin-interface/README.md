@@ -59,3 +59,14 @@ feignclient.auth.url=http://auth.dazong.com
 @Autowired
 private IAuthService authService;
 ```
+
+#### 5、需要上传文件相关接口添加以下配置
+```
+feignclient.up.serviceId=up
+feignclient.up.url=https://up.dazong.com/upload
+```
+代码就可以注入
+```
+@Autowired
+private IUploadService upService;
+```
