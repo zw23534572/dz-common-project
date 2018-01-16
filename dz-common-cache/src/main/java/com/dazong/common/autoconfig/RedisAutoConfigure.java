@@ -5,7 +5,6 @@ import com.dazong.common.cache.core.impl.RedisCacheHandler;
 import com.dazong.common.cache.serialize.FstObjectSerializer;
 import com.dazong.common.cache.serialize.FstRedisSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -34,14 +33,6 @@ import redis.clients.jedis.JedisPoolConfig;
 @ConditionalOnClass({RedisCacheHandler.class})
 public class RedisAutoConfigure {
 
-    @Value("${spring.redis.host}")
-    private String hostName;
-    @Value("${spring.redis.password}")
-    private String password;
-    @Value("${spring.redis.port}")
-    private Integer port;
-    @Value("${spring.redis.database}")
-    private int database;
 
     @Bean
     @ConditionalOnMissingBean({RedisCacheHandler.class})
@@ -66,10 +57,6 @@ public class RedisAutoConfigure {
     @ConfigurationProperties(prefix = "spring.redis")
     public JedisConnectionFactory getConnectionFactory() {
         JedisConnectionFactory factory = new JedisConnectionFactory();
-        factory.setHostName(hostName);
-        factory.setPassword(password);
-        factory.setPort(port);
-        factory.setDatabase(database);
         JedisPoolConfig config = getRedisConfig();
         factory.setPoolConfig(config);
         return factory;
