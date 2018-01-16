@@ -20,10 +20,12 @@ public class Assert {
 
     protected static Logger logger = LoggerFactory.getLogger(Assert.class);
 
-    private Assert(){}
+    private Assert() {
+    }
 
     /**
      * 判断对象是否为空，为空抛异常
+     *
      * @param o
      */
     public static void isEmpty(Object o) {
@@ -35,6 +37,7 @@ public class Assert {
 
     /**
      * 判断对象是否为空，为空抛自定义异常
+     *
      * @param o
      * @param filedName
      */
@@ -45,15 +48,16 @@ public class Assert {
             throw new BusinessException(CommonStatus.ILLEGAL_PARAM.getCode(), errMsg);
         }
     }
-    
+
     /**
      * 判断是否为空，为空抛异常
+     *
      * @param objs
      */
-    public static void isNotEmpty(Object...objs) {
+    public static void isNotEmpty(Object... objs) {
         for (Object obj : objs) {
-            if(obj == null) {
-                throw new PlatformException(CommonStatus.ILLEGAL_PARAM,String.format("对象不能为空", obj));
+            if (obj == null) {
+                throw new PlatformException(CommonStatus.ILLEGAL_PARAM, "对象不能为空", obj);
             }
         }
     }
@@ -65,7 +69,8 @@ public class Assert {
     }
 
     /**
-     *  判断是否为邮箱，不是抛异常
+     * 判断是否为邮箱，不是抛异常
+     *
      * @param parameter
      */
     public static void isEmail(String parameter) {
@@ -73,7 +78,8 @@ public class Assert {
     }
 
     /**
-     *  判断是否URL，不是抛异常
+     * 判断是否URL，不是抛异常
+     *
      * @param parameter
      */
     public static void isUrl(String parameter) {

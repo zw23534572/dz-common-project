@@ -3,6 +3,9 @@ package com.dazong.common.util.codec;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.StringUtil;
+import com.dazong.common.util.reflect.ClassWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -23,8 +26,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class AesUtil {
 
+    protected static Logger logger = LoggerFactory.getLogger(ClassWrapper.class);
+
     private static final String SECRET_KEY = "^&U2T$E200#A1C%E";
-    private static final String charSet = "UTF-8";
+    private static final String CHAE_SET = "UTF-8";
     private static MessageDigest md;
     private static Lock md5Lock = new ReentrantLock();
 
@@ -40,9 +45,9 @@ public class AesUtil {
     public static String md5RandomString() {
 
         String random = String.valueOf(System.currentTimeMillis()) + String.valueOf(new Random().nextLong());
-        StringBuffer rs = new StringBuffer();
+        StringBuilder rs = new StringBuilder();
         try {
-            byte[] input = random.getBytes(charSet);
+            byte[] input = random.getBytes(CHAE_SET);
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(input);
             byte[] security = md.digest(input);
@@ -51,12 +56,14 @@ public class AesUtil {
                 rs.append(sr.length() == 2 ? sr : "0" + sr);
             }
         } catch (Exception e) {
+            logger.info("MD5 随机数异常：{}", e);
         }
         return rs.toString();
     }
 
     /**
-     *  生成32位md5码
+     * 生成32位md5码
+     *
      * @param encryptStr
      * @return
      */
@@ -65,7 +72,7 @@ public class AesUtil {
         String encrypt;
         try {
             md5 = MessageDigest.getInstance("MD5");
-            byte[] md5Bytes = md5.digest(encryptStr.getBytes(charSet));
+            byte[] md5Bytes = md5.digest(encryptStr.getBytes(CHAE_SET));
             StringBuilder hexValue = new StringBuilder();
             for (int i = 0; i < md5Bytes.length; i++) {
                 int val = ((int) md5Bytes[i]) & 0xff;
@@ -76,7 +83,7 @@ public class AesUtil {
             }
             encrypt = hexValue.toString();
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL,"digest32");
+            throw new PlatformException(e, CommonStatus.FAIL, "digest32");
         }
         return encrypt;
     }
@@ -117,7 +124,7 @@ public class AesUtil {
             }
             return bytesToString(digest, localBase);
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL,"digest");
+            throw new PlatformException(e, CommonStatus.FAIL, "digest");
         }
     }
 
@@ -140,22 +147,22 @@ public class AesUtil {
     }
 
     /**
-     * AesUtil 对称加密
+     * AES 对称加密
      *
      * @param inStr
      * @return
      */
     public static String encrypt(final String inStr) {
-        StringBuffer outStr = new StringBuffer();
+        StringBuilder outStr = new StringBuilder();
         byte[] secretkey = SECRET_KEY.getBytes();
-        SecretKeySpec key = new SecretKeySpec(secretkey, "AesUtil");
+        SecretKeySpec key = new SecretKeySpec(secretkey, "AES");
         byte[] secret = new byte[1024];
         try {
-            Cipher cipher = Cipher.getInstance("AesUtil");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, key);
             secret = cipher.doFinal(inStr.getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new PlatformException(e, CommonStatus.FAIL, "AES 对称加密");
         }
         for (byte b : secret) {
             String sr = Integer.toHexString(b + 128).toUpperCase();
@@ -165,17 +172,17 @@ public class AesUtil {
     }
 
     /**
-     * AesUtil 对称解密
+     * AES 对称解密
      *
      * @param inStr
      * @return
      */
     public static String decrypt(final String inStr) {
         byte[] secretkey = SECRET_KEY.getBytes();
-        SecretKeySpec key = new SecretKeySpec(secretkey, "AesUtil");
+        SecretKeySpec key = new SecretKeySpec(secretkey, "AES");
         byte[] secret = new byte[1024];
         try {
-            Cipher cipher = Cipher.getInstance("AesUtil");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] b = new byte[inStr.length() / 2];
             for (int i = 0; i < inStr.length(); i += 2) {
@@ -183,7 +190,7 @@ public class AesUtil {
             }
             secret = cipher.doFinal(b);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new PlatformException(e, CommonStatus.FAIL, "AES 对称解密");
         }
         return new String(secret);
     }
@@ -191,65 +198,65 @@ public class AesUtil {
     /**
      * 加密
      *
-     * @param _content 需要加密的内容
-     * @param _key     加密密码
-     * @param md5Key   是否对key进行md5加密
-     * @param _iv      加密向量
+     * @param content 需要加密的内容
+     * @param key     加密密码
+     * @param md5Key  是否对key进行md5加密
+     * @param iv      加密向量
      * @return 加密后的字符串
      */
-    public static String encrypt(String _content, String _key, boolean md5Key, String _iv) {
+    public static String encrypt(String content, String key, boolean md5Key, String iv) {
         try {
-            byte[] content = _content.getBytes(charSet);
-            byte[] key = _key.getBytes(charSet);
-            byte[] iv = _iv.getBytes(charSet);
+            byte[] tmpContent = content.getBytes(CHAE_SET);
+            byte[] tmpKey = key.getBytes(CHAE_SET);
+            byte[] tmpIv = iv.getBytes(CHAE_SET);
 
             if (md5Key) {
                 MessageDigest md = MessageDigest.getInstance("MD5");
-                key = md.digest(key);
+                tmpKey = md.digest(tmpKey);
             }
-            SecretKeySpec skeySpec = new SecretKeySpec(key, "AesUtil");
-            Cipher cipher = Cipher.getInstance("AesUtil/CBC/ISO10126Padding"); //"算法/模式/补码方式"
-            IvParameterSpec ivps = new IvParameterSpec(iv);//使用CBC模式，需要一个向量iv，可增加加密算法的强度
+            SecretKeySpec skeySpec = new SecretKeySpec(tmpKey, "AES");
+            Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding"); //"算法/模式/补码方式"
+            IvParameterSpec ivps = new IvParameterSpec(tmpIv);//使用CBC模式，需要一个向量iv，可增加加密算法的强度
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivps);
-            byte[] bytes = cipher.doFinal(content);
+            byte[] bytes = cipher.doFinal(tmpContent);
             return new BASE64Encoder().encode(bytes);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+        } catch (Exception e) {
+            throw new PlatformException(e, CommonStatus.FAIL, "加密");
         }
     }
 
     /**
      * AesUtil 解密
      *
-     * @param _content 需要解密的内容
-     * @param _key     密码
-     * @param md5Key   是否对key进行md5加密
-     * @param _iv      加密的向量
+     * @param content 需要解密的内容
+     * @param key     密码
+     * @param md5Key  是否对key进行md5加密
+     * @param iv      加密的向量
      * @return 解密后内容
      */
-    public static String decrypt(String _content, String _key, boolean md5Key, String _iv) {
+    public static String decrypt(String content, String key, boolean md5Key, String iv) {
         try {
-            if (StringUtil.isBlank(_content) || StringUtil.isBlank(_key) || StringUtil.isBlank(_iv)) {
+            if (StringUtil.isBlank(content) || StringUtil.isBlank(key) || StringUtil.isBlank(iv)) {
                 return "";
             }
-            byte[] content = new BASE64Decoder().decodeBuffer(_content);
-            byte[] key = _key.getBytes(charSet);
-            byte[] iv = _iv.getBytes(charSet);
+            byte[] tmpContent = new BASE64Decoder().decodeBuffer(content);
+            byte[] tmpKey = key.getBytes(CHAE_SET);
+            byte[] tmpIv = iv.getBytes(CHAE_SET);
 
             if (md5Key) {
                 MessageDigest md = MessageDigest.getInstance("MD5");
-                key = md.digest(key);
+                tmpKey = md.digest(tmpKey);
             }
-            SecretKeySpec skeySpec = new SecretKeySpec(key, "AesUtil");
+            SecretKeySpec skeySpec = new SecretKeySpec(tmpKey, "AES");
             //"算法/模式/补码方式"
-            Cipher cipher = Cipher.getInstance("AesUtil/CBC/ISO10126Padding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
             //使用CBC模式，需要一个向量iv，可增加加密算法的强度
-            IvParameterSpec ivps = new IvParameterSpec(iv);
+            IvParameterSpec ivps = new IvParameterSpec(tmpIv);
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivps);
-            byte[] bytes = cipher.doFinal(content);
-            return new String(bytes, charSet);
+            byte[] bytes = cipher.doFinal(tmpContent);
+            return new String(bytes, CHAE_SET);
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL,"decrypt");
+            throw new PlatformException(e, CommonStatus.FAIL, "decrypt");
         }
     }
 

@@ -6,10 +6,10 @@ import org.apache.ibatis.annotations.Param;
 /**
  * @author zhiyuan.wang
  */
-public interface IdempotentDao {
+public interface IdempotentMapper {
 
 	/**
-	 * 如果不存在表，则创建表
+	 * 如果不存在表，则创建表md
 	 */
 	void createTableIfNotExists();
 

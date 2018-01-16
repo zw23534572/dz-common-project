@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.Reader;
 
 /**
- *  @author zisong.wang
+ *  @author
  *  @date 2018/01/12
  */
 public abstract class NutResource {

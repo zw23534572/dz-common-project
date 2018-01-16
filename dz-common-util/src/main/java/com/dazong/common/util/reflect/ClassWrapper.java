@@ -6,6 +6,8 @@ import com.dazong.common.util.CommonUtil;
 import com.dazong.common.util.StringUtil;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -24,6 +26,9 @@ import java.util.regex.Pattern;
  * @since 1.0.0
  */
 public class ClassWrapper<T> {
+
+    protected static Logger logger = LoggerFactory.getLogger(ClassWrapper.class);
+
     public static final String PREFIX_IS = "is";
     private Class<T> klass;
 
@@ -114,7 +119,7 @@ public class ClassWrapper<T> {
             try {
                 return superClass.getDeclaredMethod(methodName, parameterTypes);
             } catch (NoSuchMethodException e) {
-                throw new PlatformException(e, CommonStatus.FAIL, "Fail to getMethod [%s]", klass.getName());
+                logger.info("循环向上转型,获取对象的DeclaredMethod {}",e);
             }
         }
         return null;
@@ -294,7 +299,7 @@ public class ClassWrapper<T> {
      * @return 方法
      * @throws NoSuchMethodException 没找到 Setter
      */
-    public Method getSetter(String fieldName, Class<?> paramType) throws NoSuchMethodException {
+    public Method getSetter(String fieldName, Class<?> paramType) {
         try {
             String setterName = getSetterName(fieldName);
             Method varMethod = getMethodByName(setterName, paramType);
@@ -315,7 +320,7 @@ public class ClassWrapper<T> {
             }
             throw new PlatformException(CommonStatus.FAIL, "根据一个字段名了字段类型获取 Setter");
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL, "Fail to find setter for [%s]->[%s(%s)]", klass.getName(), fieldName, paramType.getName());
+            throw new PlatformException(e, CommonStatus.FAIL, "Fail to find setter for [%s]->[%s(%s)]", klass.getName(), fieldName, null == paramType ? paramType : paramType.getName());
         }
 
     }
@@ -813,6 +818,7 @@ public class ClassWrapper<T> {
         try {
             return ClassWrapper.wrap(type).getPrimitiveWrapClass() == klass;
         } catch (Exception e) {
+            logger.info("判断传进来的类型是否是原型包装类型的一种异常，返回false。 {}", e);
         }
         return false;
     }
@@ -828,7 +834,8 @@ public class ClassWrapper<T> {
         if (type.isAssignableFrom(klass)) {
             return true;
         }
-        boolean flag = klass.isPrimitive() && type.isPrimitive() && this.isPrimitiveNumber() && ClassWrapper.wrap(type).isPrimitiveNumber();;
+        boolean flag = klass.isPrimitive() && type.isPrimitive() && this.isPrimitiveNumber() && ClassWrapper.wrap(type).isPrimitiveNumber();
+        ;
         if (flag) {
             return true;
         }
@@ -836,7 +843,7 @@ public class ClassWrapper<T> {
         try {
             return ClassWrapper.wrap(type).getPrimitiveWrapClass() == this.getPrimitiveWrapClass();
         } catch (Exception e) {
-
+            logger.info("判断当前对象是否能直接转换到目标类型异常，返回false。 {}", e);
         }
         return false;
     }
@@ -885,6 +892,7 @@ public class ClassWrapper<T> {
             return new Type[0];
         }
         Type superclass = klass.getGenericSuperclass();
+      
         if (superclass instanceof ParameterizedType) {
             return ((ParameterizedType) superclass).getActualTypeArguments();
         }

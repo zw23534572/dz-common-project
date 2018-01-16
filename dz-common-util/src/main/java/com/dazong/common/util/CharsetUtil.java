@@ -18,10 +18,10 @@ public class CharsetUtil {
 
     }
 
-    public static final String ISO_8859_1 = "ISO-8859-1";
-    public static final String GBK = "GBK";
-    public static final String GB2312 = "GB2312";
-    public static final String UTF8 = "UTF-8";
+    public static final String CODING_ISO_8859_1 = "ISO-8859-1";
+    public static final String CODING_GBK = "GBK";
+    public static final String CODING_GB2312 = "GB2312";
+    public static final String CODING_UTF8 = "UTF-8";
 
 
     public static String defaultEncoding() {
@@ -41,19 +41,19 @@ public class CharsetUtil {
     }
 
     public static String utf8(CharSequence str) {
-        return encode(str, UTF8);
+        return encode(str, CODING_UTF8);
     }
 
     public static String iso8859(CharSequence str) {
-        return encode(str, ISO_8859_1);
+        return encode(str, CODING_ISO_8859_1);
     }
 
     public static String gbk(CharSequence str) {
-        return encode(str, GBK);
+        return encode(str, CODING_GBK);
     }
 
     public static String gb2312(CharSequence str) {
-        return encode(str, GB2312);
+        return encode(str, CODING_GB2312);
     }
 
     public String get(String str) {
@@ -67,10 +67,6 @@ public class CharsetUtil {
         return str;
     }
 
-    public static final Charset CHARSET_UTF8 = Charset.forName("UTF-8");
-
-    public static void main(String[] args) {
-        System.out.println(CharsetUtil.utf8("你好"));
-    }
+    public static final Charset CHARSET_UTF8 = Charset.forName(CODING_UTF8);
 
 }

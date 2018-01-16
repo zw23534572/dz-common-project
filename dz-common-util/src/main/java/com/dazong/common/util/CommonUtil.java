@@ -41,7 +41,7 @@ public class CommonUtil {
      * @return
      */
     public static <T> T getFirst(List<T> list) {
-        if (isNotEmpty(list)) {
+        if (!isEmpty(list)) {
             return list.get(0);
         }
         return null;
@@ -162,7 +162,7 @@ public class CommonUtil {
      * @return
      */
     public static <K, V> List<V> valuesOfMap(Map<K, V> map) {
-        if (isNotEmpty(map)) {
+        if (!isEmpty(map)) {
             List<V> list = arrayList();
             for (Entry<K, V> entry : map.entrySet()) {
                 list.add(entry.getValue());
@@ -170,16 +170,6 @@ public class CommonUtil {
             return list;
         }
         return arrayList();
-    }
-
-    /**
-     * 判断某个map是否不为空
-     *
-     * @param m
-     * @return
-     */
-    public static boolean isNotEmpty(Map m) {
-        return !isEmpty(m);
     }
 
     /**
@@ -370,7 +360,7 @@ public class CommonUtil {
      */
     public static <T> T[] removeIfEmpty(T[] arys) {
         if (isEmpty(arys)) {
-            return null;
+            return (T[])new Object[0];
         }
         return toArray(removeIfEmpty(asArrayList(arys)));
     }
@@ -385,11 +375,11 @@ public class CommonUtil {
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(Collection<T> c) {
         if (isEmpty(c)) {
-            return null;
+            return (T[])new Object[0];
         }
         T t = first(c);
         if (isEmpty(t)) {
-            return null;
+            return (T[])new Object[0];
         }
         T[] tArray = (T[]) Array.newInstance(t.getClass(), c.size());
         c.toArray(tArray);

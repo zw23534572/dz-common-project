@@ -3,6 +3,12 @@ package com.dazong.example;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.dazong.common.ApplicationInfo;
 import com.dazong.common.annotation.EnableValiadtor;
+<<<<<<< HEAD:example/example-web/src/main/java/com/dazong/example/web/web/web/StartupServer.java
+import com.dazong.common.idempotent.EnableIdempotent;
+import com.dazong.common.trans.annotation.EnableAutoRetry;
+import com.dazong.common.web.monitor.SimpleMonitorServlet;
+=======
+>>>>>>> 4a90878a454f16bbbfe6b9ada41cb83f8a24d424:example/example-web/src/main/java/com/dazong/example/web/StartupServer.java
 
 import com.dazong.common.support.monitor.SimpleMonitorServlet;
 import org.mybatis.spring.annotation.MapperScan;
@@ -28,6 +34,7 @@ import javax.annotation.PreDestroy;
 @ComponentScan({ "com.dazong.example"})
 @MapperScan("com.dazong.example.dao.mapper*")
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
+@EnableIdempotent
 public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);

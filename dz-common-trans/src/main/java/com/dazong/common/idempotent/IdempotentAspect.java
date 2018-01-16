@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.caucho.hessian.io.Hessian2Input;
 import com.caucho.hessian.io.Hessian2Output;
 import com.caucho.hessian.io.SerializerFactory;
-import com.dazong.common.idempotent.dao.IdempotentDao;
+import com.dazong.common.idempotent.dao.IdempotentMapper;
 import com.dazong.common.idempotent.domain.Idempotent;
 import com.dazong.common.idempotent.exception.IdempotentErrors;
 import com.google.common.base.Strings;
@@ -41,7 +41,7 @@ public class IdempotentAspect {
     private static final String STATUS_FAIL = "FAIL";
 
     @Autowired
-    IdempotentDao idempotentDao;
+    IdempotentMapper idempotentMapper;
 
 
     @Around("@annotation(com.dazong.common.idempotent.Idempotent)")
@@ -60,7 +60,7 @@ public class IdempotentAspect {
             logger.error("IdempotentAspect - biz execute error...", e);
             String errMsg = Strings.nullToEmpty(e.getMessage());
             String remark = "业务失败:" + (errMsg.length() > 120 ? errMsg.substring(0, 120) : errMsg);
-            idempotentDao.updateStatus(idempotentId, STATUS_FAIL, STATUS_PROCESSING, null, null, null, remark);
+            idempotentMapper.updateStatus(idempotentId, STATUS_FAIL, STATUS_PROCESSING, null, null, null, remark);
             throw e;
         }
     }
@@ -73,7 +73,7 @@ public class IdempotentAspect {
     private void serializeResult(Object rlt, String idempotentId) {
         // 返回值为null || void方法
         if(rlt == null){
-            idempotentDao.updateStatus(idempotentId, STATUS_SUCCESS, STATUS_PROCESSING, null, null, null, null);
+            idempotentMapper.updateStatus(idempotentId, STATUS_SUCCESS, STATUS_PROCESSING, null, null, null, null);
             return;
         }
 
@@ -87,7 +87,7 @@ public class IdempotentAspect {
             throw IdempotentErrors.IDENPOTENT_ERROR.exp(e);
         }
         try {
-            idempotentDao.updateStatus(idempotentId, STATUS_SUCCESS, STATUS_PROCESSING, JSON.toJSONString(rlt), os.toByteArray(), rlt.getClass().getName(), null);
+            idempotentMapper.updateStatus(idempotentId, STATUS_SUCCESS, STATUS_PROCESSING, JSON.toJSONString(rlt), os.toByteArray(), rlt.getClass().getName(), null);
         } finally {
             try {
                 os.close();
@@ -99,14 +99,14 @@ public class IdempotentAspect {
 
     private ResultHolder getLastSuccessResult(String idempotentId) {
         logger.info("IdempotentAspect start... idempotentId={}", idempotentId);
-        Idempotent idempotent = idempotentDao.selectOne(idempotentId);
+        Idempotent idempotent = idempotentMapper.selectOne(idempotentId);
         logger.info("IdempotentAspect - last time idempotent is : {}", JSON.toJSONString(idempotent));
         // 查幂等记录是否存在，不存在就插入
         if (idempotent == null) {
             idempotent = buildIdempotent(idempotentId);
             try {
                 // 幂等的接口，在并发时，同时插入幂等记录时，只能让一个成功。（唯一约束来保证）
-                idempotentDao.add(idempotent);
+                idempotentMapper.add(idempotent);
             } catch (DuplicateKeyException e) {
                 throw IdempotentErrors.OTHER_THREAD_PROCESSING.exp();
             }
@@ -122,7 +122,7 @@ public class IdempotentAspect {
         // 前一次失败，这一次继续重做
         if (STATUS_FAIL.equals(idempotent.getStatus())) {
             logger.warn("IdempotentAspect - biz excute fail last time, continue executing origin origin method!");
-            int count = idempotentDao.updateStatus(idempotentId,
+            int count = idempotentMapper.updateStatus(idempotentId,
                     STATUS_PROCESSING, STATUS_FAIL, null, null, null, null);
             if (count != 1) {
                 logger.error("IdempotentAspect - update status error, update count={}", count);
