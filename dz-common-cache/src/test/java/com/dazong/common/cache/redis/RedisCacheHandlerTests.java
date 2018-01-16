@@ -24,7 +24,7 @@ import static junit.framework.TestCase.*;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/META-INF/dz-common-cache-test.xml")
-public class RedisCacheHandlerTest {
+public class RedisCacheHandlerTests {
 
     @Autowired
     CacheFactory cacheFactory;
@@ -45,7 +45,7 @@ public class RedisCacheHandlerTest {
         String valueOri = "daniel";
 
         cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.ONE_MILL_SECOND);
-        for (int i = 0; i < 10000; ++i);
+        for (int i = 0; i < 100000; ++i);
 
         String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
 
@@ -74,7 +74,7 @@ public class RedisCacheHandlerTest {
         personOri.setAge(18);
 
         cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri, IExpire.ONE_MILL_SECOND);
-        for (int i = 0; i < 10000; ++i);
+        for (int i = 0; i < 100000; ++i);
         Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
 
         assertEquals (valueTemp, null);
