@@ -11,6 +11,7 @@ import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class CacheFactory extends ApplicationObjectSupport {
     @Autowired
     LocalCacheHandler localCacheHandler;
 
+    ICacheHandler cacheHandler;
     /**
      * 获取缓存处理器
      * @param cacheType 缓存枚举配置
@@ -62,27 +64,22 @@ public class CacheFactory extends ApplicationObjectSupport {
     }
 
     /**
-     * 获取默认缓存处理器，根据自动注入缓存配置Bean的顺序来进行选择,由用户自定义
-     * 最先注入的缓存bean则为默认缓存处理器
+     * 获取默认缓存处理器
      * @return
      */
     public ICacheHandler getDefaultCacheHandler(){
         String[] arrayBean = getApplicationContext().getBeanNamesForAnnotation(Configuration.class);
-
         if(arrayBean.length == 0){
             throw new CacheException("请按照使用说明配置项目");
         }
-        String beanFirst = arrayBean[0];
-        if(beanFirst.equalsIgnoreCase(CacheType.CACHE_REDIS.getTypeDesc())){
-            return getCacheHandler(CacheType.CACHE_REDIS);
+        // 设置默认处理器
+        if(null == cacheHandler){
+            cacheHandler = redisCacheHandler;
+            logger.info("设置默认缓存处理器");
         }
-        if(beanFirst.equalsIgnoreCase(CacheType.CACHE_MEMCACHE.getTypeDesc())){
-            return getCacheHandler(CacheType.CACHE_MEMCACHE);
-        }
-        if(beanFirst.equalsIgnoreCase(CacheType.CACHE_LOCALCACHE.getTypeDesc())){
-            return getCacheHandler(CacheType.CACHE_LOCALCACHE);
-        }
-        String msgException = "暂时不支持你配置的缓存框架";
-        throw new CacheException(msgException);
+        return cacheHandler;
+    }
+    public  void setDefaultCacheHandler(ICacheHandler cacheHandler){
+        this.cacheHandler = cacheHandler;
     }
 }

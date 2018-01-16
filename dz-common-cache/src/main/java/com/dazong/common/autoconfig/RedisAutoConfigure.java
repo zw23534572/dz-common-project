@@ -29,7 +29,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * public class RedisAutoConfigure extends AbstractAutoConfigure
  **/
 @Configuration
-@ImportResource("/META-INF/dz-common-cache.xml")
+@ImportResource("classpath:/META-INF/dz-common-cache.xml")
 @ConditionalOnClass({RedisCacheHandler.class})
 public class RedisAutoConfigure {
 

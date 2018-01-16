@@ -2,6 +2,7 @@ package com.dazong.example;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.dazong.common.ApplicationInfo;
+import com.dazong.common.annotation.EnableDzWeb;
 import com.dazong.common.annotation.EnableValiadtor;
 
 import com.dazong.common.support.monitor.SimpleMonitorServlet;
@@ -27,6 +28,7 @@ import javax.annotation.PreDestroy;
 @ImportResource(locations = { "classpath:application-bean.xml" })
 @ComponentScan({ "com.dazong.example"})
 @MapperScan("com.dazong.example.dao.mapper*")
+@EnableDzWeb
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
 public class StartupServer {
 

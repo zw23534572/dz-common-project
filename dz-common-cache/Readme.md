@@ -23,6 +23,22 @@
   <bean id="redisAutoConfigure" class="com.dazong.common.autoconfig.RedisAutoConfigure"></bean>
   ```
   
+  
+2、在properties中加入redis配置属性
+  ```Java
+  #Redis 配置
+  ############################################################################################
+  # 单点配置
+  spring.redis.host=172.16.21.20
+  # 集群配置
+  #spring.redis.cluster.nodes=172.16.21.20:7000,172.16.21.20:7001,172.16.21.20:7002,172.16.21.20:7003,172.16.21.20:7004,172.16.21.20:7005
+  #通用配置
+  spring.redis.port=6379
+  spring.redis.password=
+  #Redis数据库索引(默认为0)
+  spring.redis.database=0
+  ############################################################################################
+  ```
 
 4、使用方式
 ```java
