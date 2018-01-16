@@ -33,17 +33,9 @@ public enum CacheType {
         return type;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
 
     public String getTypeDesc() {
         return typeDesc;
-    }
-
-    public void setTypeDesc(String typeDesc) {
-        this.typeDesc = typeDesc;
     }
 
 }

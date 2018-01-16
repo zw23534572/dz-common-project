@@ -12,16 +12,13 @@ import org.springframework.data.redis.serializer.SerializationException;
 public class FstRedisSerializer implements RedisSerializer {
     private static final FSTConfiguration FST = FSTConfiguration.createDefaultConfiguration();
 
-    public FstRedisSerializer() {
-    }
-
     @Override
-    public byte[] serialize(Object o) throws SerializationException {
+    public byte[] serialize(Object o)  {
         return FST.asByteArray(o);
     }
 
     @Override
-    public Object deserialize(byte[] bytes) throws SerializationException {
+    public Object deserialize(byte[] bytes)  {
         return FST.asObject(bytes);
     }
 }

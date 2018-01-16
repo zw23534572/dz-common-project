@@ -11,13 +11,9 @@ import groovy.lang.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: DanielLi
@@ -27,7 +23,7 @@ import java.util.List;
 @Singleton
 @Service
 public class CacheFactory extends ApplicationObjectSupport {
-    private static final Logger logger = LoggerFactory.getLogger(CacheFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CacheFactory.class);
 
     @Autowired
     RedisCacheHandler redisCacheHandler;
@@ -45,22 +41,22 @@ public class CacheFactory extends ApplicationObjectSupport {
      * @return
      */
     public ICacheHandler getCacheHandler(CacheType cacheType){
-        AbstractCacheHandler cacheHandler = null;
+        AbstractCacheHandler cacheHandlerTemp = null;
         String msgException = "请选择需要使用的缓存框架";
         switch (cacheType){
             case CACHE_REDIS:
-                cacheHandler = redisCacheHandler;
+                cacheHandlerTemp = redisCacheHandler;
                 break;
             case CACHE_MEMCACHE:
-                cacheHandler = memcacheHandler;
+                cacheHandlerTemp = memcacheHandler;
                 break;
             case CACHE_LOCALCACHE:
-                cacheHandler = localCacheHandler;
+                cacheHandlerTemp = localCacheHandler;
                 break;
             default:
                 throw new CacheException(msgException);
         }
-        return cacheHandler;
+        return cacheHandlerTemp;
     }
 
     /**
@@ -75,7 +71,7 @@ public class CacheFactory extends ApplicationObjectSupport {
         // 设置默认处理器
         if(null == cacheHandler){
             cacheHandler = redisCacheHandler;
-            logger.info("设置默认缓存处理器");
+            LOGGER.info("设置默认缓存处理器");
         }
         return cacheHandler;
     }

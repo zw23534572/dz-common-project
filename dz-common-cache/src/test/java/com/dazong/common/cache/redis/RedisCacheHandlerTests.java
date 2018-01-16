@@ -12,13 +12,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.awaitility.Awaitility.await;
 
 /**
  * @author: DanielLi
@@ -44,15 +48,12 @@ public class RedisCacheHandlerTests{
     }
     @Test
     public void saveStringExpire() {
-        String keyTemp = "name";
+        final String keyTemp = "name";
         String valueOri = "daniel";
 
-        cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.ONE_SEC);
-        try {
-            Thread.sleep(IExpire.FIVE_SEC);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.ONE_MILL_SECOND);
+        for (int i = 0; i < 10000; ++i);
+
         String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
 
         assert ("".equals(valueResult));

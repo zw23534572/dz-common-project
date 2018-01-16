@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +24,7 @@ import java.util.*;
 public class RedisCacheHandler extends AbstractCacheHandler implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisCacheHandler.class);
+    public static final String isNullValueWarn = "获取到的value值为null";
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
@@ -56,7 +56,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 redisConnection.pSetEx(key.getBytes(),expireMilliseconds, str.getBytes());
                 return true;
             }
@@ -76,7 +76,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 redisConnection.pSetEx(key.getBytes(), expireMilliseconds, objectSerializer.serialize(object));
                 return true;
             }
@@ -102,7 +102,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 redisConnection.hMSet(key.getBytes(), map);
                 redisConnection.pExpire(key.getBytes(), expireMilliseconds);
                 return true;
@@ -125,7 +125,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 redisConnection.hSet(key.getBytes(), itemKey.getBytes(),objectSerializer.serialize(value));
                 redisConnection.pExpire(key.getBytes(), expireMilliseconds);
                 return true;
@@ -146,7 +146,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 for (Iterator iter = data.iterator(); iter.hasNext();) {
                     redisConnection.lPush(key.getBytes(), objectSerializer.serialize(iter.next()));
                     redisConnection.pExpire(key.getBytes(), expireMilliseconds);
@@ -170,7 +170,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         }
             redisTemplate.execute(new RedisCallback<Boolean>() {
                 @Override
-                public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+                public Boolean doInRedis(RedisConnection redisConnection){
                     redisConnection.lPush(key.getBytes(), objectSerializer.serialize(object));
                     redisConnection.pExpire(key.getBytes(), expireMilliseconds);
                     return true;
@@ -187,7 +187,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 redisConnection.del(key.getBytes());
                 return true;
             }
@@ -199,7 +199,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection){
                 redisConnection.hDel(key.getBytes(),itemKey.getBytes());
                 return true;
             }
@@ -216,10 +216,10 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         return redisTemplate.execute(new RedisCallback<String>() {
             @Override
-            public String doInRedis(RedisConnection connection) throws DataAccessException {
+            public String doInRedis(RedisConnection connection){
                 byte[] bytes = connection.get(key.getBytes());
                 if(null == bytes){
-                    logger.info("获取到的value值为null");
+                    logger.info(isNullValueWarn);
                     return "";
                 }
                 return new String(bytes);
@@ -239,10 +239,10 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         return redisTemplate.execute(new RedisCallback<T>() {
             @Override
-            public T doInRedis(RedisConnection connection) throws DataAccessException {
+            public T doInRedis(RedisConnection connection){
                 byte[] bytes = connection.get(key.getBytes());
                 if(null == bytes){
-                    logger.info("获取到的value值为null");
+                    logger.info(isNullValueWarn);
                     return null;
                 }
                 return objectSerializer.deserialize(bytes,clazz);
@@ -257,10 +257,10 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notNull(type);
         return redisTemplate.execute(new RedisCallback<T>() {
             @Override
-            public T doInRedis(RedisConnection connection) throws DataAccessException {
+            public T doInRedis(RedisConnection connection){
                 byte[] value = connection.hGet(key.getBytes(),itemKey.getBytes());
                 if(null == value){
-                    logger.info("获取到的value值为null");
+                    logger.info(isNullValueWarn);
                     return null;
                 }
                 return objectSerializer.deserialize(value,type);
@@ -280,10 +280,10 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         return redisTemplate.execute(new RedisCallback<Map<String, T>>() {
             @Override
-            public Map<String, T> doInRedis(RedisConnection connection) throws DataAccessException {
+            public Map<String, T> doInRedis(RedisConnection connection){
                 Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
                 if(value == null || value.isEmpty()){
-                    logger.info("获取到的value值为null");
+                    logger.info(isNullValueWarn);
                     return null;
                 }
                 Map<String,T> map = new HashMap<>(10);
@@ -310,11 +310,11 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notNull(type);
         return redisTemplate.execute(new RedisCallback<List<T>>() {
             @Override
-            public List<T> doInRedis(RedisConnection connection) throws DataAccessException {
+            public List<T> doInRedis(RedisConnection connection){
                 Long len = connection.lLen(key.getBytes());
                 if(len <= 0){
-                    logger.info("获取到的value值为null");
-                    return null;
+                    logger.info(isNullValueWarn);
+                    return new ArrayList<>();
                 }
                 List<byte[]> list  = connection.lRange(key.getBytes(), 0L, len);
                 List<T> targetlist = new ArrayList<>(len.intValue());

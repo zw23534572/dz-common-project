@@ -28,13 +28,12 @@ public class RedisController {
      */
     @RequestMapping("/set")
     @ResponseBody
-    public List<String> testSetList() {
+    public void testSetList() {
         List<String> stringList = new ArrayList<>();
         String key = "demo";
         stringList.add("hello");
         stringList.add("world");
         cacheFactory.getDefaultCacheHandler().saveList(key, stringList, IExpire.FIVE_MIN);
-        return stringList;
     }
 
     /**
@@ -44,7 +43,5 @@ public class RedisController {
     @ResponseBody
     public List<String> testGetList() {
         String key = "demo";
-        List<String> stringList = cacheFactory.getDefaultCacheHandler().getList(key,String.class);
-        return stringList;
-    }
+        return cacheFactory.getDefaultCacheHandler().getList(key,String.class);
 }

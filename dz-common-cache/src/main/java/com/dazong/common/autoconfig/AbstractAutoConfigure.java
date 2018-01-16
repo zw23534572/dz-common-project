@@ -7,8 +7,9 @@ import org.springframework.context.annotation.ImportResource;
  * @author: DanielLi
  * @date: 2018/1/12
  * @description:该类目前无法用
+ * @deprecated :该类目前无法用
  */
-@Deprecated()
+@Deprecated
 @Configuration
 @ImportResource("/META-INF/dz-common-cache.xml")
 public  class AbstractAutoConfigure{

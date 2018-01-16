@@ -13,7 +13,8 @@ public interface ICacheHandler {
     /**
      * 保存字符串
      * @param key
-     * @param str
+     * @param value
+     * @param expireMilliseconds
      */
     public void saveString(final String key, final String value, final int expireMilliseconds) ;
 
@@ -21,6 +22,7 @@ public interface ICacheHandler {
      * 保存对象
      * @param key
      * @param object
+     * @param expireMilliseconds
      */
     public void saveObject(final String key, final Object object, final int expireMilliseconds) ;
 
@@ -28,6 +30,7 @@ public interface ICacheHandler {
      * 保存Map对象
      * @param key
      * @param data
+     * @param expireMilliseconds
      */
     public void saveMap(final String key,final Map<String, ?> data, final int expireMilliseconds);
 
@@ -36,6 +39,7 @@ public interface ICacheHandler {
      * @param key
      * @param itemKey
      * @param value
+     * @param expireMilliseconds
      */
     public void saveMapItem(final String key,final String itemKey,final Object value, final int expireMilliseconds);
 
@@ -43,6 +47,7 @@ public interface ICacheHandler {
      * 保存List
      * @param key
      * @param data
+     * @param expireMilliseconds
      */
     public void saveList(final String key,final List data, final int expireMilliseconds);
 
@@ -50,6 +55,7 @@ public interface ICacheHandler {
      * 保存List
      * @param key
      * @param object
+     * @param expireMilliseconds
      */
     public void saveListItem(final String key,final Object object, final int expireMilliseconds);
 

@@ -2,6 +2,7 @@ package com.dazong.common.cache.core.impl;
 
 import com.dazong.common.cache.core.ICacheHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -73,6 +74,6 @@ public abstract class AbstractCacheHandler implements ICacheHandler {
 
     @Override
     public <T> List<T> getList(String key, Class<T> type) {
-        return null;
+        return new ArrayList<T>();
     }
 }

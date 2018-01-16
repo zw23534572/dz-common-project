@@ -1,6 +1,5 @@
 package com.dazong.common.cache.exception;
 
-import com.dazong.common.cache.manager.CacheFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

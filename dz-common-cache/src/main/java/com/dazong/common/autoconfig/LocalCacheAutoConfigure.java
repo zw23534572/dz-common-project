@@ -13,5 +13,5 @@ import org.springframework.context.annotation.ImportResource;
 @Configuration
 @ImportResource("/META-INF/dz-common-cache.xml")
 @ConditionalOnClass({LocalCacheHandler.class})
-public class LocalCacheAutoConfigure extends AbstractAutoConfigure{
+public class LocalCacheAutoConfigure{
 }
