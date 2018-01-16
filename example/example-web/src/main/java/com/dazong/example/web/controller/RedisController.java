@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 public class RedisController {
 
-
     @Autowired
     CacheFactory cacheFactory;
 
@@ -43,5 +42,6 @@ public class RedisController {
     @ResponseBody
     public List<String> testGetList() {
         String key = "demo";
-        return cacheFactory.getDefaultCacheHandler().getList(key,String.class);
+        return cacheFactory.getDefaultCacheHandler().getList(key, String.class);
+    }
 }
