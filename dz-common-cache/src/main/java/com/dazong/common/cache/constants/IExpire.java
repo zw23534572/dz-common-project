@@ -7,35 +7,38 @@ package com.dazong.common.cache.constants;
  */
 public final class IExpire {
 
-    public static int EXPIRE_MAX = Integer.MAX_VALUE;
+    private IExpire(){
 
-    public static int ONE_MILL_SECOND = 1;
+    }
+    public static final int EXPIRE_MAX = Integer.MAX_VALUE;
 
-    public static int ONE_SEC = 1000 * ONE_MILL_SECOND;
+    public static final int ONE_MILL_SECOND = 1;
 
-    public static int FIVE_SEC = 5 * ONE_SEC;
+    public static final int ONE_SEC = 1000 * ONE_MILL_SECOND;
 
-    public static int TEN_SEC = 2 * FIVE_SEC;
+    public static final int FIVE_SEC = 5 * ONE_SEC;
 
-    public static int ONE_MIN = 6 * TEN_SEC;
+    public static final int TEN_SEC = 2 * FIVE_SEC;
 
-    public static int FIVE_MIN = 5 * ONE_MIN;
+    public static final int ONE_MIN = 6 * TEN_SEC;
 
-    public static int TEN_MIN = 2 * FIVE_MIN;
+    public static final int FIVE_MIN = 5 * ONE_MIN;
 
-    public static int HALF_HOUR = 30 * TEN_MIN;
+    public static final int TEN_MIN = 2 * FIVE_MIN;
 
-    public static int ONE_HOUR = 2 * HALF_HOUR;
+    public static final int HALF_HOUR = 30 * TEN_MIN;
 
-    public static int TWO_HOUR = 2 * ONE_HOUR;
+    public static final int ONE_HOUR = 2 * HALF_HOUR;
 
-    public static int SIX_HOUR = 3 * TWO_HOUR;
+    public static final int TWO_HOUR = 2 * ONE_HOUR;
 
-    public static int TWELVE_HOUR = 2 * SIX_HOUR;
+    public static final int SIX_HOUR = 3 * TWO_HOUR;
 
-    public static int ONE_DAY = 2 * TWELVE_HOUR;
+    public static final int TWELVE_HOUR = 2 * SIX_HOUR;
 
-    public static int TWO_DAY = 2 * ONE_DAY;
+    public static final int ONE_DAY = 2 * TWELVE_HOUR;
 
-    public static int ONE_WEEK = 7 * ONE_DAY;
+    public static final int TWO_DAY = 2 * ONE_DAY;
+
+    public static final int ONE_WEEK = 7 * ONE_DAY;
 }

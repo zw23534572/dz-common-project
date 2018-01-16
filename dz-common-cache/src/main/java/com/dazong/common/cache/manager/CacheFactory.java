@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 @Singleton
 @Service
 public class CacheFactory extends ApplicationObjectSupport {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CacheFactory.class);
 
     @Autowired
     RedisCacheHandler redisCacheHandler;
@@ -71,7 +70,6 @@ public class CacheFactory extends ApplicationObjectSupport {
         // 设置默认处理器
         if(null == cacheHandler){
             cacheHandler = redisCacheHandler;
-            LOGGER.info("设置默认缓存处理器");
         }
         return cacheHandler;
     }

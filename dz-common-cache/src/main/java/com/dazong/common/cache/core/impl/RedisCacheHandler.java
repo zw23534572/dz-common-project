@@ -24,7 +24,7 @@ import java.util.*;
 public class RedisCacheHandler extends AbstractCacheHandler implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisCacheHandler.class);
-    public static final String isNullValueWarn = "获取到的value值为null";
+    public static final String IS_NULL_VALUE_WARN = "获取到的value值为null";
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
@@ -219,7 +219,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             public String doInRedis(RedisConnection connection){
                 byte[] bytes = connection.get(key.getBytes());
                 if(null == bytes){
-                    logger.info(isNullValueWarn);
+                    logger.info(IS_NULL_VALUE_WARN);
                     return "";
                 }
                 return new String(bytes);
@@ -242,7 +242,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             public T doInRedis(RedisConnection connection){
                 byte[] bytes = connection.get(key.getBytes());
                 if(null == bytes){
-                    logger.info(isNullValueWarn);
+                    logger.info(IS_NULL_VALUE_WARN);
                     return null;
                 }
                 return objectSerializer.deserialize(bytes,clazz);
@@ -260,7 +260,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             public T doInRedis(RedisConnection connection){
                 byte[] value = connection.hGet(key.getBytes(),itemKey.getBytes());
                 if(null == value){
-                    logger.info(isNullValueWarn);
+                    logger.info(IS_NULL_VALUE_WARN);
                     return null;
                 }
                 return objectSerializer.deserialize(value,type);
@@ -283,7 +283,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             public Map<String, T> doInRedis(RedisConnection connection){
                 Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
                 if(value == null || value.isEmpty()){
-                    logger.info(isNullValueWarn);
+                    logger.info(IS_NULL_VALUE_WARN);
                     return null;
                 }
                 Map<String,T> map = new HashMap<>(10);
@@ -313,7 +313,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             public List<T> doInRedis(RedisConnection connection){
                 Long len = connection.lLen(key.getBytes());
                 if(len <= 0){
-                    logger.info(isNullValueWarn);
+                    logger.info(IS_NULL_VALUE_WARN);
                     return new ArrayList<>();
                 }
                 List<byte[]> list  = connection.lRange(key.getBytes(), 0L, len);

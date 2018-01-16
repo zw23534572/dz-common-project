@@ -74,6 +74,6 @@ public abstract class AbstractCacheHandler implements ICacheHandler {
 
     @Override
     public <T> List<T> getList(String key, Class<T> type) {
-        return new ArrayList<T>();
+        return new ArrayList<>();
     }
 }
