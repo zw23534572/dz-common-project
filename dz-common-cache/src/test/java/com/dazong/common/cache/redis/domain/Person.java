@@ -30,6 +30,9 @@ public class Person implements Serializable{
 
     @Override
     public boolean equals(Object obj) {
+        if(null == obj){
+            return false;
+        }
         Person tmp = (Person) obj;
         return this.name.equals(tmp.name) &&
                 this.age == tmp.age;
