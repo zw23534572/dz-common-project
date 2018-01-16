@@ -1,14 +1,14 @@
 package com.dazong.example.service.impl;
 
+
+import com.dazong.common.feign.client.dto.response.UserInfo;
 import com.dazong.common.idempotent.Idempotent;
+import com.dazong.common.resp.DataResponse;
 import com.dazong.common.trans.annotation.AutoRetry;
 import com.dazong.example.service.UserService;
 import com.dazong.example.service.common.impl.HttpClientServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.dazong.common.feign.client.dto.response.UserInfo;
-import com.dazong.common.resp.DataResponse;
 
 /**
  * 
