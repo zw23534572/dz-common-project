@@ -18,7 +18,7 @@ public class ChartsetUtilTest {
     public void md5UtilTest(){
 		System.out.println(CharsetUtil.utf8("你好"));
 		String[] obj = {};
-		System.out.println(CommonUtil.removeIfEmpty2(obj));
+		System.out.println(CommonUtil.removeIfEmpty(obj));
     }
 
 }

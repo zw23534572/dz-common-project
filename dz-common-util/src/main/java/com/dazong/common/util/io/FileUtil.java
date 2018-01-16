@@ -664,10 +664,8 @@ public class FileUtil {
         if (!src.isDirectory()) {
             throw new IOException(src.getAbsolutePath() + " should be a directory!");
         }
-        if (!target.exists()) {
-            if (!makeDir(target)) {
+        if (!target.exists() && !makeDir(target)) {
                 return false;
-            }
         }
         boolean re = true;
         File[] files = src.listFiles();
