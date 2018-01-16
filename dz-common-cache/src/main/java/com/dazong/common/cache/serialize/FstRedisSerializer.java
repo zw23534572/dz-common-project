@@ -2,7 +2,6 @@ package com.dazong.common.cache.serialize;
 
 import org.nustaq.serialization.FSTConfiguration;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.SerializationException;
 
 /**
  * @author: DanielLi

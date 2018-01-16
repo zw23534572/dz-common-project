@@ -80,8 +80,8 @@ public class RedisCacheHandlerTests{
         personOri.setName("daniel");
         personOri.setAge(18);
 
-        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri, IExpire.ONE_SEC);
-        Thread.sleep(IExpire.FIVE_SEC);
+        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri, IExpire.ONE_MILL_SECOND);
+        for (int i = 0; i < 10000; ++i);
         Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
 
         assertEquals (valueTemp, null);
