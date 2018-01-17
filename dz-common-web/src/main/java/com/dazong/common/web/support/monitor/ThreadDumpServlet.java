@@ -33,21 +33,20 @@ public class ThreadDumpServlet extends HttpServlet {
         ServerInfo serverInfo = new ServerInfo();
 
         //获取内存信息
-        if ("1".equals(type) || "all".equals(type)) {
+        if (type.contains("1") || "all".equals(type)) {
             serverInfo.setJvmArgs(ManagementFactory.getRuntimeMXBean().getInputArguments().toString());
             getMemory(serverInfo);
         }
         //获取线程信息
-        if ("2".equals(type) || "all".equals(type)) {
+        if (type.contains("2") || "all".equals(type)) {
             getThread(serverInfo);
         }
         //获取threadDump信息
-        if ("3".equals(type) || "all".equals(type)){
+        if (type.contains("3") || "all".equals(type)){
             getThreadDump(serverInfo);
         }
-
         //获取gc信息
-        if ("4".equals(type) || "all".equals(type)){
+        if (type.contains("4") || "all".equals(type)){
             getGC(serverInfo);
         }
 
