@@ -1,4 +1,4 @@
-package com.dazong.common.annotation;
+package com.dazong.common.web.annotation;
 
 import java.lang.annotation.*;
 

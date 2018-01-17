@@ -1,9 +1,9 @@
 package com.dazong.example;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
-import com.dazong.common.annotation.EnableDzSimpleMonitor;
-import com.dazong.common.annotation.EnableDzWeb;
-import com.dazong.common.annotation.EnableValiadtor;
+import com.dazong.common.web.annotation.EnableDzSimpleMonitor;
+import com.dazong.common.web.annotation.EnableDzWeb;
+import com.dazong.common.web.annotation.EnableValiadtor;
 import com.dazong.common.idempotent.EnableIdempotent;
 
 import org.mybatis.spring.annotation.MapperScan;

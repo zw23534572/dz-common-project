@@ -1,4 +1,4 @@
-package com.dazong.common.support.jsonConverter;
+package com.dazong.common.web.support.jsonConverter;
 
 import com.dazong.common.util.FastJsonUtil;
 import org.springframework.web.servlet.view.AbstractView;

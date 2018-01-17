@@ -1,9 +1,9 @@
-package com.dazong.common.config;
+package com.dazong.common.web.config;
 
 
-import com.dazong.common.annotation.EnableDzWeb;
-import com.dazong.common.support.jsonConverter.JsonHttpMessageConverter;
-import com.dazong.common.support.jsonConverter.JsonMappingExceptionResolver;
+import com.dazong.common.web.annotation.EnableDzWeb;
+import com.dazong.common.web.support.jsonConverter.JsonHttpMessageConverter;
+import com.dazong.common.web.support.jsonConverter.JsonMappingExceptionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

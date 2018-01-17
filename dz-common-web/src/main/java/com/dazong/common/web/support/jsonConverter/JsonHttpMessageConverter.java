@@ -1,4 +1,4 @@
-package com.dazong.common.support.jsonConverter;
+package com.dazong.common.web.support.jsonConverter;
 
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;

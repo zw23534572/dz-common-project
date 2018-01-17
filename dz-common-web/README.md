@@ -138,8 +138,8 @@ dz-common-web-example\src\main\java\com\dazong\test\StartupServer.java
 ```java
 package com.dazong.test;
 
-import com.dazong.common.annotation.EnableDzSimpleMonitor;
-import com.dazong.common.annotation.EnableDzWeb;
+import com.dazong.common.web.annotation.EnableDzSimpleMonitor;
+import com.dazong.common.web.annotation.EnableDzWeb;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

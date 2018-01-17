@@ -1,7 +1,7 @@
-package com.dazong.common.config;
+package com.dazong.common.web.config;
 
-import com.dazong.common.annotation.EnableDzSimpleMonitor;
-import com.dazong.common.support.monitor.SimpleMonitorServlet;
+import com.dazong.common.web.annotation.EnableDzSimpleMonitor;
+import com.dazong.common.web.support.monitor.SimpleMonitorServlet;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;

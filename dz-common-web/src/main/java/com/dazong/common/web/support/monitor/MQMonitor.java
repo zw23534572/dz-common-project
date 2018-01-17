@@ -1,4 +1,4 @@
-package com.dazong.common.support.monitor;
+package com.dazong.common.web.support.monitor;
 
 import com.dazong.common.monitor.BaseMonitor;
 import com.dazong.common.monitor.CheckResult;
