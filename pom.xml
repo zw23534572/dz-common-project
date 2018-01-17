@@ -31,7 +31,6 @@
 		<module>dz-common-trans</module>
 		<module>dz-common-web</module>
 		<module>dz-common-fegin-interface</module>
-		<module>example</module>
     </modules>
 
 	<dependencyManagement>
