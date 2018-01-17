@@ -1,5 +1,7 @@
 package com.dazong.common.web.support.monitor;
 
+import java.util.List;
+
 /**
  * @author huqichao
  * @date 2018-01-17 14:24
@@ -33,6 +35,8 @@ public class ServerInfo {
     private long totalStartedThreadCount;
 
     private String threadDump;
+
+    private List<GCInfo> gcInfoList;
 
     public String getJvmArgs() {
         return jvmArgs;
@@ -146,23 +150,32 @@ public class ServerInfo {
         this.nonHeadJvmCommitted = nonHeadJvmCommitted;
     }
 
+    public List<GCInfo> getGcInfoList() {
+        return gcInfoList;
+    }
+
+    public void setGcInfoList(List<GCInfo> gcInfoList) {
+        this.gcInfoList = gcInfoList;
+    }
+
     @Override
     public String toString() {
         return "ServerInfo{" +
                 "jvmArgs='" + jvmArgs + '\'' +
-                ", headJvmInit='" + headJvmInit + '\'' +
-                ", headJvmMax='" + headJvmMax + '\'' +
-                ", headJvmUsed='" + headJvmUsed + '\'' +
-                ", headJvmCommitted='" + headJvmCommitted + '\'' +
-                ", nonHeadJvmInit='" + nonHeadJvmInit + '\'' +
-                ", nonHeadJvmMax='" + nonHeadJvmMax + '\'' +
-                ", nonHeadJvmUsed='" + nonHeadJvmUsed + '\'' +
-                ", nonHeadJvmCommitted='" + nonHeadJvmCommitted + '\'' +
+                ", headJvmInit=" + headJvmInit +
+                ", headJvmMax=" + headJvmMax +
+                ", headJvmUsed=" + headJvmUsed +
+                ", headJvmCommitted=" + headJvmCommitted +
+                ", nonHeadJvmInit=" + nonHeadJvmInit +
+                ", nonHeadJvmMax=" + nonHeadJvmMax +
+                ", nonHeadJvmUsed=" + nonHeadJvmUsed +
+                ", nonHeadJvmCommitted=" + nonHeadJvmCommitted +
                 ", threadCount=" + threadCount +
                 ", daemonThreadCount=" + daemonThreadCount +
                 ", peakThreadCount=" + peakThreadCount +
                 ", totalStartedThreadCount=" + totalStartedThreadCount +
                 ", threadDump='" + threadDump + '\'' +
+                ", gcInfoList=" + gcInfoList +
                 '}';
     }
 }

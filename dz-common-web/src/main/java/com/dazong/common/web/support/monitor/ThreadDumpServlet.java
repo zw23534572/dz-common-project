@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.management.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 获取jvm线程堆栈
@@ -44,6 +46,11 @@ public class ThreadDumpServlet extends HttpServlet {
             getThreadDump(serverInfo);
         }
 
+        //获取gc信息
+        if ("4".equals(type) || "all".equals(type)){
+            getGC(serverInfo);
+        }
+
         PrintWriter out = resp.getWriter();
         out.append(JSON.toJSONString(serverInfo));
 
@@ -61,6 +68,16 @@ public class ThreadDumpServlet extends HttpServlet {
         }
 
         serverInfo.setThreadDump(dumpStr.toString());
+    }
+
+    private void getGC(ServerInfo serverInfo){
+        List<GarbageCollectorMXBean> gcList = ManagementFactory.getGarbageCollectorMXBeans();
+        List<GCInfo> gcInfos = new ArrayList<>(gcList.size());
+        for (GarbageCollectorMXBean gc : gcList){
+            gcInfos.add(new GCInfo(gc.getName(), gc.getCollectionCount(), gc.getCollectionTime()));
+        }
+
+        serverInfo.setGcInfoList(gcInfos);
     }
 
     private void getMemory(ServerInfo serverInfo){
