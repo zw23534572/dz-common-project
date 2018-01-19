@@ -1,7 +1,6 @@
 package com.dazong.common.feign.client.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -31,14 +30,12 @@ public class Company implements Serializable {
      * 席位号
      */
     @JSONField(name = "seats_no")
-    @JsonProperty("seats_no")
     private String seatsNo;
 
     /**
      * 组织机构代码证有效期
      */
     @JSONField(name = "ex_code")
-    @JsonProperty("ex_code")
     private String exCode;
 
     /**
@@ -50,14 +47,12 @@ public class Company implements Serializable {
      * 营业执照住所
      */
     @JSONField(name = "license_address")
-    @JsonProperty("license_address")
     private String licenseAddress;
 
     /**
      * 法人代表
      */
     @JSONField(name = "legal_person")
-    @JsonProperty("legal_person")
     private String legalPerson;
 
     /**

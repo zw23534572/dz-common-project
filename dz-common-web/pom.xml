@@ -16,21 +16,25 @@
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-web-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-dubbo-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-activemq-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.common</groupId>

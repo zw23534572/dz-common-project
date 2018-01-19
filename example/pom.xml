@@ -74,6 +74,11 @@
 
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-activemq-pom</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-test-pom</artifactId>
 		</dependency>
 

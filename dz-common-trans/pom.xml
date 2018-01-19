@@ -17,19 +17,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hessian.version>4.0.38</hessian.version>
-		<fmeye.version>2.3.5</fmeye.version>
-		<lombok.version>1.16.18</lombok.version>
-		<guava.version>15.0</guava.version>
 		<hessian.version>4.0.38</hessian.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.dazong.eye</groupId>
-			<artifactId>fmeye-common</artifactId>
-			<version>${fmeye.version}</version>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 		    <groupId>com.caucho</groupId>
 		    <artifactId>hessian</artifactId>
@@ -42,10 +33,10 @@
         	<scope>provided</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>${lombok.version}</version>
-		    <scope>provided</scope>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-fmeye-pom</artifactId>
+			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
@@ -57,11 +48,6 @@
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common</artifactId>
 			<version>${parent.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.caucho</groupId>
