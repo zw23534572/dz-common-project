@@ -73,7 +73,7 @@ public class MQAutoConfiguration implements ApplicationContextAware {
                 tableInfo.setDbName(dbName);
                 tableInfo.setTableName(TABLE_NAME);
                 tableInfo.setTableDesc("发送消息本地表-0");
-                path = dbManager.sqlPath()  + File.pathSeparator + SQL_FILE_NAME;
+                path = dbManager.sqlPath()  + File.separator + SQL_FILE_NAME;
                 logger.debug("执行数据库脚本: {}", path);
                 dbManager.executeSqlFile(Resources.getResourceAsReader(path));
             }
