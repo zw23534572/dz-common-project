@@ -20,7 +20,7 @@
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:~/test;DB_CLOSE_DELAY=-1" />
+		<property name="url" value="jdbc:h2:~/mq_test;DB_CLOSE_DELAY=-1" />
 		<!--<property name="url" value="jdbc:hsqldb:file:/D:/data/test3;ifexists=false" -->
 		<!--/> -->
 		<property name="username" value="sa" />
