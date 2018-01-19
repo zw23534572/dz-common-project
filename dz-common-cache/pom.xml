@@ -23,8 +23,7 @@
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-test-pom</artifactId>
-			<version>1.5-SNAPSHOT</version>
-			<type>pom</type>
+			<version>${dz-pom.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
@@ -39,7 +38,7 @@
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
-			<version>1.6-SNAPSHOT</version>
+			<version>${dz-pom.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.awaitility</groupId>

@@ -22,7 +22,7 @@
 		<activemq.version>5.15.1</activemq.version>
 		<rocketmq.version>4.1.0-incubating</rocketmq.version>
 		<rabbitmq.version>5.0.0</rabbitmq.version>
-		<fmeye.version>2.3.4-SNAPSHOT</fmeye.version>
+		<fmeye.version>2.3.5</fmeye.version>
 		<qpid.version>0.26.0</qpid.version>
 	</properties>
 
