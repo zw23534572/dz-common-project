@@ -24,8 +24,7 @@
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-test-pom</artifactId>
-			<version>1.5-SNAPSHOT</version>
-			<type>pom</type>
+			<version>${dz-pom.version}</version>
 		</dependency>
 	</dependencies>
 

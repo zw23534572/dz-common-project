@@ -6,12 +6,12 @@
 	<parent>
 		<artifactId>dz-pom</artifactId>
 		<groupId>com.dazong.pom</groupId>
-		<version>1.5-SNAPSHOT</version>
+		<version>1.6-SNAPSHOT</version>
 	</parent>
 
 	<properties>
 		<dz.common.version>4.0.0-SNAPSHOT</dz.common.version>
-		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
+		<dz-pom.version>1.6-SNAPSHOT</dz-pom.version>
 	</properties>
 
 	<groupId>com.dazong.common</groupId>
@@ -106,4 +106,5 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
 </project>
