@@ -31,7 +31,8 @@
 		<module>dz-common-trans</module>
 		<module>dz-common-web</module>
 		<module>dz-common-fegin-interface</module>
-	</modules>
+		<module>dz-common-elasticjob-starter</module>
+    </modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -80,8 +81,12 @@
 				<artifactId>dz-common-web</artifactId>
 				<version>${dz.common.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-elasticjob-starter</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
 		</dependencies>
-
 	</dependencyManagement>
 
 	<distributionManagement>
