@@ -23,27 +23,23 @@ public class DBManager {
 
     private Logger logger = LoggerFactory.getLogger(DBManager.class);
 
+    private static String dbType;
+
     @Autowired
     private DataSource dataSource;
 
-    public String getDBType() throws SQLException {
-        Connection conn = null;
-
-        try {
-            conn = dataSource.getConnection();
-            return conn.getMetaData().getDatabaseProductName();
-        } finally {
-            close(null, null, conn);
-        }
+    private String getDBType(Connection conn) throws SQLException {
+        return conn.getMetaData().getDatabaseProductName();
     }
 
-    public TableInfo selectTable(String dbName, String tableName, String dbType) throws SQLException {
+    public TableInfo selectTable(String dbName, String tableName) throws SQLException {
         Connection conn = null;
-        Statement stmt = null;
         ResultSet rs = null;
         try {
             conn = dataSource.getConnection();
-            stmt = conn.createStatement();
+            if (dbType == null){
+                dbType = getDBType(conn);
+            }
             String[] types = { "TABLE" };
             rs = conn.getMetaData().getTables(null, null, "%", types);
             while (rs.next()) {
@@ -55,8 +51,6 @@ public class DBManager {
                 } else {
                     comment = rs.getString("TABLE_COMMENT");
                 }
-                System.out.println(name + " - " + schema + " - " + comment);
-
                 if (schema.equals(dbName) && tableName.equals(name)){
                     TableInfo tableInfo = new TableInfo();
                     tableInfo.setDbName(dbName);
@@ -66,20 +60,9 @@ public class DBManager {
                     return tableInfo;
                 }
             }
-//            String sql = String.format("select table_schema, table_name, table_comment " +
-//                    "from information_schema.tables where table_schema='%s' and table_name='%s'", dbName, tableName);
-//
-//            rs = stmt.executeQuery(sql);
-//            TableInfo tableInfo = null;
-//            if (rs.next()){
-//                tableInfo = new TableInfo();
-//                tableInfo.setDbName(dbName);
-//                tableInfo.setTableName(tableName);
-//                tableInfo.setTableDesc(rs.getString("table_comment"));
-//            }
             return null;
         } finally {
-            close(rs, stmt, conn);
+            close(rs, null, conn);
         }
     }
 
@@ -99,11 +82,11 @@ public class DBManager {
         }
     }
 
-    public void executeSqlFile(Reader reader, String dbType) throws SQLException {
-        executeSqlFile(reader, false, null, 0, dbType);
+    public void executeSqlFile(Reader reader) throws SQLException {
+        executeSqlFile(reader, false, null, 0);
     }
 
-    public void executeSqlFile(Reader reader, boolean updateVersion, TableInfo tableInfo, int version, String dbType) throws SQLException {
+    public void executeSqlFile(Reader reader, boolean updateVersion, TableInfo tableInfo, int version) throws SQLException {
         ScriptRunner runner = null;
         try {
             Connection conn = dataSource.getConnection();
@@ -114,7 +97,7 @@ public class DBManager {
             runner.setDelimiter(";");
             runner.runScript(reader);
             if (updateVersion){
-                updateTableVersion(conn, tableInfo, version, dbType);
+                updateTableVersion(conn, tableInfo, version);
             }
             conn.commit();
         } finally {
@@ -124,7 +107,7 @@ public class DBManager {
         }
     }
 
-    private void updateTableVersion(Connection conn, TableInfo tableInfo, int version, String dbType) throws SQLException {
+    private void updateTableVersion(Connection conn, TableInfo tableInfo, int version) throws SQLException {
         Statement stmt = conn.createStatement();
         String sql = String.format("ALTER TABLE `%s`.`%s` COMMENT='%s';",
                 tableInfo.getDbName(), tableInfo.getTableName(), tableInfo.getComment(version));
@@ -134,5 +117,14 @@ public class DBManager {
 
         stmt.execute(sql);
         close(null, stmt, null);
+    }
+
+
+    public String sqlPath(){
+        if (TableInfo.DBTYPE_H2.equalsIgnoreCase(dbType)){
+            return "META-INF/sql/h2";
+        } else {
+            return "META-INF/sql/mysql";
+        }
     }
 }

@@ -1,14 +1,22 @@
 package com.dazong.common.mq.activemq;
 
 import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
+import com.dazong.common.mq.dao.mapper.MQMessageMapper;
+import com.dazong.common.mq.domian.DZConsumerMessage;
 import com.dazong.common.mq.domian.DZMessage;
 import org.apache.activemq.broker.BrokerService;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author huqichao
@@ -21,12 +29,17 @@ public class BaseTest {
     @Autowired
     private ActiveMQProducer producer;
 
+    @Autowired
+    private MQMessageMapper mqMessageMapper;
+
     @BeforeClass
     public static void init(){
         BrokerService broker = new BrokerService();
 
         // configure the broker
         try {
+            broker.setUseJmx(true);
+            broker.setDataDirectory("./target/activemq-data");
             broker.addConnector("tcp://localhost:61616");
             broker.start();
         } catch (Exception e) {
@@ -37,6 +50,22 @@ public class BaseTest {
     @Test
     public void send(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setImmediate(true);
         producer.sendMessage(message);
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
+        System.out.println(list);
+
+        assertThat(list.size()).isEqualTo(1).as("发送消息成功");
+
+        List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
+        System.out.println(list1);
+        assertThat(list1.size()).isEqualTo(2).as("消费消息成功");
     }
 }

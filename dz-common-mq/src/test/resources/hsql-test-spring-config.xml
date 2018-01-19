@@ -20,7 +20,7 @@
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
 		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:~/mq_test;DB_CLOSE_DELAY=-1" />
+		<property name="url" value="jdbc:h2:~/target/${db.name};DB_CLOSE_DELAY=-1" />
 		<!--<property name="url" value="jdbc:hsqldb:file:/D:/data/test3;ifexists=false" -->
 		<!--/> -->
 		<property name="username" value="sa" />
@@ -86,7 +86,7 @@
 	<bean id="jmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
 		<property name="connectionFactory">
 			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
-				<property name="brokerURL" value="${spring.activemq.broker-url}" />
+				<property name="brokerURL" value="vm://localhost" />
 				<property name="closeTimeout" value="60000" />
 				<!-- <property name="userName" value="${mq.username}" />
                 <property name="password" value="${mq.password}" /> -->
@@ -109,4 +109,5 @@
 	</bean>
 
     <bean id="MQAutoConfiguration" class="com.dazong.common.mq.MQAutoConfiguration" />
+
 </beans>

@@ -9,7 +9,7 @@ import com.dazong.common.mq.domian.Message;
  * @date 2018-01-19 15:27
  **/
 @Subscribe(topic = "mq.test")
-public class MQConsumerTest implements IMessageListener {
+public class MQConsumerTest2 implements IMessageListener {
     @Override
     public void receive(Message message) {
         System.out.println(message.getBody());

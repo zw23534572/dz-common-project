@@ -65,19 +65,18 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private void init() {
         try {
-            String dbType = dbManager.getDBType();
-            TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME, dbType);
+            TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
             String path;
             if (tableInfo == null) {
                 tableInfo = new TableInfo();
                 tableInfo.setDbName(dbName);
                 tableInfo.setTableName(TABLE_NAME);
                 tableInfo.setTableDesc("发送消息本地表-0");
-                path = sqlPath(dbType)  + "/" + SQL_FILE_NAME;
+                path = dbManager.sqlPath()  + "/" + SQL_FILE_NAME;
                 logger.debug("执行数据库脚本: {}", path);
-                dbManager.executeSqlFile(Resources.getResourceAsReader(path), dbType);
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path));
             }
-            upgradeDBWithVersion(tableInfo, dbType);
+            upgradeDBWithVersion(tableInfo);
 
             addListener();
             new ActiveMQConsumer(jmsTemplate, mqNotifyManager, messageMapper).init();
@@ -86,23 +85,15 @@ public class MQAutoConfiguration implements ApplicationContextAware {
         }
     }
 
-    private String sqlPath(String dbType){
-        if (TableInfo.DBTYPE_H2.equalsIgnoreCase(dbType)){
-            return "META-INF/sql/h2";
-        } else {
-            return "META-INF/sql/mysql";
-        }
-    }
-
-    private void upgradeDBWithVersion(TableInfo tableInfo, String dbType) throws SQLException, IOException {
+    private void upgradeDBWithVersion(TableInfo tableInfo) throws SQLException, IOException {
         int version = tableInfo.getVersion();
-        String root = sqlPath(dbType);
+        String root = dbManager.sqlPath();
         String path;
         if (version < SQL_VERSION){
             for (int i = version + 1; i<=SQL_VERSION; i++){
                 path = String.format("%s/%s/dz-common-mq.sql", root, i);
                 logger.debug("执行数据库脚本: {}", path);
-                dbManager.executeSqlFile(Resources.getResourceAsReader(path), true, tableInfo, i, dbType);
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path), true, tableInfo, i);
             }
         }
     }

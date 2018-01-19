@@ -26,7 +26,7 @@
         <result column="send_time" property="sendTime" jdbcType="BIGINT" />
         <result column="receive_time" property="receiveTime" jdbcType="TIMESTAMP" />
         <result column="notify_count" property="sendTime" jdbcType="INTEGER" />
-        <result column="last_notify_time" property="sendTime" jdbcType="TIMESTAMP" />
+        <result column="last_notify_time" property="lastNotifyTime" jdbcType="TIMESTAMP" />
         <result column="group_id" property="groupId" jdbcType="VARCHAR" />
         <result column="queue" property="queue" jdbcType="VARCHAR" />
         <result column="attachment" property="attachment" jdbcType="VARCHAR" />
