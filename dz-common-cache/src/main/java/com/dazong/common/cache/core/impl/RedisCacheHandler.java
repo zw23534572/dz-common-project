@@ -1,6 +1,6 @@
 package com.dazong.common.cache.core.impl;
 
-import com.dazong.common.cache.serialize.FstObjectSerializer;
+import com.dazong.common.cache.serialize.JdkSerializer;
 import com.dazong.common.cache.serialize.ObjectSerializer;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Override
     public void afterPropertiesSet() throws Exception {
         if (objectSerializer == null){
-            objectSerializer = new FstObjectSerializer();
+            objectSerializer = new JdkSerializer();
         }
     }
 

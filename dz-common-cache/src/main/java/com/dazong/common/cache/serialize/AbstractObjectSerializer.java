@@ -32,7 +32,7 @@ public abstract class AbstractObjectSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> T deserialize(byte[] bytes,Class<T> type) {
+    public <T> T deserialize(byte[] bytes, Class<T> type) {
         if (bytes == null || bytes.length < 1) {
             return null;
         }
@@ -55,17 +55,16 @@ public abstract class AbstractObjectSerializer implements ObjectSerializer {
             return (T) new BigDecimal(new String(bytes));
         }
 
-        return doDeserialize(bytes,type);
+        return doDeserialize(bytes);
     }
 
     /**
      * 反序列化
      * @param bytes
-     * @param type
      * @param <T>
      * @return
      */
-    public abstract <T> T doDeserialize(byte[] bytes,Class<T> type);
+    public abstract <T> T doDeserialize(byte[] bytes);
 
     /**
      * 序列化

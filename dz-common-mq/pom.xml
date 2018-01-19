@@ -15,14 +15,9 @@
 	<name>dz-common-mq</name>
 
 	<properties>
-		<lombok.version>1.16.18</lombok.version>
-		<mybatis-spring.version>1.2.2</mybatis-spring.version>
-		<mybatis.version>3.4.5</mybatis.version>
-		<elastic-job.version>2.1.5</elastic-job.version>
 		<activemq.version>5.15.1</activemq.version>
 		<rocketmq.version>4.1.0-incubating</rocketmq.version>
 		<rabbitmq.version>5.0.0</rabbitmq.version>
-		<fmeye.version>2.3.5</fmeye.version>
 		<qpid.version>0.26.0</qpid.version>
 	</properties>
 
@@ -36,10 +31,21 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.dazong.eye</groupId>
-			<artifactId>fmeye-common</artifactId>
-			<version>${fmeye.version}</version>
-			<scope>provided</scope>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-fmeye-pom</artifactId>
+			<version>${dz-pom.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-elastic-job</artifactId>
+			<version>${dz-pom.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-jdbc-pom</artifactId>
+			<version>${dz-pom.version}</version>
 		</dependency>
 
 		<dependency>
@@ -48,50 +54,6 @@
 			<version>${activemq.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis-spring.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>${alibaba.fastjson.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- import elastic-job lite core -->
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-core</artifactId>
-			<version>${elastic-job.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-spring</artifactId>
-			<version>${elastic-job.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-
 
 		<dependency>
 			<groupId>org.apache.rocketmq</groupId>

@@ -2,8 +2,7 @@ package com.dazong.common.autoconfig;
 
 
 import com.dazong.common.cache.core.impl.RedisCacheHandler;
-import com.dazong.common.cache.serialize.FstObjectSerializer;
-import com.dazong.common.cache.serialize.FstRedisSerializer;
+import com.dazong.common.cache.serialize.JdkSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -38,7 +38,7 @@ public class RedisAutoConfigure {
     @ConditionalOnMissingBean({RedisCacheHandler.class})
     public RedisCacheHandler redisCacheHandler(@Autowired RedisTemplate redisTemplate) {
         RedisCacheHandler cacheHandler = new RedisCacheHandler();
-        cacheHandler.setObjectSerializer(new FstObjectSerializer());
+        cacheHandler.setObjectSerializer(new JdkSerializer());
         cacheHandler.setRedisTemplate(redisTemplate);
         return cacheHandler;
     }
@@ -49,7 +49,7 @@ public class RedisAutoConfigure {
         RedisTemplate template = new RedisTemplate();
         template.setConnectionFactory(getConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new FstRedisSerializer());
+        template.setValueSerializer(new JdkSerializationRedisSerializer());
         return template;
     }
 
