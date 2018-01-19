@@ -15,6 +15,9 @@ import java.io.Serializable;
 @ToString(callSuper=true)
 public class TableInfo implements Serializable {
 
+    public static final String DBTYPE_MYSQL = "mysql";
+    public static final String DBTYPE_H2 = "h2";
+
     private String dbName;
 
     private String tableName;

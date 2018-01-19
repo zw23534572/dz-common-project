@@ -42,6 +42,8 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private static final String TABLE_NAME = "dz_mq_producer";
 
+    private static final String SQL_FILE_NAME = "dz-common-mq.sql";
+
     @Autowired
     private DBManager dbManager;
 
@@ -63,19 +65,19 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private void init() {
         try {
-            TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
+            String dbType = dbManager.getDBType();
+            TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME, dbType);
             String path;
             if (tableInfo == null) {
                 tableInfo = new TableInfo();
                 tableInfo.setDbName(dbName);
                 tableInfo.setTableName(TABLE_NAME);
                 tableInfo.setTableDesc("发送消息本地表-0");
-
-                path = "META-INF/sql/dz-common-mq.sql";
+                path = sqlPath(dbType)  + "/" + SQL_FILE_NAME;
                 logger.debug("执行数据库脚本: {}", path);
-                dbManager.executeSqlFile(Resources.getResourceAsReader(path));
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path), dbType);
             }
-            upgradeDBWithVersion(tableInfo);
+            upgradeDBWithVersion(tableInfo, dbType);
 
             addListener();
             new ActiveMQConsumer(jmsTemplate, mqNotifyManager, messageMapper).init();
@@ -84,14 +86,23 @@ public class MQAutoConfiguration implements ApplicationContextAware {
         }
     }
 
-    private void upgradeDBWithVersion(TableInfo tableInfo) throws SQLException, IOException {
+    private String sqlPath(String dbType){
+        if (TableInfo.DBTYPE_H2.equalsIgnoreCase(dbType)){
+            return "META-INF/sql/h2";
+        } else {
+            return "META-INF/sql/mysql";
+        }
+    }
+
+    private void upgradeDBWithVersion(TableInfo tableInfo, String dbType) throws SQLException, IOException {
         int version = tableInfo.getVersion();
+        String root = sqlPath(dbType);
         String path;
         if (version < SQL_VERSION){
             for (int i = version + 1; i<=SQL_VERSION; i++){
-                path = String.format("META-INF/sql/%s/dz-common-mq.sql", i);
+                path = String.format("%s/%s/dz-common-mq.sql", root, i);
                 logger.debug("执行数据库脚本: {}", path);
-                dbManager.executeSqlFile(Resources.getResourceAsReader(path), true, tableInfo, i);
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path), true, tableInfo, i, dbType);
             }
         }
     }

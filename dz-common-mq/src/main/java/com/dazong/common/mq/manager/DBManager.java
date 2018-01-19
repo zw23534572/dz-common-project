@@ -26,25 +26,58 @@ public class DBManager {
     @Autowired
     private DataSource dataSource;
 
-    public TableInfo selectTable(String dbName, String tableName) throws SQLException {
+    public String getDBType() throws SQLException {
+        Connection conn = null;
+
+        try {
+            conn = dataSource.getConnection();
+            return conn.getMetaData().getDatabaseProductName();
+        } finally {
+            close(null, null, conn);
+        }
+    }
+
+    public TableInfo selectTable(String dbName, String tableName, String dbType) throws SQLException {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
         try {
             conn = dataSource.getConnection();
             stmt = conn.createStatement();
-            String sql = String.format("select `table_schema`, `table_name`, `table_comment` " +
-                    "from `information_schema`.`tables` where `table_schema`='%s' and `table_name`='%s';", dbName, tableName);
+            String[] types = { "TABLE" };
+            rs = conn.getMetaData().getTables(null, null, "%", types);
+            while (rs.next()) {
+                String name = rs.getString("TABLE_NAME");
+                String schema = rs.getString("TABLE_SCHEMA");
+                String comment;
+                if (dbType.equalsIgnoreCase(TableInfo.DBTYPE_H2)){
+                    comment = rs.getString("REMARKS");
+                } else {
+                    comment = rs.getString("TABLE_COMMENT");
+                }
+                System.out.println(name + " - " + schema + " - " + comment);
 
-            rs = stmt.executeQuery(sql);
-            TableInfo tableInfo = null;
-            if (rs.next()){
-                tableInfo = new TableInfo();
-                tableInfo.setDbName(dbName);
-                tableInfo.setTableName(tableName);
-                tableInfo.setTableDesc(rs.getString("table_comment"));
+                if (schema.equals(dbName) && tableName.equals(name)){
+                    TableInfo tableInfo = new TableInfo();
+                    tableInfo.setDbName(dbName);
+                    tableInfo.setTableName(tableName);
+                    tableInfo.setTableDesc(comment);
+
+                    return tableInfo;
+                }
             }
-            return tableInfo;
+//            String sql = String.format("select table_schema, table_name, table_comment " +
+//                    "from information_schema.tables where table_schema='%s' and table_name='%s'", dbName, tableName);
+//
+//            rs = stmt.executeQuery(sql);
+//            TableInfo tableInfo = null;
+//            if (rs.next()){
+//                tableInfo = new TableInfo();
+//                tableInfo.setDbName(dbName);
+//                tableInfo.setTableName(tableName);
+//                tableInfo.setTableDesc(rs.getString("table_comment"));
+//            }
+            return null;
         } finally {
             close(rs, stmt, conn);
         }
@@ -66,11 +99,11 @@ public class DBManager {
         }
     }
 
-    public void executeSqlFile(Reader reader) throws SQLException {
-        executeSqlFile(reader, false, null, 0);
+    public void executeSqlFile(Reader reader, String dbType) throws SQLException {
+        executeSqlFile(reader, false, null, 0, dbType);
     }
 
-    public void executeSqlFile(Reader reader, boolean updateVersion, TableInfo tableInfo, int version) throws SQLException {
+    public void executeSqlFile(Reader reader, boolean updateVersion, TableInfo tableInfo, int version, String dbType) throws SQLException {
         ScriptRunner runner = null;
         try {
             Connection conn = dataSource.getConnection();
@@ -81,7 +114,7 @@ public class DBManager {
             runner.setDelimiter(";");
             runner.runScript(reader);
             if (updateVersion){
-                updateTableVersion(conn, tableInfo, version);
+                updateTableVersion(conn, tableInfo, version, dbType);
             }
             conn.commit();
         } finally {
@@ -91,10 +124,14 @@ public class DBManager {
         }
     }
 
-    private void updateTableVersion(Connection conn, TableInfo tableInfo, int version) throws SQLException {
+    private void updateTableVersion(Connection conn, TableInfo tableInfo, int version, String dbType) throws SQLException {
         Statement stmt = conn.createStatement();
         String sql = String.format("ALTER TABLE `%s`.`%s` COMMENT='%s';",
                 tableInfo.getDbName(), tableInfo.getTableName(), tableInfo.getComment(version));
+        if (dbType.equalsIgnoreCase(TableInfo.DBTYPE_H2)){
+            sql = String.format("COMMENT ON TABLE `%s` IS '%s';", tableInfo.getTableName(), tableInfo.getComment(version));
+        }
+
         stmt.execute(sql);
         close(null, stmt, null);
     }
