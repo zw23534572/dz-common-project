@@ -23,7 +23,7 @@ public class DBManager {
 
     private Logger logger = LoggerFactory.getLogger(DBManager.class);
 
-    private static String dbType;
+    private String dbType;
 
     @Autowired
     private DataSource dataSource;

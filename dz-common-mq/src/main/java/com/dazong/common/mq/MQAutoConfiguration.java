@@ -26,6 +26,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jms.core.JmsTemplate;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -72,7 +73,7 @@ public class MQAutoConfiguration implements ApplicationContextAware {
                 tableInfo.setDbName(dbName);
                 tableInfo.setTableName(TABLE_NAME);
                 tableInfo.setTableDesc("发送消息本地表-0");
-                path = dbManager.sqlPath()  + "/" + SQL_FILE_NAME;
+                path = dbManager.sqlPath()  + File.pathSeparator + SQL_FILE_NAME;
                 logger.debug("执行数据库脚本: {}", path);
                 dbManager.executeSqlFile(Resources.getResourceAsReader(path));
             }
