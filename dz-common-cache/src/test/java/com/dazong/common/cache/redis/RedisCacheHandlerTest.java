@@ -36,7 +36,7 @@ public class RedisCacheHandlerTest {
 
     @Before
     public void before() throws IOException {
-        server = RedisServer.newRedisServer();  // bind to a random port
+        server = RedisServer.newRedisServer(8099);  // bind to a random port
         server.start();
     }
 
