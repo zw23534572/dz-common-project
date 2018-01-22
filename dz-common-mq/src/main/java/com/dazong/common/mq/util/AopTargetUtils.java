@@ -1,8 +1,6 @@
 package com.dazong.common.mq.util;
 
 import com.dazong.common.mq.exception.MQException;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.support.AopUtils;
 
@@ -13,8 +11,9 @@ import java.lang.reflect.Field;
  *
  * @author caohao
  */
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class AopTargetUtils {
+
+    private AopTargetUtils(){}
 
     /**
      * 获取目标对象.

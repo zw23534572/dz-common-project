@@ -7,6 +7,7 @@ import com.dazong.common.mq.domian.DZConsumerMessage;
 import com.dazong.common.mq.domian.DZMessage;
 import com.dazong.common.mq.domian.TableInfo;
 import com.dazong.common.mq.job.ReTryNotifyJob;
+import com.dazong.common.mq.job.ReTrySendJob;
 import com.dazong.common.mq.manager.DBManager;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.BeforeClass;
@@ -50,6 +51,9 @@ public class BaseTest {
     @Autowired
     private ReTryNotifyJob reTryNotifyJob;
 
+    @Autowired
+    private ReTrySendJob reTrySendJob;
+
     @BeforeClass
     public static void init(){
         BrokerService broker = new BrokerService();
@@ -84,6 +88,8 @@ public class BaseTest {
             e.printStackTrace();
         }
 
+        reTrySendJob.execute();
+
         List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
         System.out.println(list);
 
@@ -114,6 +120,7 @@ public class BaseTest {
             e.printStackTrace();
         }
 
+        reTrySendJob.execute();
         reTryNotifyJob.execute();
 
         try {
@@ -152,6 +159,8 @@ public class BaseTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        reTrySendJob.execute();
 
         List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
         System.out.println(list);
