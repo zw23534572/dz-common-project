@@ -1,6 +1,5 @@
 package com.dazong.common.mq.activemq;
 
-import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dazong.common.mq.MQAutoConfiguration;
 import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
 import com.dazong.common.mq.dao.mapper.MQMessageMapper;
@@ -9,7 +8,6 @@ import com.dazong.common.mq.domian.DZMessage;
 import com.dazong.common.mq.domian.TableInfo;
 import com.dazong.common.mq.job.ReTryNotifyJob;
 import com.dazong.common.mq.manager.DBManager;
-import com.dazong.common.mq.manager.MQNotifyManager;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -50,7 +48,7 @@ public class BaseTest {
     private String dbName;
 
     @Autowired
-    private MQNotifyManager notifyManager;
+    private ReTryNotifyJob reTryNotifyJob;
 
     @BeforeClass
     public static void init(){
@@ -116,10 +114,7 @@ public class BaseTest {
             e.printStackTrace();
         }
 
-        List<DZConsumerMessage> messageList = mqMessageMapper.queryConsumerMessageByStatus(DZMessage.STATUS_DOING);
-        for (DZConsumerMessage tmp : messageList){
-            notifyManager.notifyMessage(tmp);
-        }
+        reTryNotifyJob.execute();
 
         try {
             TimeUnit.SECONDS.sleep(2);

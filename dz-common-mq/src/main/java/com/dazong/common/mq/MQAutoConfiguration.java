@@ -1,6 +1,5 @@
 package com.dazong.common.mq;
 
-import com.dangdang.ddframe.job.lite.spring.job.util.AopTargetUtils;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.mq.annotation.Subscribe;
@@ -11,6 +10,7 @@ import com.dazong.common.mq.domian.Consumer;
 import com.dazong.common.mq.domian.TableInfo;
 import com.dazong.common.mq.manager.DBManager;
 import com.dazong.common.mq.manager.MQNotifyManager;
+import com.dazong.common.mq.util.AopTargetUtils;
 import org.apache.ibatis.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

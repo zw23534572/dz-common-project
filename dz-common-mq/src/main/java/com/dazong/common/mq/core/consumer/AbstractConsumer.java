@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author huqichao
- * @create 2017-10-30 15:31
+ * @date 2017-10-30 15:31
  **/
 public abstract class AbstractConsumer {
 

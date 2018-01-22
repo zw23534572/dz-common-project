@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  * @author huqichao
- * @create 2017-10-30 19:29
+ * @date 2017-10-30 19:29
  **/
 @Data
 @EqualsAndHashCode(callSuper = false)
