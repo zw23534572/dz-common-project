@@ -2,7 +2,7 @@ package com.dazong.example;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.dazong.common.trans.annotation.EnableAutoRetry;
-import com.dazong.common.web.annotation.EnableValiadtor;
+import com.dazong.common.annotation.EnableValiadtor;
 import com.dazong.common.idempotent.EnableIdempotent;
 
 import org.mybatis.spring.annotation.MapperScan;
