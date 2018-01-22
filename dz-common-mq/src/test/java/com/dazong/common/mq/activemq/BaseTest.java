@@ -6,6 +6,8 @@ import com.dazong.common.mq.dao.mapper.MQMessageMapper;
 import com.dazong.common.mq.domian.DZConsumerMessage;
 import com.dazong.common.mq.domian.DZMessage;
 import com.dazong.common.mq.domian.TableInfo;
+import com.dazong.common.mq.job.ReTryNotifyJob;
+import com.dazong.common.mq.job.ReTrySendJob;
 import com.dazong.common.mq.manager.DBManager;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.BeforeClass;
@@ -20,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +48,12 @@ public class BaseTest {
     @Value("${db.name}")
     private String dbName;
 
+    @Autowired
+    private ReTryNotifyJob reTryNotifyJob;
+
+    @Autowired
+    private ReTrySendJob reTrySendJob;
+
     @BeforeClass
     public static void init(){
         BrokerService broker = new BrokerService();
@@ -64,10 +73,12 @@ public class BaseTest {
     public void send(){
         sendQueue();
         sendTopic();
+        sendTopicWithNonImmediate();
     }
 
     private void sendTopic(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setGroupId(UUID.randomUUID().toString());
         message.setImmediate(true);
         producer.sendMessage(message);
 
@@ -76,6 +87,8 @@ public class BaseTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        reTrySendJob.execute();
 
         List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
         System.out.println(list);
@@ -95,8 +108,48 @@ public class BaseTest {
 
     }
 
+    private void sendTopicWithNonImmediate(){
+        DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setGroupId(UUID.randomUUID().toString());
+        message.setImmediate(false);
+        producer.sendMessage(message);
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        reTrySendJob.execute();
+        reTryNotifyJob.execute();
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
+        System.out.println(list);
+
+        assertThat(list.size()).isEqualTo(3).as("发送消息成功");
+
+        List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
+        System.out.println(list1);
+        assertThat(list1.size()).isEqualTo(5).as("消费消息成功");
+
+        try {
+            TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
+            assertThat(tableInfo.getVersion()).isEqualTo(MQAutoConfiguration.SQL_VERSION).as("数据脚本更新成功");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void sendQueue(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setGroupId(UUID.randomUUID().toString());
         message.setImmediate(true);
         message.setQueue(true);
         producer.sendMessage(message);
@@ -106,6 +159,8 @@ public class BaseTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        reTrySendJob.execute();
 
         List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
         System.out.println(list);
