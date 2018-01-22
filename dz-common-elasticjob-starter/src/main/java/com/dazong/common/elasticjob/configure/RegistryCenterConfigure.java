@@ -20,9 +20,7 @@ public class RegistryCenterConfigure {
 	
 	@Bean
 	public CoordinatorRegistryCenter registryCenter(){
-		String server = StringUtils.isEmpty(this.elassticjobProperties.getZkServer()) ? 
-				this.elassticjobProperties.getZkHost() : this.elassticjobProperties.getZkServer();
-		ZookeeperConfiguration zookeeperConfiguration = new ZookeeperConfiguration(server, this.elassticjobProperties.getNamespace());
+		ZookeeperConfiguration zookeeperConfiguration = new ZookeeperConfiguration(this.elassticjobProperties.getZkServer(), this.elassticjobProperties.getNamespace());
 		zookeeperConfiguration.setBaseSleepTimeMilliseconds(this.elassticjobProperties.getBaseSleepTimeMilliseconds());
 		zookeeperConfiguration.setMaxSleepTimeMilliseconds(this.elassticjobProperties.getMaxSleepTimeMilliseconds());
 		zookeeperConfiguration.setMaxRetries(this.elassticjobProperties.getMaxRetries());

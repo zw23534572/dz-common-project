@@ -1,6 +1,7 @@
 package com.dazong.example;
 
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
+import com.dazong.common.trans.annotation.EnableAutoRetry;
 import com.dazong.common.web.annotation.EnableValiadtor;
 import com.dazong.common.idempotent.EnableIdempotent;
 
@@ -15,7 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 import javax.annotation.PreDestroy;
 
 /**
@@ -29,6 +29,7 @@ import javax.annotation.PreDestroy;
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
 @EnableIdempotent
 @EnableFeignClients(basePackages={"com.dazong.common.feign"})
+@EnableAutoRetry
 public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);
