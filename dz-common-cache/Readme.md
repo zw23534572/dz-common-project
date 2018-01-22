@@ -66,5 +66,4 @@ CacheFactory cacheFactory;
 
 #### 1.0
 - 支持Redis缓存框架
-- 支持本地缓存框架
 - 支持spring boot自动注入和非spring boot项目
