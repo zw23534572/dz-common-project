@@ -1,12 +1,15 @@
 package com.dazong.common.mq.activemq;
 
+import com.dangdang.ddframe.job.api.ShardingContext;
 import com.dazong.common.mq.MQAutoConfiguration;
 import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
 import com.dazong.common.mq.dao.mapper.MQMessageMapper;
 import com.dazong.common.mq.domian.DZConsumerMessage;
 import com.dazong.common.mq.domian.DZMessage;
 import com.dazong.common.mq.domian.TableInfo;
+import com.dazong.common.mq.job.ReTryNotifyJob;
 import com.dazong.common.mq.manager.DBManager;
+import com.dazong.common.mq.manager.MQNotifyManager;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
@@ -45,6 +48,9 @@ public class BaseTest {
     @Value("${db.name}")
     private String dbName;
 
+    @Autowired
+    private MQNotifyManager notifyManager;
+
     @BeforeClass
     public static void init(){
         BrokerService broker = new BrokerService();
@@ -64,6 +70,7 @@ public class BaseTest {
     public void send(){
         sendQueue();
         sendTopic();
+        sendTopicWithNonImmediate();
     }
 
     private void sendTopic(){
@@ -85,6 +92,46 @@ public class BaseTest {
         List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
         System.out.println(list1);
         assertThat(list1.size()).isEqualTo(3).as("消费消息成功");
+
+        try {
+            TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
+            assertThat(tableInfo.getVersion()).isEqualTo(MQAutoConfiguration.SQL_VERSION).as("数据脚本更新成功");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void sendTopicWithNonImmediate(){
+        DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setImmediate(false);
+        producer.sendMessage(message);
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<DZConsumerMessage> messageList = mqMessageMapper.queryConsumerMessageByStatus(DZMessage.STATUS_DOING);
+        for (DZConsumerMessage tmp : messageList){
+            notifyManager.notifyMessage(tmp);
+        }
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
+        System.out.println(list);
+
+        assertThat(list.size()).isEqualTo(3).as("发送消息成功");
+
+        List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
+        System.out.println(list1);
+        assertThat(list1.size()).isEqualTo(5).as("消费消息成功");
 
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
