@@ -1,5 +1,6 @@
 package com.dazong.common.mq.activemq;
 
+import com.dazong.common.mq.MQAutoConfiguration;
 import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
 import com.dazong.common.mq.dao.mapper.MQMessageMapper;
 import com.dazong.common.mq.domian.DZConsumerMessage;
@@ -79,8 +80,8 @@ public class BaseTest {
         assertThat(list1.size()).isEqualTo(2).as("消费消息成功");
 
         try {
-            TableInfo tableInfo = dbManager.selectTable(dbName,"dz_mq_producer");
-            assertThat(tableInfo.getVersion()).isEqualTo(2).as("数据脚本更新成功");
+            TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
+            assertThat(tableInfo.getVersion()).isEqualTo(MQAutoConfiguration.SQL_VERSION).as("数据脚本更新成功");
         } catch (SQLException e) {
             e.printStackTrace();
         }

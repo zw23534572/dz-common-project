@@ -39,9 +39,9 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private Logger logger = LoggerFactory.getLogger(MQAutoConfiguration.class);
 
-    private static final int SQL_VERSION = 2;
+    public static final int SQL_VERSION = 2;
 
-    private static final String TABLE_NAME = "dz_mq_producer";
+    public static final String TABLE_NAME = "dz_mq_producer";
 
     private static final String SQL_FILE_NAME = "dz-common-mq.sql";
 
