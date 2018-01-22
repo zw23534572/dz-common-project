@@ -67,17 +67,18 @@ public class MQAutoConfiguration implements ApplicationContextAware {
     private void init() {
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
+            String root = dbManager.sqlPath();
             String path;
             if (tableInfo == null) {
                 tableInfo = new TableInfo();
                 tableInfo.setDbName(dbName);
                 tableInfo.setTableName(TABLE_NAME);
                 tableInfo.setTableDesc("发送消息本地表-0");
-                path = dbManager.sqlPath()  + File.separator + SQL_FILE_NAME;
+                path = root + File.separator + SQL_FILE_NAME;
                 logger.debug("执行数据库脚本: {}", path);
                 dbManager.executeSqlFile(Resources.getResourceAsReader(path));
             }
-            upgradeDBWithVersion(tableInfo);
+            upgradeDBWithVersion(tableInfo, root);
 
             addListener();
             new ActiveMQConsumer(jmsTemplate, mqNotifyManager, messageMapper).init();
@@ -86,9 +87,8 @@ public class MQAutoConfiguration implements ApplicationContextAware {
         }
     }
 
-    private void upgradeDBWithVersion(TableInfo tableInfo) throws SQLException, IOException {
+    private void upgradeDBWithVersion(TableInfo tableInfo, String root) throws SQLException, IOException {
         int version = tableInfo.getVersion();
-        String root = dbManager.sqlPath();
         String path;
         if (version < SQL_VERSION){
             for (int i = version + 1; i<=SQL_VERSION; i++){
