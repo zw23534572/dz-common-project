@@ -1,7 +1,5 @@
 package com.dazong.common.mq.job;
 
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import com.dazong.common.mq.dao.mapper.MQMessageMapper;
 import com.dazong.common.mq.domian.DZConsumerMessage;
 import com.dazong.common.mq.domian.DZMessage;
@@ -15,10 +13,10 @@ import java.util.List;
 
 /**
  * @author huqichao
- * @create 2017-10-31 18:23
+ * @date 2017-10-31 18:23
  **/
 @Component
-public class ReTryNotifyJob implements SimpleJob {
+public class ReTryNotifyJob implements Job {
 
     private Logger logger = LoggerFactory.getLogger(ReTryNotifyJob.class);
 
@@ -28,13 +26,8 @@ public class ReTryNotifyJob implements SimpleJob {
     @Autowired
     private MQNotifyManager notifyManager;
 
-    /**
-     * 执行作业.
-     *
-     * @param shardingContext 分片上下文
-     */
     @Override
-    public void execute(ShardingContext shardingContext) {
+    public void execute() {
         List<DZConsumerMessage> messageList = messageMapper.queryConsumerMessageByStatus(DZMessage.STATUS_DOING);
         logger.debug("定时重复通知未处理成功的消息：{}", messageList.size());
         for (DZConsumerMessage message : messageList){

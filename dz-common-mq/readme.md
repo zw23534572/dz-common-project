@@ -16,40 +16,6 @@
     <artifactId>dz-common-mq</artifactId>
     <version>4.0.0-SNAPSHOT</version>
 </dependency>
-
-<!--配置elastic-job，如果已经依赖则不用配置-->
-<dependency>
-    <groupId>com.dangdang</groupId>
-    <artifactId>elastic-job-lite-core</artifactId>
-    <version>2.1.5</version>
-</dependency>
-<dependency>
-    <groupId>com.dangdang</groupId>
-    <artifactId>elastic-job-lite-spring</artifactId>
-    <version>2.1.5</version>
-</dependency>
-
-<dependency>
-    <groupId>org.apache.curator</groupId>
-    <artifactId>curator-client</artifactId>
-    <version>2.10.0</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.curator</groupId>
-    <artifactId>curator-framework</artifactId>
-    <version>2.10.0</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.curator</groupId>
-    <artifactId>curator-recipes</artifactId>
-    <version>2.10.0</version>
-</dependency>
-<dependency>
-    <groupId>com.netflix.curator</groupId>
-    <artifactId>curator-test</artifactId>
-    <version>1.3.3</version>
-    <scope>test</scope>
-</dependency>
 ```
 
 2、在spring配置文件加入：
@@ -84,36 +50,17 @@ public class PayMQ implements IMessageListener {
 }
 ```
 
-6、配置ElasticJob任务
+6、配置分布式调度任务
+在分布式调用任务系统配置调用 ReTryNotifyJob、ReTrySendJob 的 execute 方法
 ```java
+@Autowired
+private ReTryNotifyJob reTryNotifyJob;
 
-@Resource
-private ZookeeperRegistryCenter regCenter;
-
-@Bean(initMethod = "init", destroyMethod = "close")
-public ZookeeperRegistryCenter regCenter(@Value("${zk.host}") final String serverList,
-                                             @Value("${elastic.job.zk.namespace}") final String namespace) {
-    ZookeeperConfiguration configuration = new ZookeeperConfiguration(serverList, namespace);
-    configuration.setConnectionTimeoutMilliseconds(3000);
-    configuration.setSessionTimeoutMilliseconds(3000);
-    return new ZookeeperRegistryCenter(configuration);
-}
-
-@Bean(initMethod = "init")
-public JobScheduler registryReTrySendJob(ReTrySendJob reTrySendJob) {
-    LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(new SimpleJobConfiguration(
-        JobCoreConfiguration.newBuilder(ReTrySendJob.class.getSimpleName(), "0 0/1 * * * ?", 1).build(),
-        ReTrySendJob.class.getCanonicalName())).overwrite(true).build();
-    return new SpringJobScheduler(reTrySendJob, regCenter, liteJobConfiguration);
-}
-
-@Bean(initMethod = "init")
-public JobScheduler registryReTryNotifyJob(ReTryNotifyJob reTryNotifyJob) {
-    LiteJobConfiguration liteJobConfiguration = LiteJobConfiguration.newBuilder(new SimpleJobConfiguration(
-        JobCoreConfiguration.newBuilder(ReTryNotifyJob.class.getSimpleName(), "0 0/5 * * * ?", 1).build(),
-        ReTryNotifyJob.class.getCanonicalName())).overwrite(true).build();
-    return new SpringJobScheduler(reTryNotifyJob, regCenter, liteJobConfiguration);
-}
+@Autowired
+private ReTrySendJob reTrySendJob;
+...
+reTryNotifyJob.execute();
+reTrySendJob.execute();
 ```
 
 

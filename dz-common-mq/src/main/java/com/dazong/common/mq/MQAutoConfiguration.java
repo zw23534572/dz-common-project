@@ -1,6 +1,5 @@
 package com.dazong.common.mq;
 
-import com.dangdang.ddframe.job.lite.spring.job.util.AopTargetUtils;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.mq.annotation.Subscribe;
@@ -11,6 +10,7 @@ import com.dazong.common.mq.domian.Consumer;
 import com.dazong.common.mq.domian.TableInfo;
 import com.dazong.common.mq.manager.DBManager;
 import com.dazong.common.mq.manager.MQNotifyManager;
+import com.dazong.common.mq.util.AopTargetUtils;
 import org.apache.ibatis.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,9 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private Logger logger = LoggerFactory.getLogger(MQAutoConfiguration.class);
 
-    private static final int SQL_VERSION = 2;
+    public static final int SQL_VERSION = 2;
 
-    private static final String TABLE_NAME = "dz_mq_producer";
+    public static final String TABLE_NAME = "dz_mq_producer";
 
     private static final String SQL_FILE_NAME = "dz-common-mq.sql";
 
@@ -94,7 +94,7 @@ public class MQAutoConfiguration implements ApplicationContextAware {
             for (int i = version + 1; i<=SQL_VERSION; i++){
                 path = String.format("%s/%s/dz-common-mq.sql", root, i);
                 logger.debug("执行数据库脚本: {}", path);
-                dbManager.executeSqlFile(Resources.getResourceAsReader(path), true, tableInfo, i);
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path), i == SQL_VERSION, tableInfo, i);
             }
         }
     }

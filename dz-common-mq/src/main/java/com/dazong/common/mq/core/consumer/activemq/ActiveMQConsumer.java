@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * @author huqichao
- * @create 2017-11-03 09:32
+ * @date 2017-11-03 09:32
  **/
 public class ActiveMQConsumer extends AbstractConsumer {
 

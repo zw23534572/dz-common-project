@@ -32,6 +32,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common-elasticjob-starter</artifactId>
+			<version>4.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common-fegin-interface</artifactId>
 		</dependency>
 		<dependency>
@@ -46,11 +51,6 @@
 			<groupId>com.dazong.message</groupId>
 			<artifactId>message-client-sdk</artifactId>
 			<version>${message-platform.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dazong</groupId>
-			<artifactId>transaction</artifactId>
-			<version>${transaction.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
@@ -85,6 +85,11 @@
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-jdbc-pom</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-dubbo-pom</artifactId>
 		</dependency>
 
 		<dependency>

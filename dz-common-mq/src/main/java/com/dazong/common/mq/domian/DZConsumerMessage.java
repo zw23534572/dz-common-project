@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * @author huqichao
- * @create 2017-10-30 15:58
+ * @date 2017-10-30 15:58
  **/
 @Data
 @EqualsAndHashCode(callSuper = false)

@@ -32,13 +32,6 @@
 
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
-			<artifactId>dz-elastic-job</artifactId>
-			<version>${dz-pom.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-jdbc-pom</artifactId>
 			<version>${dz-pom.version}</version>
 			<scope>provided</scope>
@@ -58,6 +51,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-
 </project>

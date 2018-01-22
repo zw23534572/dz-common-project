@@ -2,7 +2,7 @@ package com.dazong.common.mq.constant;
 
 /**
  * @author huqichao
- * @create 2017-11-03 09:28
+ * @date 2017-11-03 09:28
  **/
 public class Constants {
 
