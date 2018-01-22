@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,6 +76,7 @@ public class BaseTest {
 
     private void sendTopic(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setGroupId(UUID.randomUUID().toString());
         message.setImmediate(true);
         producer.sendMessage(message);
 
@@ -104,6 +106,7 @@ public class BaseTest {
 
     private void sendTopicWithNonImmediate(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setGroupId(UUID.randomUUID().toString());
         message.setImmediate(false);
         producer.sendMessage(message);
 
@@ -144,6 +147,7 @@ public class BaseTest {
 
     private void sendQueue(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setGroupId(UUID.randomUUID().toString());
         message.setImmediate(true);
         message.setQueue(true);
         producer.sendMessage(message);
