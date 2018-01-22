@@ -23,5 +23,5 @@
             <aop:around method="serviceAspect" pointcut-ref="pointcut"/>
         </aop:aspect>
     </aop:config>
-    <import resource="classpath*:spring-dubbo-consumers.xml" />
+    <import resource="classpath*:spring-dubbo-core.xml" />
 </beans>

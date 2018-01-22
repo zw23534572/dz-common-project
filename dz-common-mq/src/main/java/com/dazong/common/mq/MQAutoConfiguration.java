@@ -94,7 +94,7 @@ public class MQAutoConfiguration implements ApplicationContextAware {
             for (int i = version + 1; i<=SQL_VERSION; i++){
                 path = String.format("%s/%s/dz-common-mq.sql", root, i);
                 logger.debug("执行数据库脚本: {}", path);
-                dbManager.executeSqlFile(Resources.getResourceAsReader(path), true, tableInfo, i);
+                dbManager.executeSqlFile(Resources.getResourceAsReader(path), i == SQL_VERSION, tableInfo, i);
             }
         }
     }

@@ -4,15 +4,19 @@ import com.dazong.common.mq.core.producer.activemq.ActiveMQProducer;
 import com.dazong.common.mq.dao.mapper.MQMessageMapper;
 import com.dazong.common.mq.domian.DZConsumerMessage;
 import com.dazong.common.mq.domian.DZMessage;
+import com.dazong.common.mq.domian.TableInfo;
+import com.dazong.common.mq.manager.DBManager;
 import org.apache.activemq.broker.BrokerService;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +35,12 @@ public class BaseTest {
 
     @Autowired
     private MQMessageMapper mqMessageMapper;
+
+    @Autowired
+    private DBManager dbManager;
+
+    @Value("${db.name}")
+    private String dbName;
 
     @BeforeClass
     public static void init(){
@@ -67,5 +77,13 @@ public class BaseTest {
         List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
         System.out.println(list1);
         assertThat(list1.size()).isEqualTo(2).as("消费消息成功");
+
+        try {
+            TableInfo tableInfo = dbManager.selectTable(dbName,"dz_mq_producer");
+            assertThat(tableInfo.getVersion()).isEqualTo(2).as("数据脚本更新成功");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
@@ -27,6 +28,7 @@ import javax.annotation.PreDestroy;
 @MapperScan("com.dazong.example.dao.mapper*")
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
 @EnableIdempotent
+@EnableFeignClients(basePackages={"com.dazong.common.feign"})
 public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);

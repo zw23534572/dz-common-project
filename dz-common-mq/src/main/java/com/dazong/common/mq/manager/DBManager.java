@@ -34,24 +34,33 @@ public class DBManager {
 
     public TableInfo selectTable(String dbName, String tableName) throws SQLException {
         Connection conn = null;
-        ResultSet rs = null;
         try {
             conn = dataSource.getConnection();
             if (dbType == null){
                 dbType = getDBType(conn);
             }
+            TableInfo tableInfo;
+            if (dbType.equalsIgnoreCase(TableInfo.DBTYPE_H2)){
+                tableInfo = getTableInfo4H2(conn, dbName, tableName);
+            } else {
+                tableInfo = getTableInfo4MySql(conn, dbName, tableName);
+            }
+            return tableInfo;
+        } finally {
+            close(null, null, conn);
+        }
+    }
+
+    private TableInfo getTableInfo4H2(Connection conn, String dbName, String tableName) throws SQLException {
+        ResultSet rs = null;
+        try {
             String[] types = { "TABLE" };
             rs = conn.getMetaData().getTables(null, null, "%", types);
             while (rs.next()) {
                 String name = rs.getString("TABLE_NAME");
-                String schema = rs.getString("TABLE_SCHEMA");
-                String comment;
-                if (dbType.equalsIgnoreCase(TableInfo.DBTYPE_H2)){
-                    comment = rs.getString("REMARKS");
-                } else {
-                    comment = rs.getString("TABLE_COMMENT");
-                }
-                if (schema.equals(dbName) && tableName.equals(name)){
+                String cat = rs.getString("TABLE_CAT");
+                String comment = rs.getString("REMARKS");
+                if (cat.equalsIgnoreCase(dbName) && tableName.equalsIgnoreCase(name)){
                     TableInfo tableInfo = new TableInfo();
                     tableInfo.setDbName(dbName);
                     tableInfo.setTableName(tableName);
@@ -62,7 +71,29 @@ public class DBManager {
             }
             return null;
         } finally {
-            close(rs, null, conn);
+            close(rs, null, null);
+        }
+    }
+
+    private TableInfo getTableInfo4MySql(Connection conn, String dbName, String tableName) throws SQLException {
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            String sql = String.format("select `table_schema`, `table_name`, `table_comment` " +
+                    "from `information_schema`.`tables` where `table_schema`='%s' and `table_name`='%s';", dbName, tableName);
+
+            rs = stmt.executeQuery(sql);
+            TableInfo tableInfo = null;
+            if (rs.next()){
+                tableInfo = new TableInfo();
+                tableInfo.setDbName(dbName);
+                tableInfo.setTableName(tableName);
+                tableInfo.setTableDesc(rs.getString("table_comment"));
+            }
+            return tableInfo;
+        } finally {
+            close(rs, stmt, null);
         }
     }
 
