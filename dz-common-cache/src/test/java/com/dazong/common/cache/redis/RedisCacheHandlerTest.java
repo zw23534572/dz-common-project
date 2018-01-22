@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -33,10 +34,12 @@ public class RedisCacheHandlerTest {
     CacheFactory cacheFactory;
 
     private static RedisServer server = null;
+    @Value("${spring.redis.port}")
+    String port;
 
     @Before
     public void before() throws IOException {
-        server = RedisServer.newRedisServer(8099);  // bind to a random port
+        server = RedisServer.newRedisServer(Integer.parseInt(port));  // bind to a random port
         server.start();
     }
 
