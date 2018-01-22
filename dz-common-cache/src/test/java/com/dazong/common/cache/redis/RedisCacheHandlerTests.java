@@ -28,7 +28,7 @@ import static junit.framework.TestCase.*;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/META-INF/dz-common-cache-test.xml")
-public class RedisCacheHandlerTest {
+public class RedisCacheHandlerTests {
 
     @Autowired
     CacheFactory cacheFactory;
