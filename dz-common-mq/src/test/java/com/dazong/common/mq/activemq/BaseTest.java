@@ -8,10 +8,11 @@ import com.dazong.common.mq.domian.DZMessage;
 import com.dazong.common.mq.domian.TableInfo;
 import com.dazong.common.mq.manager.DBManager;
 import org.apache.activemq.broker.BrokerService;
-import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  **/
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:hsql-test-spring-config.xml"})
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BaseTest {
 
     @Autowired
@@ -60,8 +62,43 @@ public class BaseTest {
 
     @Test
     public void send(){
+        sendQueue();
+        sendTopic();
+    }
+
+    private void sendTopic(){
         DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
         message.setImmediate(true);
+        producer.sendMessage(message);
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
+        System.out.println(list);
+
+        assertThat(list.size()).isEqualTo(2).as("发送消息成功");
+
+        List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
+        System.out.println(list1);
+        assertThat(list1.size()).isEqualTo(3).as("消费消息成功");
+
+        try {
+            TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
+            assertThat(tableInfo.getVersion()).isEqualTo(MQAutoConfiguration.SQL_VERSION).as("数据脚本更新成功");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void sendQueue(){
+        DZMessage message = DZMessage.wrap("mq.test", "卡上打上客户端");
+        message.setImmediate(true);
+        message.setQueue(true);
         producer.sendMessage(message);
 
         try {
@@ -77,7 +114,7 @@ public class BaseTest {
 
         List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
         System.out.println(list1);
-        assertThat(list1.size()).isEqualTo(2).as("消费消息成功");
+        assertThat(list1.size()).isEqualTo(1).as("消费消息成功");
 
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
