@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>ai.grakn</groupId>
 			<artifactId>redis-mock</artifactId>
-			<version>0.1.4</version>
+			<version>0.1.6-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 
