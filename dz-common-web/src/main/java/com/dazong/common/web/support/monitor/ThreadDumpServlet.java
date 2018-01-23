@@ -18,13 +18,23 @@ import java.util.Properties;
 
 /**
  * 获取jvm线程堆栈
+ *
  * @author huqichao
  * @date 2018-01-17 09:30
  **/
-@WebServlet(name="ThreadDump",urlPatterns="/threadDump")
+@WebServlet(name = "ThreadDump", urlPatterns = "/threadDump")
 public class ThreadDumpServlet extends HttpServlet {
 
+
     private static final Logger logger = LoggerFactory.getLogger(ThreadDumpServlet.class);
+
+    private static final String MEMORY_CARD = "1";
+    private static final String THEAD_INFO = "2";
+    private static final String THREAD_DUMP = "3";
+    private static final String GC_INFO = "4";
+    private static final String GIT_REPOSITORY_STATE = "5";
+    private static final String ALL_TYPE = "all";
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -38,24 +48,24 @@ public class ThreadDumpServlet extends HttpServlet {
         ServerInfo serverInfo = new ServerInfo();
 
         //获取内存信息
-        if (type.contains("1") || "all".equals(type)) {
+        if (type.contains(MEMORY_CARD) || ALL_TYPE.equals(type)) {
             serverInfo.setJvmArgs(ManagementFactory.getRuntimeMXBean().getInputArguments().toString());
             getMemory(serverInfo);
         }
         //获取线程信息
-        if (type.contains("2") || "all".equals(type)) {
+        if (type.contains(THEAD_INFO) || ALL_TYPE.equals(type)) {
             getThread(serverInfo);
         }
         //获取threadDump信息
-        if (type.contains("3") || "all".equals(type)){
+        if (type.contains(THREAD_DUMP) || ALL_TYPE.equals(type)) {
             getThreadDump(serverInfo);
         }
         //获取gc信息
-        if (type.contains("4") || "all".equals(type)){
+        if (type.contains(GC_INFO) || ALL_TYPE.equals(type)) {
             getGC(serverInfo);
         }
         //获取gc信息
-        if (type.contains("5") || "all".equals(type)){
+        if (type.contains(GIT_REPOSITORY_STATE) || "all".equals(type)) {
             getGitRepositoryState(serverInfo);
         }
 
@@ -66,7 +76,7 @@ public class ThreadDumpServlet extends HttpServlet {
         out.close();
     }
 
-    private void getThreadDump(ServerInfo serverInfo){
+    public void getThreadDump(ServerInfo serverInfo) {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         ThreadInfo[] infos = bean.dumpAllThreads(true, true);
 
@@ -78,17 +88,17 @@ public class ThreadDumpServlet extends HttpServlet {
         serverInfo.setThreadDump(dumpStr.toString());
     }
 
-    private void getGC(ServerInfo serverInfo){
+    public void getGC(ServerInfo serverInfo) {
         List<GarbageCollectorMXBean> gcList = ManagementFactory.getGarbageCollectorMXBeans();
         List<GCInfo> gcInfos = new ArrayList<>(gcList.size());
-        for (GarbageCollectorMXBean gc : gcList){
+        for (GarbageCollectorMXBean gc : gcList) {
             gcInfos.add(new GCInfo(gc.getName(), gc.getCollectionCount(), gc.getCollectionTime()));
         }
 
         serverInfo.setGcInfoList(gcInfos);
     }
 
-    private void getMemory(ServerInfo serverInfo){
+    public void getMemory(ServerInfo serverInfo) {
         MemoryMXBean memoryMBean = ManagementFactory.getMemoryMXBean();
         MemoryUsage headUsage = memoryMBean.getHeapMemoryUsage();
         serverInfo.setHeadJvmInit(headUsage.getInit());
@@ -103,7 +113,7 @@ public class ThreadDumpServlet extends HttpServlet {
         serverInfo.setNonHeadJvmMax(nonHeadUsage.getMax());
     }
 
-    private void getThread(ServerInfo serverInfo){
+    public void getThread(ServerInfo serverInfo) {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         serverInfo.setThreadCount(threadMXBean.getThreadCount());
         serverInfo.setDaemonThreadCount(threadMXBean.getDaemonThreadCount());
