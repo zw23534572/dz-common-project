@@ -4,17 +4,21 @@ import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
 import com.dazong.common.cache.redis.domain.Person;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import ai.grakn.redismock.RedisServer;
 import static junit.framework.TestCase.*;
 
 /**
@@ -24,10 +28,30 @@ import static junit.framework.TestCase.*;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/META-INF/dz-common-cache-test.xml")
-public class RedisCacheHandlerTests {
+public class RedisCacheHandlerTest {
 
     @Autowired
     CacheFactory cacheFactory;
+
+    private static RedisServer server = null;
+    @Value("${spring.redis.port}")
+    String port;
+
+    @Before
+    public void before() throws IOException {
+        server = RedisServer.newRedisServer(Integer.parseInt(port));  // bind to a random port
+        server.start();
+    }
+
+    @Test
+    public void test() {
+    }
+
+    @After
+    public void after() {
+        server.stop();
+        server = null;
+    }
 
     @Test
     public void saveString() {

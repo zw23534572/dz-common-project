@@ -38,6 +38,20 @@ public class ServerInfo {
 
     private List<GCInfo> gcInfoList;
 
+    private String branch;
+
+    private String commitId;
+
+    private String buildVersion;
+
+    private String commitTime;
+
+    private String buildTime;
+
+    private String commitUserName;
+
+    private String commitMessageFull;
+
     public String getJvmArgs() {
         return jvmArgs;
     }
@@ -158,6 +172,62 @@ public class ServerInfo {
         this.gcInfoList = gcInfoList;
     }
 
+    public String getBranch() {
+        return branch;
+    }
+
+    public void setBranch(String branch) {
+        this.branch = branch;
+    }
+
+    public String getCommitId() {
+        return commitId;
+    }
+
+    public void setCommitId(String commitId) {
+        this.commitId = commitId;
+    }
+
+    public String getBuildVersion() {
+        return buildVersion;
+    }
+
+    public void setBuildVersion(String buildVersion) {
+        this.buildVersion = buildVersion;
+    }
+
+    public String getCommitTime() {
+        return commitTime;
+    }
+
+    public void setCommitTime(String commitTime) {
+        this.commitTime = commitTime;
+    }
+
+    public String getBuildTime() {
+        return buildTime;
+    }
+
+    public void setBuildTime(String buildTime) {
+        this.buildTime = buildTime;
+    }
+
+    public String getCommitUserName() {
+        return commitUserName;
+    }
+
+    public void setCommitUserName(String commitUserName) {
+        this.commitUserName = commitUserName;
+    }
+
+    public String getCommitMessageFull() {
+        return commitMessageFull;
+    }
+
+    public void setCommitMessageFull(String commitMessageFull) {
+        this.commitMessageFull = commitMessageFull;
+    }
+
     @Override
     public String toString() {
         return "ServerInfo{" +
@@ -176,6 +246,13 @@ public class ServerInfo {
                 ", totalStartedThreadCount=" + totalStartedThreadCount +
                 ", threadDump='" + threadDump + '\'' +
                 ", gcInfoList=" + gcInfoList +
+                ", branch='" + branch + '\'' +
+                ", commitId='" + commitId + '\'' +
+                ", buildVersion='" + buildVersion + '\'' +
+                ", commitTime='" + commitTime + '\'' +
+                ", buildTime='" + buildTime + '\'' +
+                ", commitUserName='" + commitUserName + '\'' +
+                ", commitMessageFull='" + commitMessageFull + '\'' +
                 '}';
     }
 }

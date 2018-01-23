@@ -1,6 +1,8 @@
 package com.dazong.common.web.support.monitor;
 
 import com.alibaba.fastjson.JSON;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,7 @@ import java.io.PrintWriter;
 import java.lang.management.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * 获取jvm线程堆栈
@@ -20,6 +23,8 @@ import java.util.List;
  **/
 @WebServlet(name="ThreadDump",urlPatterns="/threadDump")
 public class ThreadDumpServlet extends HttpServlet {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThreadDumpServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,6 +53,10 @@ public class ThreadDumpServlet extends HttpServlet {
         //获取gc信息
         if (type.contains("4") || "all".equals(type)){
             getGC(serverInfo);
+        }
+        //获取gc信息
+        if (type.contains("5") || "all".equals(type)){
+            getGitRepositoryState(serverInfo);
         }
 
         PrintWriter out = resp.getWriter();
@@ -100,5 +109,22 @@ public class ThreadDumpServlet extends HttpServlet {
         serverInfo.setDaemonThreadCount(threadMXBean.getDaemonThreadCount());
         serverInfo.setPeakThreadCount(threadMXBean.getPeakThreadCount());
         serverInfo.setTotalStartedThreadCount(threadMXBean.getTotalStartedThreadCount());
+    }
+
+
+    public void getGitRepositoryState(ServerInfo serverInfo) {
+        Properties properties = new Properties();
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream("git.properties"));
+            serverInfo.setBranch(properties.getProperty("git.branch"));
+            serverInfo.setCommitId(properties.getProperty("git.commit.id"));
+            serverInfo.setCommitTime(properties.getProperty("git.commit.time"));
+            serverInfo.setBuildTime(properties.getProperty("git.build.time"));
+            serverInfo.setBuildVersion(properties.getProperty("git.build.version"));
+            serverInfo.setCommitUserName(properties.getProperty("git.commit.user.name"));
+            serverInfo.setCommitMessageFull(properties.getProperty("git.commit.message.full"));
+        } catch (Exception e) {
+            logger.warn("this application does not configure the Maven plugin: git-commit-id-plugin");
+        }
     }
 }
