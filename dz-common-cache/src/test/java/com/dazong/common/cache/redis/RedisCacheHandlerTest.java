@@ -46,6 +46,9 @@ public class RedisCacheHandlerTest {
     @Before
     public void before() throws IOException {
         server = RedisServer.newRedisServer(port);  // bind to a random port
+//         ServiceOptions options = new ServiceOptions();
+//        options.setCloseSocketAfterSeveralCommands(3);
+//        server.setOptions(options);
         server.start();
     }
 

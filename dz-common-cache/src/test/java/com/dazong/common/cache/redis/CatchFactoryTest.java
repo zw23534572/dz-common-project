@@ -1,5 +1,6 @@
 package com.dazong.common.cache.redis;
 
+import com.dazong.common.autoconfig.RedisAutoConfigure;
 import com.dazong.common.cache.constants.CacheType;
 import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.core.impl.LocalCacheHandler;
@@ -11,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.cglib.core.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,7 +23,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/META-INF/dz-common-cache-test.xml")
+@SpringBootTest(classes = RedisAutoConfigure.class)
+@EnableAutoConfiguration
 public class CatchFactoryTest {
 
     @Autowired
