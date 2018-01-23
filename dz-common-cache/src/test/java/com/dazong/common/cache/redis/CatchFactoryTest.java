@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration("/META-INF/dz-common-cache-test.xml")
-public class CatchFactoryTests {
+public class CatchFactoryTest {
 
     @Autowired
     CacheFactory cacheFactory;
