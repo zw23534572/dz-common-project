@@ -20,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import ai.grakn.redismock.RedisServer;
 import static junit.framework.TestCase.*;
 
@@ -72,7 +74,11 @@ public class RedisCacheHandlerTest {
         String valueOri = "daniel";
 
         cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.ONE_MILL_SECOND);
-        for (int i = 0; i < 100000; ++i);
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
 
