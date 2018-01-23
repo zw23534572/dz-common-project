@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -25,6 +26,8 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
 
     private static final Logger logger = LoggerFactory.getLogger(RedisCacheHandler.class);
     public static final String IS_NULL_VALUE_WARN = "获取到的value值为null";
+
+    private static final String CHARACTER = "UTF-8";
 
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
@@ -57,7 +60,11 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.pSetEx(key.getBytes(),expireMilliseconds, str.getBytes());
+                try {
+                    redisConnection.pSetEx(key.getBytes(CHARACTER),expireMilliseconds, str.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -77,7 +84,11 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.pSetEx(key.getBytes(), expireMilliseconds, objectSerializer.serialize(object));
+                try {
+                    redisConnection.pSetEx(key.getBytes(CHARACTER), expireMilliseconds, objectSerializer.serialize(object));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -96,15 +107,23 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notNull(data);
 
         final Map<byte[],byte[]> map = new HashMap<>(10);
-        for (Map.Entry<String,?> entry : data.entrySet()) {
-            map.put(entry.getKey().getBytes(),objectSerializer.serialize(entry.getValue()));
+        try {
+            for (Map.Entry<String,?> entry : data.entrySet()) {
+                map.put(entry.getKey().getBytes(CHARACTER),objectSerializer.serialize(entry.getValue()));
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
 
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.hMSet(key.getBytes(), map);
-                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                try {
+                    redisConnection.hMSet(key.getBytes(CHARACTER), map);
+                    redisConnection.pExpire(key.getBytes(CHARACTER), expireMilliseconds);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -126,8 +145,12 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.hSet(key.getBytes(), itemKey.getBytes(),objectSerializer.serialize(value));
-                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                try {
+                    redisConnection.hSet(key.getBytes(CHARACTER), itemKey.getBytes(CHARACTER),objectSerializer.serialize(value));
+                    redisConnection.pExpire(key.getBytes(CHARACTER), expireMilliseconds);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -148,8 +171,12 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
                 for (Iterator iter = data.iterator(); iter.hasNext();) {
-                    redisConnection.lPush(key.getBytes(), objectSerializer.serialize(iter.next()));
-                    redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                    try {
+                        redisConnection.lPush(key.getBytes(CHARACTER), objectSerializer.serialize(iter.next()));
+                        redisConnection.pExpire(key.getBytes(CHARACTER), expireMilliseconds);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return true;
             }
@@ -171,8 +198,12 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             redisTemplate.execute(new RedisCallback<Boolean>() {
                 @Override
                 public Boolean doInRedis(RedisConnection redisConnection){
-                    redisConnection.lPush(key.getBytes(), objectSerializer.serialize(object));
-                    redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                    try {
+                        redisConnection.lPush(key.getBytes(CHARACTER), objectSerializer.serialize(object));
+                        redisConnection.pExpire(key.getBytes(CHARACTER), expireMilliseconds);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     return true;
                 }
             });
@@ -188,7 +219,11 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.del(key.getBytes());
+                try {
+                    redisConnection.del(key.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -200,7 +235,11 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.hDel(key.getBytes(),itemKey.getBytes());
+                try {
+                    redisConnection.hDel(key.getBytes(CHARACTER),itemKey.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         });
@@ -217,7 +256,12 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         return redisTemplate.execute(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection){
-                byte[] bytes = connection.get(key.getBytes());
+                byte[] bytes = new byte[0];
+                try {
+                    bytes = connection.get(key.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 if(null == bytes){
                     logger.info(IS_NULL_VALUE_WARN);
                     return "";
@@ -240,7 +284,12 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         return redisTemplate.execute(new RedisCallback<T>() {
             @Override
             public T doInRedis(RedisConnection connection){
-                byte[] bytes = connection.get(key.getBytes());
+                byte[] bytes = new byte[0];
+                try {
+                    bytes = connection.get(key.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 if(null == bytes){
                     logger.info(IS_NULL_VALUE_WARN);
                     return null;
@@ -258,7 +307,12 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         return redisTemplate.execute(new RedisCallback<T>() {
             @Override
             public T doInRedis(RedisConnection connection){
-                byte[] value = connection.hGet(key.getBytes(),itemKey.getBytes());
+                byte[] value = new byte[0];
+                try {
+                    value = connection.hGet(key.getBytes(CHARACTER),itemKey.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 if(null == value){
                     logger.info(IS_NULL_VALUE_WARN);
                     return null;
@@ -280,8 +334,13 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         return redisTemplate.execute(new RedisCallback<Map<String, T>>() {
             @Override
-            public Map<String, T> doInRedis(RedisConnection connection){
-                Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
+            public Map<String, T> doInRedis(RedisConnection connection) {
+                Map<byte[],byte[]> value = null;
+                try {
+                    value = connection.hGetAll(key.getBytes(CHARACTER));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 if(value == null || value.isEmpty()){
                     logger.info(IS_NULL_VALUE_WARN);
                     return null;
@@ -311,15 +370,20 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         return redisTemplate.execute(new RedisCallback<List<T>>() {
             @Override
             public List<T> doInRedis(RedisConnection connection){
-                Long len = connection.lLen(key.getBytes());
-                if(len <= 0){
-                    logger.info(IS_NULL_VALUE_WARN);
-                    return new ArrayList<>();
-                }
-                List<byte[]> list  = connection.lRange(key.getBytes(), 0L, len);
-                List<T> targetlist = new ArrayList<>(len.intValue());
-                for (byte[] l : list) {
-                    targetlist.add(objectSerializer.deserialize(l,type));
+                List<T> targetlist = null;
+                try {
+                    Long len = connection.lLen(key.getBytes(CHARACTER));
+                    if(len <= 0){
+                        logger.info(IS_NULL_VALUE_WARN);
+                        return new ArrayList<>();
+                    }
+                    List<byte[]> list  = connection.lRange(key.getBytes(CHARACTER), 0L, len);
+                    targetlist = new ArrayList<>(len.intValue());
+                    for (byte[] l : list) {
+                        targetlist.add(objectSerializer.deserialize(l,type));
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
                 return targetlist;
             }
