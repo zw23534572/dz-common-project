@@ -1,5 +1,6 @@
 package com.dazong.common.cache.redis;
 
+import ai.grakn.redismock.RedisServer;
 import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
@@ -18,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import ai.grakn.redismock.RedisServer;
+
 import static junit.framework.TestCase.*;
 
 /**

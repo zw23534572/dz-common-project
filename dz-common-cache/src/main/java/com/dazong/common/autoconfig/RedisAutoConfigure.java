@@ -33,6 +33,8 @@ import redis.clients.jedis.JedisPoolConfig;
 @ConditionalOnClass({RedisCacheHandler.class})
 public class RedisAutoConfigure {
 
+    @Autowired
+    JedisConnectionFactory jedisConnectionFactory;
 
     @Bean
     @ConditionalOnMissingBean({RedisCacheHandler.class})
@@ -47,25 +49,10 @@ public class RedisAutoConfigure {
     @Bean
     public RedisTemplate redisTemplate() {
         RedisTemplate template = new RedisTemplate();
-        template.setConnectionFactory(getConnectionFactory());
+        template.setConnectionFactory(jedisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new JdkSerializationRedisSerializer());
         return template;
     }
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
-    public JedisConnectionFactory getConnectionFactory() {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        JedisPoolConfig config = getRedisConfig();
-        factory.setPoolConfig(config);
-        return factory;
-    }
-
-
-    @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
-    public JedisPoolConfig getRedisConfig() {
-        return new JedisPoolConfig();
-    }
 }
