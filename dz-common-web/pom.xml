@@ -11,34 +11,30 @@
 	<packaging>jar</packaging>
 	<name>dz-common-web</name>
 
-	<properties>
-		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-web-pom</artifactId>
 			<version>${dz-pom.version}</version>
-			<type>pom</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
 			<version>${dz-pom.version}</version>
-			<type>pom</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-dubbo-pom</artifactId>
 			<version>${dz-pom.version}</version>
-			<type>pom</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-activemq-pom</artifactId>
 			<version>${dz-pom.version}</version>
-			<type>pom</type>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.common</groupId>
@@ -48,43 +44,11 @@
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common-util</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.2</version>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.0.1</version>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	
 </project>

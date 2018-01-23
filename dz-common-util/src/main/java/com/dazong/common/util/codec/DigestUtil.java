@@ -33,7 +33,7 @@ public class DigestUtil {
     /** 加密算法 */
     public static final String HASH_ALGORITHM = "SHA-256";
     /** MD5 */
-    public static final String MD5 = "MD5";
+    public static final String STR_MD5 = "MD5";
 
     private static SecureRandom random = new SecureRandom();
 
@@ -93,7 +93,7 @@ public class DigestUtil {
      * 对文件进行md5散列.
      */
     public static byte[] md5(InputStream input) throws IOException {
-        return digest(input, MD5);
+        return digest(input, STR_MD5);
     }
 
     /**

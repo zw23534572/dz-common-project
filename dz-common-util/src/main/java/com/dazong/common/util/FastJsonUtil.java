@@ -10,8 +10,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  @author zisong.wang
+ *  @updateDate 2018/01/15
+ */
 public class FastJsonUtil {
-    public FastJsonUtil() {
+    private FastJsonUtil() {
     }
 
     /**
@@ -49,7 +53,7 @@ public class FastJsonUtil {
     }
 
     public static String toJsonSuccess(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<String, Object>();
+        Map<String, Object> mp = new HashMap<>();
         mp.put("status", 1);
         mp.put("state", "success");
         mp.put("msg", msg);
@@ -58,7 +62,7 @@ public class FastJsonUtil {
     }
 
     public static String toJsonError(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<String, Object>();
+        Map<String, Object> mp = new HashMap<>();
         mp.put("status", 0);
         mp.put("state", "error");
         mp.put("msg", msg);
@@ -66,28 +70,4 @@ public class FastJsonUtil {
         return toJson(mp);
     }
 
-    public static void main(String[] args) {
-
-        String json = "{\n" +
-                "    \"errcode\": 0,\n" +
-                "    \"errmsg\": \"ok\",\n" +
-                "    \"department\": [\n" +
-                "        {\n" +
-                "           \"id\": 2,\n" +
-                "            \"name\": \"钉钉事业部\",\n" +
-                "            \"parentid\": 1,\n" +
-                "            \"createDeptGroup\": true,\n" +
-                "            \"autoAddUser\": true\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"id\": 3,\n" +
-                "            \"name\": \"服务端开发组\",\n" +
-                "            \"parentid\": 2,\n" +
-                "            \"createDeptGroup\": false,\n" +
-                "            \"autoAddUser\": false\n" +
-                "        }\n" +
-                "    ]\n" +
-                "}";
-
-    }
 }

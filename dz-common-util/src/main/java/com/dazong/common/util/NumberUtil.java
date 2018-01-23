@@ -169,4 +169,4 @@ public class NumberUtil {
         return round(Double.valueOf(object.toString()), scale);
     }
 
-};
+}

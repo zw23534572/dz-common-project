@@ -18,7 +18,7 @@ import javax.jms.*;
 
 /**
  * @author huqichao
- * @create 2017-10-31 09:47
+ * @date 2017-10-31 09:47
  **/
 @Component
 public class MQSendManager {

@@ -6,12 +6,12 @@
 	<parent>
 		<artifactId>dz-pom</artifactId>
 		<groupId>com.dazong.pom</groupId>
-		<version>1.5-SNAPSHOT</version>
+		<version>1.6-SNAPSHOT</version>
 	</parent>
 
 	<properties>
 		<dz.common.version>4.0.0-SNAPSHOT</dz.common.version>
-		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
+		<dz-pom.version>1.6-SNAPSHOT</dz-pom.version>
 	</properties>
 
 	<groupId>com.dazong.common</groupId>
@@ -31,7 +31,7 @@
 		<module>dz-common-trans</module>
 		<module>dz-common-web</module>
 		<module>dz-common-fegin-interface</module>
-		<module>example</module>
+		<module>dz-common-elasticjob-starter</module>
     </modules>
 
 	<dependencyManagement>
@@ -81,8 +81,12 @@
 				<artifactId>dz-common-web</artifactId>
 				<version>${dz.common.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.dazong.common</groupId>
+				<artifactId>dz-common-elasticjob-starter</artifactId>
+				<version>${dz.common.version}</version>
+			</dependency>
 		</dependencies>
-
 	</dependencyManagement>
 
 	<distributionManagement>
@@ -97,4 +101,15 @@
 			<url>http://172.16.21.221:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>javancss-maven-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+		</plugins>
+	</reporting>
+
 </project>

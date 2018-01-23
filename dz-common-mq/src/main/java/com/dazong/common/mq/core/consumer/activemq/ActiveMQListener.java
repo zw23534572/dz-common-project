@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @author huqichao
- * @create 2017-11-02 13:46
+ * @date 2017-11-02 13:46
  **/
 public class ActiveMQListener implements MessageListener {
 

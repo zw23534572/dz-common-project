@@ -3,7 +3,6 @@ package com.dazong.common.mq.activemq;
 import com.dazong.common.mq.constant.Constants;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.RedeliveryPolicy;
-import org.apache.qpid.jms.JmsConnectionFactory;
 
 import javax.jms.*;
 

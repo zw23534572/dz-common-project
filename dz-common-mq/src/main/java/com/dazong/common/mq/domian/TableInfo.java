@@ -8,12 +8,15 @@ import java.io.Serializable;
 
 /**
  * @author huqichao
- * @create 2017-10-30 19:29
+ * @date 2017-10-30 19:29
  **/
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ToString(callSuper=true)
 public class TableInfo implements Serializable {
+
+    public static final String DBTYPE_MYSQL = "mysql";
+    public static final String DBTYPE_H2 = "h2";
 
     private String dbName;
 

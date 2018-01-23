@@ -276,12 +276,13 @@ public class DateUtil {
     public static String getYearWeekNoByDate(Date date) {
         String dimWeek = "";
         int weekNo = getWeekOfYear(date);
-        int year = getYearOfWeek(date);
+        String year = String.valueOf(getYearOfWeek(date));
+        String week = String.valueOf(weekNo);
         int val = 10;
         if (weekNo < val) {
-            dimWeek = String.valueOf(year) + "0" + String.valueOf(weekNo);
+            dimWeek = year + "0" + week;
         } else {
-            dimWeek = String.valueOf(year) + String.valueOf(weekNo);
+            dimWeek = year + week;
         }
         return dimWeek;
     }
