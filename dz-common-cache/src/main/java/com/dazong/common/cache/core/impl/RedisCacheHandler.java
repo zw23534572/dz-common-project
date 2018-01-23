@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: DanielLi
@@ -61,7 +62,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
                 try {
-                    redisConnection.pSetEx(key.getBytes(CHARACTER),expireMilliseconds, str.getBytes(CHARACTER));
+                    redisConnection.pSetEx(key.getBytes(CHARACTER), expireMilliseconds, str.getBytes(CHARACTER));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -146,7 +147,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
                 try {
-                    redisConnection.hSet(key.getBytes(CHARACTER), itemKey.getBytes(CHARACTER),objectSerializer.serialize(value));
+                    redisConnection.hSet(key.getBytes(CHARACTER), itemKey.getBytes(CHARACTER), objectSerializer.serialize(value));
                     redisConnection.pExpire(key.getBytes(CHARACTER), expireMilliseconds);
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
@@ -253,6 +254,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Override
     public String getString(final String key) {
         Validate.notBlank(key);
+
         return redisTemplate.execute(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection){
