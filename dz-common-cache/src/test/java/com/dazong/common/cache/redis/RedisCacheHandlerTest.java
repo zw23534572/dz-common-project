@@ -1,5 +1,6 @@
 package com.dazong.common.cache.redis;
 
+import com.dazong.common.autoconfig.RedisAutoConfigure;
 import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
@@ -10,7 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -27,7 +29,8 @@ import static junit.framework.TestCase.*;
  * @Description:
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/META-INF/dz-common-cache-test.xml")
+@SpringBootTest(classes = RedisAutoConfigure.class)
+@EnableAutoConfiguration
 public class RedisCacheHandlerTest {
 
     @Autowired
@@ -35,11 +38,11 @@ public class RedisCacheHandlerTest {
 
     private static RedisServer server = null;
     @Value("${spring.redis.port}")
-    String port;
+    int port;
 
     @Before
     public void before() throws IOException {
-        server = RedisServer.newRedisServer(Integer.parseInt(port));  // bind to a random port
+        server = RedisServer.newRedisServer(port);  // bind to a random port
         server.start();
     }
 
