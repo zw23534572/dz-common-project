@@ -42,22 +42,25 @@
 
 4、使用方式
 ```java
-@Autowired
-CacheFactory cacheFactory;
-```
-```java
-   @Test
-    public void saveObject() {
-        String keyTemp = "name";
+  
+    @Autowired
+    ICacheHandler redisCacheHandler;
 
-        Person personOri = new Person();
-        personOri.setName("daniel");
-        personOri.setAge(18);
+    /**
+     * 使用自动注入处理器对象
+     */
 
-        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri);
-        Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
-
-        assert (personOri.equals(valueTemp));
+    /**
+     * 设置key值
+     */
+    @RequestMapping("/set1")
+    @ResponseBody
+    public void testSetList1() {
+        List<String> stringList = new ArrayList<>();
+        String key = "demo";
+        stringList.add("hello");
+        stringList.add("world");
+        redisCacheHandler.saveList(key, stringList, IExpire.FIVE_MIN);
     }
 ```
 

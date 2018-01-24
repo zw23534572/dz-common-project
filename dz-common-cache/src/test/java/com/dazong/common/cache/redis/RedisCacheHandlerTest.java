@@ -36,8 +36,9 @@ import static junit.framework.TestCase.*;
 @EnableAutoConfiguration
 public class RedisCacheHandlerTest {
 
+
     @Autowired
-    CacheFactory cacheFactory;
+    ICacheHandler redisCacheHandler;
 
     private static RedisServer server = null;
     @Value("${spring.redis.port}")
@@ -45,11 +46,8 @@ public class RedisCacheHandlerTest {
 
     @Before
     public void before() throws IOException {
-        server = RedisServer.newRedisServer(port);  // bind to a random port
-//         ServiceOptions options = new ServiceOptions();
-//        options.setCloseSocketAfterSeveralCommands(3);
-//        server.setOptions(options);
-        server.start();
+//        server = RedisServer.newRedisServer(port);
+//        server.start();
     }
 
     @Test
@@ -58,8 +56,8 @@ public class RedisCacheHandlerTest {
 
     @After
     public void after() {
-        server.stop();
-        server = null;
+//        server.stop();
+//        server = null;
     }
 
     @Test
@@ -67,8 +65,8 @@ public class RedisCacheHandlerTest {
         String keyTemp = "name";
         String valueOri = "abc";
 
-        cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.FIVE_MIN);
-        String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
+        redisCacheHandler.saveString(keyTemp, valueOri, IExpire.FIVE_MIN);
+        String valueResult = redisCacheHandler.getString(keyTemp);
 
         assert (valueOri.equals(valueResult));
     }
@@ -77,14 +75,14 @@ public class RedisCacheHandlerTest {
         final String keyTemp = "name";
         String valueOri = "daniel";
 
-        cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.ONE_MILL_SECOND);
+        redisCacheHandler.saveString(keyTemp, valueOri, IExpire.ONE_MILL_SECOND);
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
+        String valueResult = redisCacheHandler.getString(keyTemp);
 
         assert ("".equals(valueResult));
     }
@@ -97,8 +95,8 @@ public class RedisCacheHandlerTest {
         personOri.setName("daniel");
         personOri.setAge(18);
 
-        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri, IExpire.FIVE_MIN);
-        Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
+        redisCacheHandler.saveObject(keyTemp, personOri, IExpire.FIVE_MIN);
+        Person valueTemp = redisCacheHandler.getObject(keyTemp, Person.class);
 
         assert (personOri.equals(valueTemp));
     }
@@ -110,16 +108,16 @@ public class RedisCacheHandlerTest {
         personOri.setName("daniel");
         personOri.setAge(18);
 
-        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri, IExpire.ONE_MILL_SECOND);
+        redisCacheHandler.saveObject(keyTemp, personOri, IExpire.ONE_MILL_SECOND);
         for (int i = 0; i < 100000; ++i);
-        Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
+        Person valueTemp = redisCacheHandler.getObject(keyTemp, Person.class);
 
         assertEquals (valueTemp, null);
     }
 
     @Test
     public void saveMap() {
-        ICacheHandler cacheHandler = cacheFactory.getDefaultCacheHandler();
+        ICacheHandler cacheHandler = redisCacheHandler;
         String mapkey = "test:map";
         String itemkey = "str";
         String itemValue = "test001";
@@ -164,7 +162,7 @@ public class RedisCacheHandlerTest {
 
     @Test
     public void saveList() {
-        ICacheHandler cacheHandler = cacheFactory.getDefaultCacheHandler();
+        ICacheHandler cacheHandler = redisCacheHandler;
         List<String> strs2 = new ArrayList<String>();
         strs2.add("1");
         strs2.add("2");
@@ -191,9 +189,9 @@ public class RedisCacheHandlerTest {
         personOri.setName("danielDelete");
         personOri.setAge(18);
 
-        cacheFactory.getDefaultCacheHandler().saveObject(keyTemp, personOri, IExpire.FIVE_MIN);
-        cacheFactory.getDefaultCacheHandler().delete(keyTemp);
-        Person valueTemp = cacheFactory.getDefaultCacheHandler().getObject(keyTemp, Person.class);
+        redisCacheHandler.saveObject(keyTemp, personOri, IExpire.FIVE_MIN);
+        redisCacheHandler.delete(keyTemp);
+        Person valueTemp = redisCacheHandler.getObject(keyTemp, Person.class);
 
         assertEquals (valueTemp, null);
     }

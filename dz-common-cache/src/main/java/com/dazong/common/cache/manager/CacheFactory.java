@@ -55,23 +55,4 @@ public class CacheFactory extends ApplicationObjectSupport {
         }
         return cacheHandlerTemp;
     }
-
-    /**
-     * 获取默认缓存处理器
-     * @return
-     */
-    public ICacheHandler getDefaultCacheHandler(){
-        String[] arrayBean = getApplicationContext().getBeanNamesForAnnotation(Configuration.class);
-        if(arrayBean.length == 0){
-            throw new CacheException("请按照使用说明配置项目");
-        }
-        // 设置默认处理器
-        if(null == cacheHandler){
-            cacheHandler = redisCacheHandler;
-        }
-        return cacheHandler;
-    }
-    public  void setDefaultCacheHandler(ICacheHandler cacheHandler){
-        this.cacheHandler = cacheHandler;
-    }
 }
