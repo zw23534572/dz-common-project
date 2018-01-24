@@ -1,5 +1,6 @@
 package com.dazong.common.cache.redis;
 
+import ai.grakn.redismock.ServiceOptions;
 import com.dazong.common.autoconfig.RedisAutoConfigure;
 import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
@@ -45,6 +46,9 @@ public class RedisCacheHandlerTest {
     @Before
     public void before() throws IOException {
         server = RedisServer.newRedisServer(port);  // bind to a random port
+//         ServiceOptions options = new ServiceOptions();
+//        options.setCloseSocketAfterSeveralCommands(3);
+//        server.setOptions(options);
         server.start();
     }
 
@@ -61,7 +65,7 @@ public class RedisCacheHandlerTest {
     @Test
     public void saveString() {
         String keyTemp = "name";
-        String valueOri = "daniel";
+        String valueOri = "abc";
 
         cacheFactory.getDefaultCacheHandler().saveString(keyTemp, valueOri, IExpire.FIVE_MIN);
         String valueResult = cacheFactory.getDefaultCacheHandler().getString(keyTemp);
