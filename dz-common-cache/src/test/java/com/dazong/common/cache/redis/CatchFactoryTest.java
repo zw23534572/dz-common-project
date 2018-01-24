@@ -28,11 +28,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CatchFactoryTest {
 
     @Autowired
+    ICacheHandler redisCacheHandler;
+
+    @Autowired
     CacheFactory cacheFactory;
 
     @Test
     public void testGetDefaultHandler(){
-        ICacheHandler cacheHandler = cacheFactory.getDefaultCacheHandler();
+        ICacheHandler cacheHandler = cacheFactory.getCacheHandler(CacheType.CACHE_REDIS);
         assert(cacheHandler instanceof RedisCacheHandler);
     }
 
