@@ -12,9 +12,9 @@ import java.nio.charset.Charset;
  *
  * @author Sam
  */
-public class CharsetUtil {
+public class CharsetUtils {
 
-    private CharsetUtil() {
+    private CharsetUtils() {
 
     }
 
@@ -29,8 +29,8 @@ public class CharsetUtil {
     }
 
     public static String encode(CharSequence str, String encoding) {
-        Assert.isEmpty(str, "the encode string can not be null!");
-        if (StringUtil.isNotEmpty(str)) {
+        Assert.notEmpty(str, "the encode string can not be null!");
+        if (StringUtils.isNotEmpty(str)) {
             try {
                 return new String(str.toString().getBytes(), encoding);
             } catch (UnsupportedEncodingException e) {

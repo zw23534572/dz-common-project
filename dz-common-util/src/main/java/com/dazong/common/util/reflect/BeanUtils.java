@@ -3,9 +3,8 @@ package com.dazong.common.util.reflect;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.Assert;
-import com.dazong.common.util.CommonUtil;
+import com.dazong.common.util.CommonUtils;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +18,7 @@ import java.util.Map;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class BeanUtil extends BeanUtils {
+public class BeanUtils extends org.springframework.beans.BeanUtils {
 
     /**
      * bean copy
@@ -30,7 +29,7 @@ public class BeanUtil extends BeanUtils {
      */
     public static void copyPropertiesWithout(Object target, Object source, String... withOutFields) {
         try {
-            BeanUtils.copyProperties(target, source);
+            org.springframework.beans.BeanUtils.copyProperties(target, source);
             if (withOutFields != null) {
                 for (String f : withOutFields) {
                     PropertyUtils.setProperty(target, f, null);
@@ -77,10 +76,10 @@ public class BeanUtil extends BeanUtils {
      * @return
      */
     public static <T> List<T> copyObjects(List sourceObjects, Class<T> targetObjectClass, String... withOutFields) {
-        if (CommonUtil.isEmpty(sourceObjects)) {
+        if (CommonUtils.isEmpty(sourceObjects)) {
             return new ArrayList<>();
         }
-        List<T> targetObjects = CommonUtil.arrayList(sourceObjects.size());
+        List<T> targetObjects = CommonUtils.arrayList(sourceObjects.size());
         for (Iterator iter = sourceObjects.iterator(); iter.hasNext(); ) {
             T targetObject = copy(iter.next(), targetObjectClass, withOutFields);
             if (targetObject != null) {
@@ -108,7 +107,7 @@ public class BeanUtil extends BeanUtils {
      * @return
      */
     public static String getSimpleProperty(Object bean, String name) {
-        Assert.isEmpty(bean, name);
+        Assert.notEmpty(bean, name);
         try {
             return org.apache.commons.beanutils.BeanUtils.getSimpleProperty(bean, name);
         } catch (Exception e) {

@@ -13,9 +13,9 @@ import java.util.Map.Entry;
  *
  * @author zisong.wang
  */
-public class CommonUtil {
+public class CommonUtils {
 
-    private CommonUtil(){
+    private CommonUtils(){
 
     }
 
@@ -67,7 +67,7 @@ public class CommonUtil {
      */
     public static Map<String, String> string2Map(String string, String keySplitStr, String entrySplitStr) {
         Map<String, String> map = new HashMap<>();
-        if (StringUtil.isNotBlank(string)) {
+        if (StringUtils.isNotBlank(string)) {
             String[] groups = string.split(entrySplitStr);
             for (String group : groups) {
                 String[] entry = group.split(keySplitStr);
@@ -223,7 +223,7 @@ public class CommonUtil {
             return true;
         }
         if (obj instanceof String) {
-            return StringUtil.isEmpty(obj.toString());
+            return StringUtils.isEmpty(obj.toString());
         } else if (obj instanceof Collection) {
             return isEmpty(((Collection) obj));
         } else if (obj instanceof Map) {
@@ -432,7 +432,7 @@ public class CommonUtil {
         }
         Map<String, V> map = new HashMap<>();
         for (V v : list) {
-            String[] comboProperty = StringUtil.splitIgnoreBlank(keyProperty, ",");
+            String[] comboProperty = StringUtils.splitIgnoreBlank(keyProperty, ",");
             StringBuilder key = new StringBuilder();
             for (String prop : comboProperty) {
                 String keyItem = Objects.toString(ClassWrapper.wrap(v).getValue(v, prop));
