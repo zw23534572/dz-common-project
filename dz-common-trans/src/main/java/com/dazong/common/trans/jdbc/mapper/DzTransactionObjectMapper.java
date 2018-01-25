@@ -4,19 +4,66 @@ import java.util.List;
 
 import com.dazong.common.trans.support.DzTransactionObject;
 
+/**
+ * 数据库操作mapper
+ * @author hujunzhong
+ *
+ */
 public interface DzTransactionObjectMapper {
+	
+	/**
+	 * <B>方法名称：如果不存在则创建表</B><BR>
+	 * <B>概要说明：</B><BR>
+	 */
+	void createTableIfNotExists();
+	
+	/**
+	 * 通过事务id删除一条记录
+	 * @param uid
+	 * @return
+	 */
 	int deleteByPrimaryKey(String uid);
 
+	/**
+	 * 插入一条记录
+	 * @param record
+	 * @return
+	 */
 	int insert(DzTransactionObject record);
 
+	/**
+	 * 插入一条记录
+	 * @param record
+	 * @return
+	 */
 	int insertSelective(DzTransactionObject record);
-
+	
+	/**
+	 * 通过事务id查询对象
+	 * @param uid
+	 * @return
+	 */
 	DzTransactionObject selectByPrimaryKey(String uid);
-
+	
+	/**
+	 * 更新一条记录
+	 * @param record
+	 * @return
+	 */
 	int updateByPrimaryKeySelective(DzTransactionObject record);
-
+	
+	/**
+	 * 更新一条记录
+	 * @param record
+	 * @return
+	 */
 	int updateByPrimaryKey(DzTransactionObject record);
 
+	/**
+	 * 通过跟事务id删除记录
+	 * @param rid
+	 * @return
+	 */
 	int deleteByRid(String rid);
 
 	/**

@@ -36,7 +36,11 @@ public enum CommonStatus implements IErrors<CommonResponse> {
 	/**
 	 * mq系统错误
 	 */
-	MQ_ERROR(505, "消息组件发生异常");
+	MQ_ERROR(505, "消息组件发生异常"),
+	/**
+	 * mq系统错误
+	 */
+	RETRY_UTIL_ERROR(506, "重试组件发生异常");
 
 	private int code;
 	private String message;

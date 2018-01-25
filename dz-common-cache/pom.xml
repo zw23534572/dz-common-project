@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dazong.common</groupId>
 		<artifactId>dz-common-parent</artifactId>
@@ -9,11 +10,9 @@
 	</parent>
 
 	<artifactId>dz-common-cache</artifactId>
-	<modelVersion>4.0.0</modelVersion>
 
 	<packaging>jar</packaging>
 	<name>dz-common-cache</name>
-
 
 	<dependencies>
 		<dependency>
@@ -24,8 +23,28 @@
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-test-pom</artifactId>
-			<version>1.5-SNAPSHOT</version>
-			<type>pom</type>
+			<version>${dz-pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>de.ruedigermoeller</groupId>
+			<artifactId>fst</artifactId>
+			<version>2.43</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-redis-pom</artifactId>
+			<version>${dz-pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.awaitility</groupId>
+			<artifactId>awaitility</artifactId>
+			<version>2.0.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

@@ -40,20 +40,8 @@ system_code=88 --项目系统码
 
 配置完成，可通过```spring boot```方式正常启动.
 
-## 开始使用
 
-声明：启动类注解``@EnableDzWeb``,其中包含```统一异常拦截```，```统一正常封包```
-
-```java
-@EnableDzWeb
-public class StartupServer {
-    public static void main(String[] args) {
-        SpringApplication.run(StartupServer.class, args);
-    }
-}
-```
-
-#### 使用1：统一异常拦截
+### 使用1：统一异常拦截
 
 测试代码
 
@@ -79,7 +67,7 @@ public List<String> test2() {
 
 > 访问http://localhost/test2 接口时，异常信息自动封装成json返回。
 
-#### 使用2：统一正常封包
+### 使用2：统一正常封包
 
 测试代码
 
@@ -115,19 +103,10 @@ public List<String> test() {
 >
 > 这样好处是，数据封装的操作交给了dz-common-web.
 
-#### 使用3：项目检测
+### 使用3：项目检测
 
-声明：启动类注解``@EnableDzSimpleMonitor``,其中包含```项目检测```
-
-```java
-@EnableDzSimpleMonitor
-public class StartupServer {
-    public static void main(String[] args) {
-        SpringApplication.run(StartupServer.class, args);
-    }
-}
-```
-> 开启后访问  http://localhost/simpleMonitor 进行检测
+  - 心跳检测 http://localhost/simpleMonitor
+  - 线程堆栈检测 http://localhost/threadDump
 
 
 
@@ -138,14 +117,12 @@ dz-common-web-example\src\main\java\com\dazong\test\StartupServer.java
 ```java
 package com.dazong.test;
 
-import com.dazong.common.annotation.EnableDzSimpleMonitor;
-import com.dazong.common.annotation.EnableDzWeb;
+import com.dazong.common.web.annotation.EnableDzSimpleMonitor;
+import com.dazong.common.web.annotation.EnableDzWeb;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@EnableDzWeb
-@EnableDzSimpleMonitor
 public class StartupServer {
     public static void main(String[] args) {
         SpringApplication.run(StartupServer.class, args);
@@ -195,6 +172,5 @@ public class ExcepitionWebController {
 dz-common-web-example\src\main\resources\application.properties
 
 ```java
-server.port=8080
-system_code=88
+system_code=88  项目code
 ```

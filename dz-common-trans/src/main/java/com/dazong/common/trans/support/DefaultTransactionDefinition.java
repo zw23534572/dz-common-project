@@ -1,25 +1,22 @@
 package com.dazong.common.trans.support;
 
-import java.io.Serializable;
-
 import com.dazong.common.trans.TransactionDefinition;
 import com.dazong.common.trans.annotation.Propagation;
 
-
 /**
  * 事务定义
+ * 
  * @author hujunzhong
  *
  */
-@SuppressWarnings("serial")
-public class DefaultTransactionDefinition implements TransactionDefinition, Serializable{
-	
+public class DefaultTransactionDefinition implements TransactionDefinition {
+
 	private String name;
-	
+
 	private Propagation propagation;
-	
+
 	private long timeout;
-	
+
 	private int maxTryTimes;
 	/**
 	 * 所有参数
@@ -77,6 +74,5 @@ public class DefaultTransactionDefinition implements TransactionDefinition, Seri
 	public void setBussinessId(String bussinessId) {
 		this.bussinessId = bussinessId;
 	}
-	
-	
+
 }

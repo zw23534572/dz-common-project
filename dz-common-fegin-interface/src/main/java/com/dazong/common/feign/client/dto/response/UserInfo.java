@@ -1,11 +1,9 @@
 package com.dazong.common.feign.client.dto.response;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 
@@ -14,6 +12,11 @@ import java.io.Serializable;
  */
 @Data
 public class UserInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9077197157796128092L;
+
 	/** 用户编号 出参时使用*/
 	private Long id;
 	

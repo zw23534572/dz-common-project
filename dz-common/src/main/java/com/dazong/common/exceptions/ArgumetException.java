@@ -21,4 +21,6 @@ public class ArgumetException extends BaseApplicationException {
 	public ArgumetException(int code, String message) {
 		super(code, message);
 	}
+
+
 }

@@ -13,9 +13,6 @@
 
 	<packaging>jar</packaging>
 	<name>dz-common</name>
-	<properties>
-		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
-	</properties>
 
 	<dependencies>
 		<dependency>
@@ -27,7 +24,11 @@
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-test-pom</artifactId>
 			<version>${dz-pom.version}</version>
-			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.paranamer</groupId>
+			<artifactId>paranamer</artifactId>
+			<version>2.3</version>
 		</dependency>
 	</dependencies>
 

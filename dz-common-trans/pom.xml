@@ -17,8 +17,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hessian.version>4.0.38</hessian.version>
-		<fmeye.version>2.3.4-SNAPSHOT</fmeye.version>
-		<dz-pom.version>1.5-SNAPSHOT</dz-pom.version>
+		<fmeye.version>2.3.5</fmeye.version>
 		<lombok.version>1.16.18</lombok.version>
 		<guava.version>15.0</guava.version>
 		<hessian.version>4.0.38</hessian.version>
@@ -40,7 +39,6 @@
         	<groupId>com.dazong.pom</groupId>
         	<artifactId>dz-springboot-pom</artifactId>
         	<version>${dz-pom.version}</version>
-        	<type>pom</type>
         	<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -53,13 +51,12 @@
 			<groupId>com.dazong.pom</groupId>
 			 <artifactId>dz-jdbc-pom</artifactId>
 			 <version>${dz-pom.version}</version>
-        	<type>pom</type>
         	<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common</artifactId>
-			<version>4.0.0-SNAPSHOT</version>
+			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

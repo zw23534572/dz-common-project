@@ -16,6 +16,10 @@ public class EnvironmentCache {
     public static void saveUserInfo(UserInfo user) {
         userInfoThreadLocal.set(user);
     }
+    
+    public static void remove(){
+    	userInfoThreadLocal.remove();
+    }
 
     public static UserInfo getUserInfo(){
         return userInfoThreadLocal.get();

@@ -2,7 +2,6 @@ package com.dazong.common.feign.client.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
 
 /**
