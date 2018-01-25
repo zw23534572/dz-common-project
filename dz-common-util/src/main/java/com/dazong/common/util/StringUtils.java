@@ -12,17 +12,16 @@ import static org.apache.commons.lang3.StringUtils.split;
  * @author: zisong.wang
  * @date: 2018/1/10
  */
-public class StringUtil {
+public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 逗号
      */
     public static final String SEP_COMMA = ",";
     private static final String UNDER_LINE = "_";
+    public static final String REGEX_EMAIL = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
+    public static final String REGEX_URL = "((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
 
-    private StringUtil() {
-
-    }
 
     /**
      * 下划线转驼峰法
@@ -356,11 +355,11 @@ public class StringUtil {
      */
     public static String[] splitIgnoreBlank(String s, String regex) {
         return isEmpty(s) ?
-                null : CommonUtil.removeIfEmpty(split(s, regex));
+                null : CommonUtils.removeIfEmpty(split(s, regex));
     }
 
     public static String[] splitIgnoreBlank(String s) {
-        return splitIgnoreBlank(s, StringUtil.SEP_COMMA);
+        return splitIgnoreBlank(s, StringUtils.SEP_COMMA);
     }
 
     /**
@@ -452,7 +451,7 @@ public class StringUtil {
     public static <T extends Number> List<T> splitToNumberList(String str, String sep, Class<T> numClass) {
         String[] strs = splitIgnoreBlank(str, sep);
         if (strs != null) {
-            List<T> nums = CommonUtil.arrayList();
+            List<T> nums = CommonUtils.arrayList();
             for (String s : strs) {
                 if (numClass == Integer.class) {
                     nums.add((T) Integer.valueOf(s));
@@ -473,5 +472,26 @@ public class StringUtil {
         return new ArrayList<>();
     }
 
+    public static boolean matched(String parameter, String pattern) {
+        return isNoneBlank(parameter,parameter) && parameter.matches(pattern);
+    }
+
+    /**
+     * 判断是否为邮箱
+     *
+     * @param parameter
+     */
+    public static boolean isEmail(String parameter) {
+        return matched(parameter,REGEX_EMAIL);
+    }
+
+    /**
+     * 判断是否URL
+     *
+     * @param parameter
+     */
+    public static boolean isUrl(String parameter) {
+        return matched(parameter, REGEX_URL);
+    }
 
 }

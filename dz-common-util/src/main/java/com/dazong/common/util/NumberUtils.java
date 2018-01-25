@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
  * @author zisong.wang
  * @date 2018/01/09
  */
-public class NumberUtil {
+public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
 
     /**
      * 默认除法运算精度
@@ -22,7 +22,7 @@ public class NumberUtil {
      */
     private static String scaleStr = "小数位数必须为大于等于0的正整数";
 
-    private NumberUtil(){
+    private NumberUtils(){
 
     }
 
@@ -167,6 +167,82 @@ public class NumberUtil {
             throw new IllegalArgumentException(scaleStr);
         }
         return round(Double.valueOf(object.toString()), scale);
+    }
+
+    /**
+     * 如果输入一个为空的数字返回0
+     * @param number
+     * @return
+     */
+    public static BigDecimal defaultNumber(BigDecimal number) {
+        return defaultNumber(number,null);
+    }
+
+    public static BigDecimal defaultNumber(BigDecimal number,BigDecimal defaultValue) {
+        if( number == null) {
+            return defaultValue == null ?new BigDecimal(0):defaultValue;
+        }
+        return number;
+    }
+
+    /**
+     * 返回一个默认值的数字
+     * @param number
+     * @return
+     */
+    public static Double defaultNumber(Double number) {
+        if( number == null) {
+            return 0d;
+        }
+        return number;
+    }
+
+    /**
+     * 返回一个默认值的数字
+     * @param number
+     * @return
+     */
+    public static Integer defaultNumber(Integer number) {
+        return defaultNumber(number,0);
+    }
+
+    public static Integer defaultNumber(Integer number,Integer defaultValue) {
+        if( number == null) {
+            return defaultValue;
+        }
+        return number;
+    }
+
+    /**
+     * 返回一个空的数字
+     * @param number
+     * @return
+     */
+    public static Float defaultNumber(Float number) {
+        if( number == null) {
+            return 0f;
+        }
+        return number;
+    }
+
+    /**
+     * 返回一个空的数字
+     * @param number
+     * @return
+     */
+    public static Long defaultNumber(Long number) {
+        return defaultNumber(number,0l);
+    }
+    /**
+     * 返回一个空的数字
+     * @param number
+     * @return
+     */
+    public static Long defaultNumber(Long number,Long defaultValue) {
+        if( number == null) {
+            return defaultValue;
+        }
+        return number;
     }
 
 }

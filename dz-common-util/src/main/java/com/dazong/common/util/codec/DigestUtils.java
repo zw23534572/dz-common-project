@@ -22,9 +22,9 @@ import java.security.SecureRandom;
  *
  * @author calvin
  */
-public class DigestUtil {
+public class DigestUtils {
 
-    private DigestUtil() {
+    private DigestUtils() {
 
     }
 

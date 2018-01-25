@@ -14,8 +14,8 @@ import java.util.Map;
  *  @author zisong.wang
  *  @updateDate 2018/01/15
  */
-public class FastJsonUtil {
-    private FastJsonUtil() {
+public class FastJsonUtils {
+    private FastJsonUtils() {
     }
 
     /**
