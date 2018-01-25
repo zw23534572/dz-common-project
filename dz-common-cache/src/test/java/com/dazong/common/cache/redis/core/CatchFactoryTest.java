@@ -1,4 +1,4 @@
-package com.dazong.common.cache.redis;
+package com.dazong.common.cache.redis.core;
 
 import com.dazong.common.autoconfig.RedisAutoConfigure;
 import com.dazong.common.cache.constants.CacheType;
