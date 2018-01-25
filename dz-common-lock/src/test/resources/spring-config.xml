@@ -31,5 +31,5 @@
     <bean id="lockAspect" class="com.dazong.common.lock.aop.DistributionLockAspect"
     />
 
-    <bean id="lockAopService" class="com.dazong.cc.common.lock.LockAopService"/>
+    <!--<bean id="lockAopService" class="com.dazong.cc.common.lock.LockAopService"/>-->
 </beans>
