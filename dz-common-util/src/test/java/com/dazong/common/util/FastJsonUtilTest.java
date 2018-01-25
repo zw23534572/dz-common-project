@@ -1,5 +1,6 @@
 package com.dazong.common.util;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.junit.Test;
 
 /**
@@ -30,7 +31,8 @@ public class FastJsonUtilTest {
 					"        }\n" +
 					"    ]\n" +
 					"}";
-		System.out.println(json);
+
+		System.out.println(FastJsonUtils.toJson(json));
     }
 
 }
