@@ -25,12 +25,26 @@ public class Assert {
 
     /**
      * 判断对象是否为空，为空抛异常
+     * @param o
+     */
+    public static void notNull(Object o) {
+        if (o == null)
+            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM);
+    }
+
+    public static void notNull(Object o,String msg) {
+        if (o == null)
+            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.getCode(),msg);
+    }
+
+    /**
+     * 判断对象是否为空，为空抛异常
      *
      * @param o
      */
-    public static void isEmpty(Object o) {
+    public static void notEmpty(Object o) {
         if (ObjectUtils.isEmpty(o)) {
-            logger.warn("isEmpty error:{}", o);
+            logger.warn("notEmpty error:{}", o);
             throw new ArgumetException(CommonStatus.ILLEGAL_PARAM);
         }
     }
@@ -41,7 +55,7 @@ public class Assert {
      * @param o
      * @param filedName
      */
-    public static void isEmpty(Object o, String filedName) {
+    public static void notEmpty(Object o, String filedName) {
         if (ObjectUtils.isEmpty(o)) {
             String errMsg = filedName + "不能为空";
             logger.warn("required warn:{} ", errMsg);
@@ -49,41 +63,7 @@ public class Assert {
         }
     }
 
-    /**
-     * 判断是否为空，为空抛异常
-     *
-     * @param objs
-     */
-    public static void isNotEmpty(Object... objs) {
-        for (Object obj : objs) {
-            if (obj == null) {
-                throw new PlatformException(CommonStatus.ILLEGAL_PARAM, "对象不能为空", obj);
-            }
-        }
-    }
 
-    public static void pattern(String parameter, String pattern) {
-        if (!parameter.matches(pattern)) {
-            throw new BusinessException(CommonStatus.ILLEGAL_PARAM);
-        }
-    }
 
-    /**
-     * 判断是否为邮箱，不是抛异常
-     *
-     * @param parameter
-     */
-    public static void isEmail(String parameter) {
-        pattern(parameter, "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
-    }
-
-    /**
-     * 判断是否URL，不是抛异常
-     *
-     * @param parameter
-     */
-    public static void isUrl(String parameter) {
-        pattern(parameter, "((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?");
-    }
 
 }

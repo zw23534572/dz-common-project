@@ -16,7 +16,7 @@ public class ApplicationInfo {
 		return systemCode;
 	}
 
-	@Value("${system_code}")
+	@Value("${system_code:0}")
 	public void setApplicationInfo(Integer systemCode) {
 		INFO.systemCode = systemCode;
 	}

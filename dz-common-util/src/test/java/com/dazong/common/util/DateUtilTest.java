@@ -13,7 +13,7 @@ public class DateUtilTest {
     @Test
     public void md5UtilTest(){
         System.out.println(Calendar.getInstance().get(Calendar.HOUR_OF_DAY));
-        System.out.println(DateUtil.getCurrentDayAsString());
+        System.out.println(DateUtils.getCurrentDayAsString());
 
         Map<String, String> FILE_MAGIC_HEADERS = new HashMap<>();
         FILE_MAGIC_HEADERS.put("46726f6d3a203d3f6762", "eml");
