@@ -4,7 +4,7 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dazong.common.resp.CommonResponse;
 import com.dazong.common.resp.DataResponse;
-import com.dazong.common.util.FastJsonUtil;
+import com.dazong.common.util.FastJsonUtils;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -29,7 +29,7 @@ public class JsonHttpMessageConverter extends FastJsonHttpMessageConverter {
      */
     public JsonHttpMessageConverter(){
         FastJsonConfig config = new FastJsonConfig();
-        config.setSerializerFeatures(FastJsonUtil.getSerializerFeatures());
+        config.setSerializerFeatures(FastJsonUtils.getSerializerFeatures());
         this.setFastJsonConfig(config);
         this.setDefaultCharset(Charset.forName("UTF-8"));
 

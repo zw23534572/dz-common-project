@@ -10,7 +10,7 @@ public class NumberUtilTest {
 
     @Test
     public void decimalUtilTest(){
-        System.out.println("" + NumberUtil.format(3.1415926, "#.##%"));
+        System.out.println("" + NumberUtils.format(3.1415926, "#.##%"));
     }
 
 }

@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * 
- * $Id: EncoderUtil.java 1211 2010-09-10 16:20:45Z calvinxiu $
+ * $Id: EncoderUtils.java 1211 2010-09-10 16:20:45Z calvinxiu $
  */
 package com.dazong.common.util.codec;
 
@@ -27,9 +27,9 @@ import java.net.URLEncoder;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class EncoderUtil {
+public class EncoderUtils {
 
-	private EncoderUtil(){
+	private EncoderUtils(){
 
 	}
 

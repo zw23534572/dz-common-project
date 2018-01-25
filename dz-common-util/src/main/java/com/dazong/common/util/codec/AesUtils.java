@@ -2,7 +2,7 @@ package com.dazong.common.util.codec;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
-import com.dazong.common.util.StringUtil;
+import com.dazong.common.util.StringUtils;
 import com.dazong.common.util.reflect.ClassWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Sam
  * @version 1.0.0
  */
-public class AesUtil {
+public class AesUtils {
 
     protected static Logger logger = LoggerFactory.getLogger(ClassWrapper.class);
 
@@ -33,7 +33,7 @@ public class AesUtil {
     private static MessageDigest md;
     private static Lock md5Lock = new ReentrantLock();
 
-    private AesUtil() {
+    private AesUtils() {
 
     }
 
@@ -226,7 +226,7 @@ public class AesUtil {
     }
 
     /**
-     * AesUtil 解密
+     * AesUtils 解密
      *
      * @param content 需要解密的内容
      * @param key     密码
@@ -236,7 +236,7 @@ public class AesUtil {
      */
     public static String decrypt(String content, String key, boolean md5Key, String iv) {
         try {
-            if (StringUtil.isBlank(content) || StringUtil.isBlank(key) || StringUtil.isBlank(iv)) {
+            if (StringUtils.isBlank(content) || StringUtils.isBlank(key) || StringUtils.isBlank(iv)) {
                 return "";
             }
             byte[] tmpContent = new BASE64Decoder().decodeBuffer(content);

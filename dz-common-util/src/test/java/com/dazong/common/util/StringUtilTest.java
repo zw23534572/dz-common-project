@@ -10,17 +10,17 @@ public class StringUtilTest {
 
     @Test
     public void stringUtilTest(){
-        System.out.println(StringUtil.firstCharToLowerCase("AbcdD"));
-        System.out.println(StringUtil.firstCharToUpperCase("aBcded"));
+        System.out.println(StringUtils.firstCharToLowerCase("AbcdD"));
+        System.out.println(StringUtils.firstCharToUpperCase("aBcded"));
     }
 
     @Test
     public void camelCaseUtilTest() {
         String line = "a_1bdd_cdd";
-        System.out.println(StringUtil.underline2Camel(line));
+        System.out.println(StringUtils.underline2Camel(line));
 
         String test2 = "1aa1BcDd";
-        System.out.println(StringUtil.camel2Underline(test2));
+        System.out.println(StringUtils.camel2Underline(test2));
     }
 
 

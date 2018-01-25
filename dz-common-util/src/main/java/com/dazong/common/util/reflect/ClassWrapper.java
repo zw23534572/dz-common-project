@@ -2,10 +2,9 @@ package com.dazong.common.util.reflect;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
-import com.dazong.common.util.CommonUtil;
-import com.dazong.common.util.StringUtil;
+import com.dazong.common.util.CommonUtils;
+import com.dazong.common.util.StringUtils;
 import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +65,7 @@ public class ClassWrapper<T> {
     public T newOne(Object... args) {
         Class[] paramTypes = ClassWrapper.getTypes(args);
 
-        if (CommonUtil.isEmpty(paramTypes)) {
+        if (CommonUtils.isEmpty(paramTypes)) {
             try {
                 return klass.newInstance();
             } catch (Exception e) {
@@ -133,7 +132,7 @@ public class ClassWrapper<T> {
      */
     public <T extends Annotation> Method[] getMethods(Class<T> ann) {
         Method[] methods = getMethods();
-        List<Method> methodList = CommonUtil.arrayList();
+        List<Method> methodList = CommonUtils.arrayList();
         for (Method m : methods) {
             if (m.getAnnotation(ann) != null) {
                 methodList.add(m);
@@ -153,7 +152,7 @@ public class ClassWrapper<T> {
     public <T extends Annotation> Method getMethod(String methodName, Class<T> ann) {
         Method[] methods = getMethods(ann);
         for (Method m : methods) {
-            if (StringUtil.equals(methodName, m.getName())) {
+            if (StringUtils.equals(methodName, m.getName())) {
                 return m;
             }
         }
@@ -176,16 +175,15 @@ public class ClassWrapper<T> {
      * @param paramTypes 参数类型
      * @return
      */
-    @SuppressWarnings("unchecked")
     public Constructor getConstructor(Class... paramTypes) {
         Constructor[] creators = klass.getDeclaredConstructors();
         Constructor isme = null;
         for (Constructor c : creators) {
             Class[] types = c.getParameterTypes();
-            if (CommonUtil.isEmpty(paramTypes) && CommonUtil.isEmpty(types)) {
+            if (CommonUtils.isEmpty(paramTypes) && CommonUtils.isEmpty(types)) {
                 isme = c;
                 break;
-            } else if (CommonUtil.isNotEmpty(types) && types.length == paramTypes.length) {
+            } else if (CommonUtils.isNotEmpty(types) && types.length == paramTypes.length) {
                 boolean equals = true;
                 for (int i = 0, len = types.length; i < len; i++) {
                     if (!isChildOf(types[i], paramTypes[i])) {
@@ -216,7 +214,7 @@ public class ClassWrapper<T> {
      */
     public Method getGetter(String fieldName) throws NoSuchMethodException {
         try {
-            String fn = StringUtils.capitalize(fieldName);
+            String fn = org.apache.commons.lang.StringUtils.capitalize(fieldName);
             try {
                 try {
                     return klass.getMethod("get" + fn);
@@ -247,7 +245,7 @@ public class ClassWrapper<T> {
     public Method getGetter(Field field) throws NoSuchMethodException {
         try {
             try {
-                String fn = StringUtils.capitalize(field.getName());
+                String fn = org.apache.commons.lang.StringUtils.capitalize(field.getName());
                 if (ClassWrapper.wrap(field.getType()).is(boolean.class)) {
                     return klass.getMethod("is" + fn);
                 } else {
@@ -273,7 +271,7 @@ public class ClassWrapper<T> {
     public Method getSetter(Field field) throws NoSuchMethodException {
         try {
             try {
-                return klass.getMethod("set" + StringUtils.capitalize(field.getName()), field.getType());
+                return klass.getMethod("set" +  StringUtils.capitalize(field.getName()), field.getType());
             } catch (Exception e) {
                 try {
                     if (field.getName().startsWith(PREFIX_IS)
@@ -339,7 +337,7 @@ public class ClassWrapper<T> {
      * @return Setter 的名字
      */
     public static String getSetterName(String fieldName) {
-        return new StringBuilder("set").append(StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder("set").append(org.apache.commons.lang.StringUtils.capitalize(fieldName)).toString();
     }
 
     /**
@@ -351,7 +349,7 @@ public class ClassWrapper<T> {
         if (str.startsWith(PREFIX_IS)) {
             str = fieldName.substring(2);
         }
-        return new StringBuilder("set").append(StringUtils.capitalize(str)).toString();
+        return new StringBuilder("set").append(org.apache.commons.lang.StringUtils.capitalize(str)).toString();
     }
 
     /**
@@ -359,7 +357,7 @@ public class ClassWrapper<T> {
      * @return Getter 的名字
      */
     public static String getGetterName(String fieldName) {
-        return new StringBuilder("get").append(StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder("get").append(org.apache.commons.lang.StringUtils.capitalize(fieldName)).toString();
     }
 
     /**
@@ -371,7 +369,7 @@ public class ClassWrapper<T> {
         if (fieldName.startsWith(PREFIX_IS)) {
             tmpFieldName = fieldName.substring(PREFIX_IS.length());
         }
-        return new StringBuilder(PREFIX_IS).append(StringUtils.capitalize(tmpFieldName)).toString();
+        return new StringBuilder(PREFIX_IS).append(org.apache.commons.lang.StringUtils.capitalize(tmpFieldName)).toString();
     }
 
 
@@ -400,7 +398,7 @@ public class ClassWrapper<T> {
      * @return 函数数组
      */
     public Method[] findSetters(String fieldName) {
-        String mName = "set" + StringUtils.capitalize(fieldName);
+        String mName = "set" + org.apache.commons.lang.StringUtils.capitalize(fieldName);
         ArrayList<Method> ms = new ArrayList<>();
         for (Method m : this.klass.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) || m.getParameterTypes().length != 1) {
@@ -470,7 +468,7 @@ public class ClassWrapper<T> {
     }
 
     public List<Field> getFieldsByType(Class<?> type) {
-        List<Field> list = CommonUtil.arrayList();
+        List<Field> list = CommonUtils.arrayList();
         Field[] fields = klass.getDeclaredFields();
         if (fields != null) {
             for (int i = 0; i < fields.length; i++) {
@@ -702,7 +700,7 @@ public class ClassWrapper<T> {
      * @return 是否相等
      */
     public boolean is(String className) {
-        return className.equals(klass.getName());
+        return StringUtils.equals(klass.getName(),className);
     }
 
     /**
@@ -912,7 +910,7 @@ public class ClassWrapper<T> {
         Matcher m = PTN.matcher(gts);
         if (m.find()) {
             String s = m.group(2);
-            String[] ss = StringUtil.splitIgnoreBlank(s);
+            String[] ss = StringUtils.splitIgnoreBlank(s);
             if (ss.length > 0) {
                 Class<?>[] re = new Class<?>[ss.length];
                 try {
@@ -1011,14 +1009,14 @@ public class ClassWrapper<T> {
 
     @SuppressWarnings("unchecked")
     public static <T> Class<T>[] getTypes(T... objs) {
-        List<Class<T>> clsList = CommonUtil.arrayList();
+        List<Class<T>> clsList = CommonUtils.arrayList();
         for (T o : objs) {
             if (o != null) {
                 clsList.add((Class<T>) o.getClass());
             }
         }
 
-        return CommonUtil.toArray(clsList);
+        return CommonUtils.toArray(clsList);
     }
 
     /**

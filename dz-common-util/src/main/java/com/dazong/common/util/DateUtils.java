@@ -17,9 +17,9 @@ import java.util.GregorianCalendar;
  * @author zisong.wang
  * @date 2018/01/09
  */
-public class DateUtil {
+public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
 
     public static final String FORMAT_DATE_TIME_MILLI = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
@@ -27,7 +27,7 @@ public class DateUtil {
     public static final String FORMAT_MONTH = "yyyy-MM";
     public static final String FORMAT_TIME = "HH:mm:ss";
 
-    private DateUtil(){
+    private DateUtils(){
 
     }
 

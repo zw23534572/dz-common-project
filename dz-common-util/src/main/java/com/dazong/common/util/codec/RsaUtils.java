@@ -2,7 +2,7 @@ package com.dazong.common.util.codec;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
-import com.dazong.common.util.CommonUtil;
+import com.dazong.common.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
 import sun.misc.BASE64Encoder;
 
@@ -18,9 +18,9 @@ import java.util.Map;
  * @author Sam
  * @version 1.0.0
  */
-public class RsaUtil {
+public class RsaUtils {
 
-    public static final String ALGORITHM_RSA = "RsaUtil";
+    public static final String ALGORITHM_RSA = "RSA";
     public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
     public static final int KEY_SIZE = 1024;
@@ -28,7 +28,7 @@ public class RsaUtil {
     public static final String PUBLIC_KEY = "public_key";
     public static final String PRIVATE_KEY = "private_key";
 
-    private RsaUtil() {
+    private RsaUtils() {
 
     }
 
@@ -42,7 +42,7 @@ public class RsaUtil {
     public static String sign(byte[] data, String privateKey) {
 
         try {
-            byte[] keyBytes = EncoderUtil.base64Decode(privateKey);
+            byte[] keyBytes = EncoderUtils.base64Decode(privateKey);
 
             PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
 
@@ -70,7 +70,7 @@ public class RsaUtil {
      */
     public static boolean verify(byte[] data, String publicKey, String sign) {
         try {
-            byte[] keyBytes = EncoderUtil.base64Decode(publicKey);
+            byte[] keyBytes = EncoderUtils.base64Decode(publicKey);
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
             PublicKey pubKey = keyFactory.generatePublic(keySpec);
@@ -78,7 +78,7 @@ public class RsaUtil {
             signature.initVerify(pubKey);
             signature.update(data);
 
-            return signature.verify(EncoderUtil.base64Decode(sign));
+            return signature.verify(EncoderUtils.base64Decode(sign));
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "公钥验签");
         }
@@ -93,7 +93,7 @@ public class RsaUtil {
      */
     public static byte[] decryptByPrivateKey(byte[] data, String key) {
         try {
-            byte[] keyBytes = EncoderUtil.base64Decode(key);
+            byte[] keyBytes = EncoderUtils.base64Decode(key);
             PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
             Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
@@ -118,7 +118,7 @@ public class RsaUtil {
     public static byte[] decryptByPublicKey(byte[] data, String key) {
         try {
             //先解码
-            byte[] keyBytes = EncoderUtil.base64Decode(key);
+            byte[] keyBytes = EncoderUtils.base64Decode(key);
 
             X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -143,7 +143,7 @@ public class RsaUtil {
      */
     public static byte[] encryptByPublicKey(byte[] data, String key) {
         try {
-            byte[] keyBytes = EncoderUtil.base64Decode(key);
+            byte[] keyBytes = EncoderUtils.base64Decode(key);
 
             X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
@@ -168,7 +168,7 @@ public class RsaUtil {
      */
     public static byte[] encryptByPrivateKey(byte[] data, String key) {
         try {
-            byte[] keyBytes = EncoderUtil.base64Decode(key);
+            byte[] keyBytes = EncoderUtils.base64Decode(key);
             PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance(ALGORITHM_RSA);
             Key privateKey = keyFactory.generatePrivate(pkcs8KeySpec);
@@ -197,7 +197,7 @@ public class RsaUtil {
         String publicKeyBase64 = new BASE64Encoder().encode(publicKeyBytes);
         String privateKeyBase64 = new BASE64Encoder().encode(privateKeyBytes);
 
-        return CommonUtil.map(PUBLIC_KEY, publicKeyBase64, PRIVATE_KEY, privateKeyBase64);
+        return CommonUtils.map(PUBLIC_KEY, publicKeyBase64, PRIVATE_KEY, privateKeyBase64);
     }
 
     public static StringKeyPair generateStringKeyPair() {
