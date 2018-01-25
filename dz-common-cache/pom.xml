@@ -39,6 +39,7 @@
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-fmeye-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.awaitility</groupId>
