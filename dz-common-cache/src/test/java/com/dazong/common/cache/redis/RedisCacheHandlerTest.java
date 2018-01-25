@@ -1,10 +1,9 @@
 package com.dazong.common.cache.redis;
 
-import ai.grakn.redismock.ServiceOptions;
+import ai.grakn.redismock.RedisServer;
 import com.dazong.common.autoconfig.RedisAutoConfigure;
 import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
-import com.dazong.common.cache.manager.CacheFactory;
 import com.dazong.common.cache.redis.domain.Person;
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import ai.grakn.redismock.RedisServer;
 import static junit.framework.TestCase.*;
 
 /**
@@ -46,8 +44,8 @@ public class RedisCacheHandlerTest {
 
     @Before
     public void before() throws IOException {
-//        server = RedisServer.newRedisServer(port);
-//        server.start();
+        server = RedisServer.newRedisServer(port);
+        server.start();
     }
 
     @Test
@@ -56,8 +54,8 @@ public class RedisCacheHandlerTest {
 
     @After
     public void after() {
-//        server.stop();
-//        server = null;
+        server.stop();
+        server = null;
     }
 
     @Test

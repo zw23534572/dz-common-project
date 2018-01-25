@@ -24,7 +24,6 @@ public abstract class AbstractCacheHandler implements ICacheHandler {
 
     @Override
     public void saveMap(String key, Map<String, ?> data, final int expireMilliseconds) {
-
     }
 
     @Override
