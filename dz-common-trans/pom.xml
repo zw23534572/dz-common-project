@@ -17,7 +17,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<hessian.version>4.0.38</hessian.version>
-		<hessian.version>4.0.38</hessian.version>
 	</properties>
 
 	<dependencies>
@@ -47,7 +46,6 @@
 		<dependency>
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common</artifactId>
-			<version>${parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.caucho</groupId>
@@ -60,6 +58,11 @@
             <version>4.12</version>
 			<scope>test</scope>
         </dependency>
-
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 </project>
