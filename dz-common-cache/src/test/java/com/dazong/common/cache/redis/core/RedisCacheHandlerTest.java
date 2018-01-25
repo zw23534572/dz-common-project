@@ -1,4 +1,4 @@
-package com.dazong.common.cache.redis;
+package com.dazong.common.cache.redis.core;
 
 import ai.grakn.redismock.RedisServer;
 import com.dazong.common.autoconfig.RedisAutoConfigure;
