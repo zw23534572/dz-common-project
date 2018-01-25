@@ -12,8 +12,7 @@ import java.util.Map;
  * @Date: 2018/1/10
  * @Description:缓存处理的父类
  */
-@Service
-public class AbstractCacheHandler implements ICacheHandler {
+public abstract class AbstractCacheHandler implements ICacheHandler {
     @Override
     public void saveString(String key, String value, final int expireMilliseconds) {
 
