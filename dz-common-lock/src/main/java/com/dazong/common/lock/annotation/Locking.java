@@ -51,7 +51,7 @@ public @interface Locking {
      * 锁的提供方式，可以是redis，也可以是zookeeper，根据实际的场景来做选择
      * @return
      */
-    LockProviderTypeEnum provider() default LockProviderTypeEnum.REDIS;
+    LockProviderTypeEnum provider() default LockProviderTypeEnum.ZOOKEEPER;
 
     /**
      * 如果被锁了要提示什么信息给用户，默认为“有用户正执行此操作，请稍候重试！”

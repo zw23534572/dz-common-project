@@ -8,14 +8,16 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
+ *  基于fastjson的工具类
  *  @author zisong.wang
  *  @updateDate 2018/01/15
  */
-public class FastJsonUtils {
-    private FastJsonUtils() {
+public class JsonUtils {
+    private JsonUtils() {
     }
 
     /**
@@ -52,22 +54,26 @@ public class FastJsonUtils {
         return JSON.parseObject(json, tClass);
     }
 
-    public static String toJsonSuccess(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<>();
-        mp.put("status", 1);
-        mp.put("state", "success");
-        mp.put("msg", msg);
-        mp.put("result", obj);
-        return toJson(mp);
+    public static <T>List<T> parseArray(String json, Class<T> tClass) {
+        return JSON.parseArray(json,tClass);
     }
 
-    public static String toJsonError(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<>();
-        mp.put("status", 0);
-        mp.put("state", "error");
-        mp.put("msg", msg);
-        mp.put("result", obj);
-        return toJson(mp);
-    }
+//    public static String toJsonSuccess(String msg, Object obj) {
+//        Map<String, Object> mp = new HashMap<>();
+//        mp.put("status", 1);
+//        mp.put("state", "success");
+//        mp.put("msg", msg);
+//        mp.put("result", obj);
+//        return toJson(mp);
+//    }
+//
+//    public static String toJsonError(String msg, Object obj) {
+//        Map<String, Object> mp = new HashMap<>();
+//        mp.put("status", 0);
+//        mp.put("state", "error");
+//        mp.put("msg", msg);
+//        mp.put("result", obj);
+//        return toJson(mp);
+//    }
 
 }

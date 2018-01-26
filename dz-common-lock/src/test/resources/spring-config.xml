@@ -9,7 +9,8 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 
-    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
           p:host-name="172.16.21.14" p:port="6379" />
 
     <!-- redis template definition -->
@@ -22,7 +23,7 @@
           p:zkClient-ref="zkClient"
     />
 
-    <bean id="zkClient" class="com.dazong.common.lock.util.ZKClient"
+    <bean id="zkClient" class="com.dazong.common.lock.zookeeper.ZKClient"
           p:baseSleepTimeMs="20"
           p:maxRetries="20"
           p:server="172.16.21.12:2181"
@@ -31,5 +32,5 @@
     <bean id="lockAspect" class="com.dazong.common.lock.aop.DistributionLockAspect"
     />
 
-    <bean id="lockAopService" class="com.dazong.cc.common.lock.LockAopService"/>
+    <bean id="lockAopService" class="com.dazong.common.lock.service.LockAopService"/>
 </beans>

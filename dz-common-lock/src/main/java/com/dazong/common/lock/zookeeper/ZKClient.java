@@ -1,4 +1,4 @@
-package com.dazong.common.lock.util;
+package com.dazong.common.lock.zookeeper;
 
 import com.dazong.common.lock.LockException;
 import com.dazong.common.util.Assert;

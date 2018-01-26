@@ -1,23 +1,21 @@
 package com.dazong.common.lock.zookeeper;
 
+import com.dazong.common.lock.BaseDistributionLock;
 import com.dazong.common.lock.DistributionLock;
 import com.dazong.common.lock.LockException;
 import com.dazong.common.lock.LockInfo;
-import com.dazong.common.lock.util.ZKClient;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 
 /**
  * 基于ZK的InterProcessMutex实现的分布式锁
  * @author Sam
  * @version 1.0.0
  */
-public class ZookeeperDistributionLock implements DistributionLock {
+public class ZookeeperDistributionLock extends BaseDistributionLock implements DistributionLock {
 
     private static Logger logger = LoggerFactory.getLogger(ZookeeperDistributionLock.class);
 
@@ -69,10 +67,6 @@ public class ZookeeperDistributionLock implements DistributionLock {
         }
     }
 
-    @Override
-    public void lockInterruptibly() throws InterruptedException {
-        throw  new UnsupportedOperationException();
-    }
 
     @Override
     public boolean tryLock() {
@@ -100,13 +94,4 @@ public class ZookeeperDistributionLock implements DistributionLock {
         }
     }
 
-    @Override
-    public Condition newCondition() {
-        throw   new UnsupportedOperationException();
-    }
-
-    @Override
-    public void close() throws IOException {
-        unlock();
-    }
 }

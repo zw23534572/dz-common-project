@@ -3,6 +3,7 @@ package com.dazong.common.lock.impl;
 import com.dazong.common.lock.LockInfo;
 import com.dazong.common.lock.LockProviderTypeEnum;
 import com.dazong.common.lock.annotation.Locking;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author Sam
@@ -116,5 +117,9 @@ public class SimpleLockInfo implements LockInfo {
 
     public void setModule(String module) {
         this.module = module;
+    }
+
+    public String toString() {
+        return org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }

@@ -1,6 +1,7 @@
-package com.dazong.common.lock;
+package com.dazong.common.lock.service;
 
 import com.alibaba.fastjson.JSON;
+import com.dazong.common.lock.LockProviderTypeEnum;
 import com.dazong.common.lock.annotation.Locking;
 
 /**

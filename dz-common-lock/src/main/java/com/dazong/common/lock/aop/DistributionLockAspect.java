@@ -57,6 +57,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
 
     }
 
+    /** 根据被拦截的方法参数创建一个分布式锁 */
     private DistributionLock createLock(JoinPoint jp) {
         LockInfo lockInfo = createLockID(jp);
         if (lockInfo != null)
@@ -64,6 +65,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
         return null;
     }
 
+    /** 根据被拦截的参数生成一个锁定义 */
     private LockInfo createLockID(JoinPoint joinPoint) {
         Class<? extends Object> targetClass = joinPoint.getTarget().getClass();
         String methodName                   = joinPoint.getSignature().getName();
@@ -79,7 +81,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
                             joinPoint.getTarget(),method,arguments,new DefaultParameterNameDiscoverer());
             context.setBeanResolver(new BeanFactoryResolver(applicationContext));
 
-            //condition为true时不加锁
+            //condition为false时不加锁
             if (StringUtils.isNotBlank(locking.condition())) {
                 boolean conditionValue = parser.parseExpression(locking.condition()).getValue(context,boolean.class);
                 if (!conditionValue)

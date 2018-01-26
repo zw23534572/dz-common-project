@@ -1,5 +1,6 @@
 package com.dazong.common.lock.redis;
 
+import com.dazong.common.lock.BaseDistributionLock;
 import com.dazong.common.lock.DistributionLock;
 import com.dazong.common.lock.LockException;
 import com.dazong.common.lock.LockInfo;
@@ -19,10 +20,12 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Condition;
 
 /**
+ * redis分布式业务锁，基于Redis的这个命令实现：SET key value [EX seconds] [PX milliseconds] [NX|XX]
+ * 详见：http://redisdoc.com/string/set.html
  * @author Sam
  * @version 1.0.0
  */
-public class RedisDistributionLock implements DistributionLock {
+public class RedisDistributionLock extends BaseDistributionLock implements DistributionLock {
 
     private static Logger logger = LoggerFactory.getLogger(RedisDistributionLock.class);
 
@@ -37,7 +40,7 @@ public class RedisDistributionLock implements DistributionLock {
     //本地VM的锁缓存
     private static Map<Thread,LockInfo> threadData = new ConcurrentHashMap<>();
 
-
+    //锁状态
     private static Map<String,Object> lockStatusData = new ConcurrentHashMap<>();
 
     public RedisDistributionLock(RedisTemplate redisTemplate,LockInfo lockInfo) {
@@ -52,16 +55,13 @@ public class RedisDistributionLock implements DistributionLock {
         }
     }
 
-    @Override
-    public void lockInterruptibly() throws InterruptedException {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public boolean tryLock() {
         try {
             return tryLock(lockInfo.getWaitTime(),TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new LockException(e,"获取锁失败了！");
         }
     }
@@ -116,10 +116,6 @@ public class RedisDistributionLock implements DistributionLock {
 
     }
 
-    @Override
-    public Condition newCondition() {
-        throw  new UnsupportedOperationException();
-    }
 
     private Boolean attemptRedisLock(long time, TimeUnit unit) {
 
@@ -149,8 +145,5 @@ public class RedisDistributionLock implements DistributionLock {
 
     private static final String SUCCESS = "OK";
 
-    @Override
-    public void close() throws IOException {
-        unlock();
-    }
+
 }

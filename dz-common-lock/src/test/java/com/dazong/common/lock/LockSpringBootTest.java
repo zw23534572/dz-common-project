@@ -1,10 +1,13 @@
 package com.dazong.common.lock;
 
+import com.dazong.common.lock.config.LockTestConfig;
 import com.dazong.common.lock.service.LockAopService;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,8 +20,9 @@ import java.util.concurrent.locks.Lock;
  * @version 1.0.0
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/spring-config.xml")
-public class LockTest {
+@SpringBootTest(classes = {LockManager.class,LockAopService.class})
+@Import(LockTestConfig.class)
+public class LockSpringBootTest {
 
     @Autowired
     LockManager lockManager;

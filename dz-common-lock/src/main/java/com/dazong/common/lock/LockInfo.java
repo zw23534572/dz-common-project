@@ -3,6 +3,7 @@ package com.dazong.common.lock;
 import com.dazong.common.util.DateUtils;
 
 /**
+ * 锁信息对象
  * @author Sam
  * @version 1.0.0
  */
