@@ -22,12 +22,12 @@ public class RsaUtilsTest {
         String key = "123456ABD%%";
         System.out.println("随机字符串: " + character);
 
-        //RSA私钥加密
-        byte[] bytes1 =  RsaUtils.encryptByPrivateKey(salt,key);
-        //RSA私钥解密
-        byte[] bytes2 = RsaUtils.decryptByPrivateKey(bytes1,key);
-        character = EncoderUtils.hexEncode(bytes2);
-        System.out.println("私钥加密解密后字符串: " + character);
+//        //RSA私钥加密
+//        byte[] bytes1 =  RsaUtils.encryptByPrivateKey(salt,key);
+//        //RSA私钥解密
+//        byte[] bytes2 = RsaUtils.decryptByPrivateKey(bytes1,key);
+//        character = EncoderUtils.hexEncode(bytes2);
+//        System.out.println("私钥加密解密后字符串: " + character);
 
 
 
