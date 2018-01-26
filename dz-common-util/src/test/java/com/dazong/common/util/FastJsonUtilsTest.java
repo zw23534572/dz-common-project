@@ -32,7 +32,7 @@ public class FastJsonUtilsTest {
 					"    ]\n" +
 					"}";
 
-		System.out.println(FastJsonUtils.toJson(json));
+
     }
 
 }
