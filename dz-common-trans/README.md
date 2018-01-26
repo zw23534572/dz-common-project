@@ -99,8 +99,6 @@ public void initWorker(){
 
 ### 事务全局配置
 
-配置是基于dz-common中的PropertiesAccessUtil实现的,可以取到加载到spring中的properties文件内容.
-
 * dz.transaction.commit.thread.size:异步提交事务线程池大小,默认为cpu核数
 * dz.transaction.async.thread.size:异步事务线程池大小,默认为cpu核数
 * dz.transaction.manager.bean.name:事物管理器自定义的spring bean名称,默认dzBaseTransactionManager
