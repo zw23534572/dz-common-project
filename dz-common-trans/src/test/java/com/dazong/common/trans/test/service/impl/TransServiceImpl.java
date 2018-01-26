@@ -90,4 +90,11 @@ public class TransServiceImpl implements ITransService{
 		System.out.println("doTransAsync");
 		cd.countDown();
 	}
+
+	@Override
+	@AutoRetry
+	public void doTransAsyncException(CountDownLatch cd) {
+		System.out.println("doTransAsyncException");
+		this.testService.test4(cd);
+	}
 }
