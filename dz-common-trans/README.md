@@ -106,7 +106,7 @@ public void initWorker(){
 * dz.transaction.manager.bean.name:事物管理器自定义的spring bean名称,默认dzBaseTransactionManager
 * dz.transaction.retry.batch.size:每次重试的事务数,默认为10
 * dz.transaction.timeout.min:事务重试毫秒数最小值.默认10s
-* dz.transaction.task.cron:定时任务cron表达式配置,当应用中含有dztask的包时会自动使用dztask开启定时任务重试.默认:0/3 * * * * ?
+* dz.transaction.task.cron:定时任务cron表达式配置
 * dz.transaction.param.serialize.class:参数序列化类,默认为com.dazong.transaction.serialize.HessianSerialize.目前dz-transaction支持json,hession,java三种序列化方式
 
 ### 注意事项

@@ -90,6 +90,8 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 			if (!hasTransaction) {
 				throw new DzTransactionException("MANDATORY:不存在事务,不允许新建事务!");
 			}
+			status.setTransaction(false);
+			return status;
 		} else if (pagation == Propagation.REQUIRED && hasTransaction) {
 			status.setTransaction(false);
 			return status;

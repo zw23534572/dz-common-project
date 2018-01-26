@@ -7,7 +7,7 @@ import org.junit.Test;
  * @author: zisong.wang
  * @date: 2018/1/11
  */
-public class FastJsonUtilTest {
+public class FastJsonUtilsTest {
 
     @Test
     public void md5UtilTest(){
