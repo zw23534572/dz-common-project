@@ -1,10 +1,6 @@
 package com.dazong.common.util;
 
-import com.dazong.common.util.codec.AesUtils;
 import com.dazong.common.util.entity.Student1;
-import com.dazong.common.util.entity.Student2;
-import com.dazong.common.util.entity.Student3;
-import com.dazong.common.util.entity.StudentBase;
 import com.dazong.common.util.reflect.ReflectUtil;
 import org.junit.Test;
 

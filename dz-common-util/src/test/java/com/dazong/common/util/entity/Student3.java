@@ -1,4 +1,4 @@
-package com.xingfu.meihua.domain;
+package com.dazong.common.util.entity;
 
 /**
  * @author: zisong.wang
