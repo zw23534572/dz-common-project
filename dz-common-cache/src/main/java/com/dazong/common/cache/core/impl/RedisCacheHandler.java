@@ -12,9 +12,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author: DanielLi

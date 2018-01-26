@@ -1,5 +1,7 @@
 package com.dazong.common.cache.serialize;
 
+import com.dazong.common.cache.exception.CacheException;
+
 import java.io.*;
 
 /**
@@ -34,7 +36,7 @@ public class JdkSerializer extends AbstractObjectSerializer {
             byteArrayOS.close();
             return byteArrayOS.toByteArray();
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e.getCause());
+            throw new CacheException(e.getMessage(), e.getCause());
         }
     }
 }
