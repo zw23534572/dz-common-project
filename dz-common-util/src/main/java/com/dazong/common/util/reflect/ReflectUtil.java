@@ -104,7 +104,7 @@ public class ReflectUtil {
     }
 
     /**
-     * 获取getter方法
+     * 获取setter方法
      *
      * @param clazz
      * @param field
@@ -258,10 +258,6 @@ public class ReflectUtil {
                 throw new PlatformException(e, CommonStatus.FAIL, "利用反射设置指定对象的指定属性为指定的值");
             }
         }
-    }
-
-    public static void copyProperties(Object source, Object target) {
-        BeanUtils.copyProperties(source, target);
     }
 
 }

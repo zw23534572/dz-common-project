@@ -12,7 +12,7 @@ import static com.dazong.common.util.codec.DigestUtils.HASH_INTERATIONS;
  * @author: zisong.wang
  * @date: 2018/1/11
  */
-public class DigestUtilTest {
+public class DigestUtilsTest {
 
     @Test
     public void Test() {

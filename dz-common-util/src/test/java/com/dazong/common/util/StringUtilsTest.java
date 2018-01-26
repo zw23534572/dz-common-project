@@ -6,7 +6,7 @@ import org.junit.Test;
  * @author: zisong.wang
  * @date: 2018/1/11
  */
-public class StringUtilTest {
+public class StringUtilsTest {
 
     @Test
     public void stringUtilTest(){

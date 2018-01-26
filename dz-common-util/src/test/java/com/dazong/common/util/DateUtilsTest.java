@@ -8,7 +8,7 @@ import java.util.*;
  * @author: zisong.wang
  * @date: 2018/1/11
  */
-public class DateUtilTest {
+public class DateUtilsTest {
 
     @Test
     public void md5UtilTest(){
