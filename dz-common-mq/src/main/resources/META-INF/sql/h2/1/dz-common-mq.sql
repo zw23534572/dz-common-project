@@ -1,0 +1,1 @@
+ALTER TABLE dz_mq_producer ADD COLUMN send_third TINYINT(4) NOT NULL DEFAULT 0 AFTER queue;

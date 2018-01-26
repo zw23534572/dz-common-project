@@ -31,20 +31,51 @@
 			<version>2.4.3</version>
 		</dependency>
 		<dependency>
-			<groupId>de.ruedigermoeller</groupId>
-			<artifactId>fst</artifactId>
-			<version>2.43</version>
-		</dependency>
-		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
 			<version>${dz-pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-fmeye-pom</artifactId>
+			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
 			<version>2.0.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ai.grakn</groupId>
+			<artifactId>redis-mock</artifactId>
+			<version>0.1.8-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>2.2.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>javax.el</artifactId>
+			<version>2.2.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+			<version>${spring.boot.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.logging.log4j</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 

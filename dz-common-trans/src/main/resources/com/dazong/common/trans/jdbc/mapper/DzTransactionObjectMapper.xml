@@ -14,7 +14,7 @@
 		  `retry_time` bigint(20) DEFAULT NULL COMMENT '下一次重试时间',
 		  `retry_tally` int(11) DEFAULT '0' COMMENT '重试次数',
 		  `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-		  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+		  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 		  `remark` varchar(128) DEFAULT NULL COMMENT '备注',
 		  `fmeye_id` varchar(128) DEFAULT NULL COMMENT '关连的fmeye traceid',
 		  PRIMARY KEY (`uid`)

@@ -14,18 +14,6 @@
 	<packaging>jar</packaging>
 	<name>dz-common-mq</name>
 
-	<properties>
-		<lombok.version>1.16.18</lombok.version>
-		<mybatis-spring.version>1.2.2</mybatis-spring.version>
-		<mybatis.version>3.4.5</mybatis.version>
-		<elastic-job.version>2.1.5</elastic-job.version>
-		<activemq.version>5.15.1</activemq.version>
-		<rocketmq.version>4.1.0-incubating</rocketmq.version>
-		<rabbitmq.version>5.0.0</rabbitmq.version>
-		<fmeye.version>2.3.5</fmeye.version>
-		<qpid.version>0.26.0</qpid.version>
-	</properties>
-
 	<dependencies>
 
 		<dependency>
@@ -36,84 +24,31 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.dazong.eye</groupId>
-			<artifactId>fmeye-common</artifactId>
-			<version>${fmeye.version}</version>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-fmeye-pom</artifactId>
+			<version>${dz-pom.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-all</artifactId>
-			<version>${activemq.version}</version>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-jdbc-pom</artifactId>
+			<version>${dz-pom.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-activemq-pom</artifactId>
+			<version>${dz-pom.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis-spring.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>${alibaba.fastjson.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- import elastic-job lite core -->
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-core</artifactId>
-			<version>${elastic-job.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-spring</artifactId>
-			<version>${elastic-job.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-
-
-		<dependency>
-			<groupId>org.apache.rocketmq</groupId>
-			<artifactId>rocketmq-client</artifactId>
-			<version>${rocketmq.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-			<version>${rabbitmq.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.qpid</groupId>
-			<artifactId>qpid-jms-client</artifactId>
-			<version>${qpid.version}</version>
-			<scope>provided</scope>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-
 </project>

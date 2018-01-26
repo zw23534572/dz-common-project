@@ -1,6 +1,6 @@
 package com.dazong.common.cache.core.impl;
 
-import com.dazong.common.cache.serialize.FstObjectSerializer;
+import com.dazong.common.cache.serialize.JdkSerializer;
 import com.dazong.common.cache.serialize.ObjectSerializer;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Override
     public void afterPropertiesSet() throws Exception {
         if (objectSerializer == null){
-            objectSerializer = new FstObjectSerializer();
+            objectSerializer = new JdkSerializer();
         }
     }
 
@@ -57,7 +57,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.pSetEx(key.getBytes(),expireMilliseconds, str.getBytes());
+                redisConnection.pSetEx(key.getBytes(), expireMilliseconds, str.getBytes());
                 return true;
             }
         });
@@ -126,7 +126,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.hSet(key.getBytes(), itemKey.getBytes(),objectSerializer.serialize(value));
+                redisConnection.hSet(key.getBytes(), itemKey.getBytes(), objectSerializer.serialize(value));
                 redisConnection.pExpire(key.getBytes(), expireMilliseconds);
                 return true;
             }
@@ -214,6 +214,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Override
     public String getString(final String key) {
         Validate.notBlank(key);
+
         return redisTemplate.execute(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection){
@@ -280,7 +281,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         return redisTemplate.execute(new RedisCallback<Map<String, T>>() {
             @Override
-            public Map<String, T> doInRedis(RedisConnection connection){
+            public Map<String, T> doInRedis(RedisConnection connection) {
                 Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
                 if(value == null || value.isEmpty()){
                     logger.info(IS_NULL_VALUE_WARN);

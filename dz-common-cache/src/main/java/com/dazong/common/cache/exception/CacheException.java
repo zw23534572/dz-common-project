@@ -16,11 +16,8 @@ public class CacheException extends RuntimeException {
         logger.warn(message);
     }
 
-    public CacheException(Throwable cause) {
-        super(cause);
-    }
-
     public CacheException(String message, Throwable cause) {
-        super(message, cause);
+        super(message);
+        logger.warn(message);
     }
 }

@@ -9,7 +9,6 @@ import com.dazong.common.cache.core.impl.RedisCacheHandler;
 import com.dazong.common.cache.exception.CacheException;
 import groovy.lang.Singleton;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,6 @@ public class CacheFactory extends ApplicationObjectSupport {
     @Autowired
     LocalCacheHandler localCacheHandler;
 
-    ICacheHandler cacheHandler;
     /**
      * 获取缓存处理器
      * @param cacheType 缓存枚举配置
@@ -54,24 +52,5 @@ public class CacheFactory extends ApplicationObjectSupport {
                 throw new CacheException(msgException);
         }
         return cacheHandlerTemp;
-    }
-
-    /**
-     * 获取默认缓存处理器
-     * @return
-     */
-    public ICacheHandler getDefaultCacheHandler(){
-        String[] arrayBean = getApplicationContext().getBeanNamesForAnnotation(Configuration.class);
-        if(arrayBean.length == 0){
-            throw new CacheException("请按照使用说明配置项目");
-        }
-        // 设置默认处理器
-        if(null == cacheHandler){
-            cacheHandler = redisCacheHandler;
-        }
-        return cacheHandler;
-    }
-    public  void setDefaultCacheHandler(ICacheHandler cacheHandler){
-        this.cacheHandler = cacheHandler;
     }
 }

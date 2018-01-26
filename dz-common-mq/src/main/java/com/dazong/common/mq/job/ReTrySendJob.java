@@ -1,7 +1,5 @@
 package com.dazong.common.mq.job;
 
-import com.dangdang.ddframe.job.api.ShardingContext;
-import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import com.dazong.common.mq.dao.mapper.MQMessageMapper;
 import com.dazong.common.mq.domian.DZMessage;
 import com.dazong.common.mq.manager.MQSendManager;
@@ -14,10 +12,10 @@ import java.util.List;
 
 /**
  * @author huqichao
- * @create 2017-10-31 18:23
+ * @date 2017-10-31 18:23
  **/
 @Component
-public class ReTrySendJob implements SimpleJob {
+public class ReTrySendJob implements Job {
 
     private static final int SEND_MQ_BATCH = 20;
 
@@ -29,13 +27,8 @@ public class ReTrySendJob implements SimpleJob {
     @Autowired
     private MQSendManager mqSendManager;
 
-    /**
-     * 执行作业.
-     *
-     * @param shardingContext 分片上下文
-     */
     @Override
-    public void execute(ShardingContext shardingContext) {
+    public void execute() {
         List<DZMessage> messageList = messageMapper.queryMessageByStatus(DZMessage.STATUS_DOING, SEND_MQ_BATCH);
         logger.debug("定时重发未发送成功的消息：{}", messageList.size());
         for (DZMessage message : messageList){

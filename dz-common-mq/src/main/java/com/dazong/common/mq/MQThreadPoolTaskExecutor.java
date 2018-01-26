@@ -8,7 +8,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * @author huqichao
- * @create 2017-11-10 16:21
+ * @date 2017-11-10 16:21
  **/
 @Configuration
 @EnableAsync

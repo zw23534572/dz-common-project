@@ -1,1 +1,0 @@
-ALTER TABLE `dz_mq_producer` ADD COLUMN `send_third` TINYINT(4) NOT NULL DEFAULT 0 COMMENT '该消息是否发送第三方，如果是第三方只会发送body里的内容' AFTER `queue`;

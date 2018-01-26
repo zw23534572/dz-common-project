@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author: DanielLi
  * @Date: 2018/1/10
- * @Description:缓存处理的抽象类,不能进行实例化
+ * @Description:缓存处理的父类
  */
 public abstract class AbstractCacheHandler implements ICacheHandler {
     @Override
@@ -24,7 +24,6 @@ public abstract class AbstractCacheHandler implements ICacheHandler {
 
     @Override
     public void saveMap(String key, Map<String, ?> data, final int expireMilliseconds) {
-
     }
 
     @Override

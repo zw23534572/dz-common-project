@@ -7,11 +7,6 @@
 		http://code.alibabatech.com/schema/dubbo
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-	<dubbo:application name="example" />
-
-	<dubbo:protocol name="dubbo" port="-1" threadpool="cached" />
-
-	<dubbo:registry protocol="zookeeper" address="${zk.host}"/>
 	<dubbo:consumer check="false" retries="3" filter="dubboConsumerFMEyeFilter"/>
 
 </beans>
