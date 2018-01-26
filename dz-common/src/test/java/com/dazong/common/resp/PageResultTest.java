@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-public class PagedDataResponseTest {
+public class PageResultTest {
 
     @Test
     public void testTotalPageCalculate() {
