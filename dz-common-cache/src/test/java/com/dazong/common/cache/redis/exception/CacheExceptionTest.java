@@ -24,4 +24,10 @@ public class CacheExceptionTest {
         assert (exception instanceof RuntimeException);
         assert (exception instanceof CacheException);
     }
+    @Test
+    public void cacheExeptionTest2(){
+        CacheException exception = new CacheException("哈哈异常", null);
+        assert (exception instanceof RuntimeException);
+        assert (exception instanceof CacheException);
+    }
 }
