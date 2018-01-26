@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dazong.common.trans.annotation.AutoRetry;
+import com.dazong.common.trans.annotation.BussinessIdParam;
 import com.dazong.common.trans.support.DzTransactionInfo;
 import com.dazong.common.trans.support.DzTransactionSyncManager;
 import com.dazong.common.trans.test.TransContext;
@@ -96,5 +97,12 @@ public class TransServiceImpl implements ITransService{
 	public void doTransAsyncException(CountDownLatch cd) {
 		System.out.println("doTransAsyncException");
 		this.testService.test4(cd);
+	}
+
+	@Override
+	@AutoRetry
+	public void doTransBussinessId(@BussinessIdParam("id") Long id) {
+		setUid("doTransBussinessId");
+		throw new TransExcetion("doTransBussinessId发生异常");
 	}
 }

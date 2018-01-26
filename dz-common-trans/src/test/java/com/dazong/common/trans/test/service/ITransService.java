@@ -53,4 +53,6 @@ public interface ITransService {
 	
 	void doTransAsyncException(CountDownLatch cd);
 	
+	void doTransBussinessId(Long id);
+	
 }
