@@ -9,7 +9,6 @@ import com.dazong.common.cache.core.impl.RedisCacheHandler;
 import com.dazong.common.cache.exception.CacheException;
 import groovy.lang.Singleton;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,6 @@ public class CacheFactory extends ApplicationObjectSupport {
     @Autowired
     LocalCacheHandler localCacheHandler;
 
-    ICacheHandler cacheHandler;
     /**
      * 获取缓存处理器
      * @param cacheType 缓存枚举配置

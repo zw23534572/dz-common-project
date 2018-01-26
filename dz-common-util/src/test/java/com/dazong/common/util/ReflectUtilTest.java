@@ -14,7 +14,7 @@ public class ReflectUtilTest {
 
     @Test
     public void reflectUtilTest(){
-        System.out.println(AesUtils.digest("3869cd84918b7392b20ebb88b31420891002张三0"));
+
         System.out.println(AesUtils.digest("3869cd84918b7392b20ebb88b31420891002张三0"));
         for (Field f : ReflectUtil.getAllFields(AesUtils.class)) {
             System.out.println(f);

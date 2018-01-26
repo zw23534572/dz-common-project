@@ -15,6 +15,6 @@ public class FastjsonObjectSerializer extends AbstractObjectSerializer  implemen
 
     @Override
     public <T> T doDeserialize(byte[] bytes,Class<T> type) {
-        return (T) JSON.parseObject(bytes,type);
+        return JSON.parseObject(bytes,type);
     }
 }

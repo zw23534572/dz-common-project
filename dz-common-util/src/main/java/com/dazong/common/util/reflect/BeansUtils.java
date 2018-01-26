@@ -4,6 +4,7 @@ import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.Assert;
 import com.dazong.common.util.CommonUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @version 1.0.0
  * @since 1.0.0
  */
-public class BeanUtils extends org.springframework.beans.BeanUtils {
+public class BeansUtils extends BeanUtils {
 
     /**
      * bean copy
