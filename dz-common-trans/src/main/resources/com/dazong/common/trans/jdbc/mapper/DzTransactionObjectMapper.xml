@@ -203,14 +203,14 @@
 		from dz_transaction
 		where rid = #{rid,jdbcType=VARCHAR}
 	</select>
-	<select id="queryTimeoutTransactions" resultMap="BaseResultMap" parameterType="java.lang.Long">
+	<select id="queryTimeoutTransactions" resultMap="BaseResultMap" parameterType="map">
 		SELECT
 		t.*
 		FROM
 		dz_transaction t
 		LEFT JOIN dz_transaction p ON t.pid = p.uid
 		WHERE
-		t.retry_time &lt; #{currentDateMsec}<!-- UNIX_TIMESTAMP(now())* 1000 -->
+		t.retry_time &lt; #{currentDateMsec}
 		AND (p.uid IS NULL OR p.`STATUS` != 10)
 		and t.`STATUS` = 10
 		order by t.retry_time
