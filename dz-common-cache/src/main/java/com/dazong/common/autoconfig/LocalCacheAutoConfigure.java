@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
 
 /**
  * @author DanielLi
- * @description Redis Cache自动化配置
+ * @description Local Cache自动化配置,目前还没实现,根据未来需要再实现
  */
 @Configuration
 @ImportResource("/META-INF/dz-common-cache.xml")

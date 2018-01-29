@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
 /**
  * @author: DanielLi
  * @date: 2018/1/12
- * @description:自动化配置Memcache框架
+ * @description:自动化配置Memcache框架,目前还没实现,根据未来需要再实现
  */
 @Configuration
 @ImportResource("/META-INF/dz-common-cache.xml")

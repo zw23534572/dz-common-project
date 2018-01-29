@@ -3,6 +3,7 @@ package com.dazong.common.serialize;
 import java.math.BigDecimal;
 
 import com.dazong.common.IObjectSerializer;
+import com.dazong.common.exceptions.SerializeException;
 
 /**
  * 
@@ -28,6 +29,7 @@ public abstract class AbstractObjectSerializer implements IObjectSerializer {
 		}
 
 		return doSerialize(object);
+
 	}
 
 	@Override
@@ -55,24 +57,39 @@ public abstract class AbstractObjectSerializer implements IObjectSerializer {
 		}
 
 		return doDeserialize(bytes);
+
 	}
 
 	/**
 	 * 把参数序列化成二进制
+	 * 
 	 * @param params
 	 * @return
 	 */
 	@Override
-	public abstract byte[] serialize(Object[] params);
-	
+	public byte[] serialize(Object[] params) {
+		if (params == null) {
+			return new byte[0];
+		}
+
+		return doSerialize(params);
+	}
+
 	/**
 	 * 把二进制反序列化成参数
+	 * 
 	 * @param bytes
 	 * @param clz
 	 * @return
 	 */
 	@Override
-	public abstract Object[] deserialize(byte[] bytes, Class<?>[] clz);
+	public Object[] deserialize(byte[] bytes, Class<?>[] clz) {
+		if (bytes == null || clz == null) {
+			return new Object[0];
+		}
+
+		return doDeserialize(bytes, clz);
+	}
 
 	/**
 	 * 反序列化
@@ -92,4 +109,20 @@ public abstract class AbstractObjectSerializer implements IObjectSerializer {
 	 */
 	protected abstract <T> byte[] doSerialize(T object);
 
+	/**
+	 * 把参数序列化成二进制
+	 * 
+	 * @param params
+	 * @return
+	 */
+	protected abstract byte[] doSerialize(Object[] params);
+
+	/**
+	 * 把二进制反序列化成参数
+	 * 
+	 * @param bytes
+	 * @param clz
+	 * @return
+	 */
+	protected abstract Object[] doDeserialize(byte[] bytes, Class<?>[] clz);
 }

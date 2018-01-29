@@ -16,10 +16,7 @@ import com.dazong.common.exceptions.SerializeException;
 public class JdkSerializer extends AbstractObjectSerializer {
 
 	@Override
-	public byte[] serialize(Object[] params) {
-		if (params == null || params.length == 0) {
-			return new byte[0];
-		}
+	protected byte[] doSerialize(Object[] params) {
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			ObjectOutputStream oos = new ObjectOutputStream(out);
@@ -35,10 +32,7 @@ public class JdkSerializer extends AbstractObjectSerializer {
 	}
 
 	@Override
-	public Object[] deserialize(byte[] bytes, Class<?>[] clz) {
-		if (bytes == null || clz == null || clz.length == 0) {
-			return new Object[] {};
-		}
+	protected Object[] doDeserialize(byte[] bytes, Class<?>[] clz) {
 
 		try (InputStream in = new ByteArrayInputStream(bytes)) {
 			Object[] result = new Object[clz.length];
@@ -56,9 +50,6 @@ public class JdkSerializer extends AbstractObjectSerializer {
 	@Override
 	protected <T> T doDeserialize(byte[] bytes) {
 		try {
-			if (bytes == null || bytes.length == 0) {
-				return null;
-			}
 			ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
 			ObjectInputStream inputStream = new ObjectInputStream(bin);
 			Object object = inputStream.readObject();
@@ -66,7 +57,7 @@ public class JdkSerializer extends AbstractObjectSerializer {
 			bin.close();
 			return (T) object;
 		} catch (Exception e) {
-			throw new SerializeException("java object参数序列化异常!", e);
+			throw new SerializeException("java object参数反序列化异常!", e);
 		}
 	}
 

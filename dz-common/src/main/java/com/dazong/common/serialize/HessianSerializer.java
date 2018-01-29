@@ -17,10 +17,7 @@ public class HessianSerializer extends AbstractObjectSerializer {
 	private boolean allowUnSerializable = true;
 
 	@Override
-	public byte[] serialize(Object[] params) {
-		if (params == null || params.length == 0) {
-			return new byte[0];
-		}
+	protected byte[] doSerialize(Object[] params) {
 
 		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			Hessian2Output hessianOutput = new Hessian2Output(out);
@@ -37,10 +34,7 @@ public class HessianSerializer extends AbstractObjectSerializer {
 	}
 
 	@Override
-	public Object[] deserialize(byte[] bytes, Class<?>[] clz) {
-		if (bytes == null || clz == null || clz.length == 0) {
-			return new Object[] {};
-		}
+	protected Object[] doDeserialize(byte[] bytes, Class<?>[] clz) {
 
 		try (InputStream in = new ByteArrayInputStream(bytes)) {
 			Object[] result = new Object[clz.length];
