@@ -76,7 +76,7 @@ public class ThreadDumpServlet extends HttpServlet {
         out.close();
     }
 
-    public void getThreadDump(ServerInfo serverInfo) {
+    private void getThreadDump(ServerInfo serverInfo) {
         ThreadMXBean bean = ManagementFactory.getThreadMXBean();
         ThreadInfo[] infos = bean.dumpAllThreads(true, true);
 
@@ -88,7 +88,7 @@ public class ThreadDumpServlet extends HttpServlet {
         serverInfo.setThreadDump(dumpStr.toString());
     }
 
-    public void getGC(ServerInfo serverInfo) {
+    private void getGC(ServerInfo serverInfo) {
         List<GarbageCollectorMXBean> gcList = ManagementFactory.getGarbageCollectorMXBeans();
         List<GCInfo> gcInfos = new ArrayList<>(gcList.size());
         for (GarbageCollectorMXBean gc : gcList) {
@@ -98,7 +98,7 @@ public class ThreadDumpServlet extends HttpServlet {
         serverInfo.setGcInfoList(gcInfos);
     }
 
-    public void getMemory(ServerInfo serverInfo) {
+    private void getMemory(ServerInfo serverInfo) {
         MemoryMXBean memoryMBean = ManagementFactory.getMemoryMXBean();
         MemoryUsage headUsage = memoryMBean.getHeapMemoryUsage();
         serverInfo.setHeadJvmInit(headUsage.getInit());
@@ -113,7 +113,7 @@ public class ThreadDumpServlet extends HttpServlet {
         serverInfo.setNonHeadJvmMax(nonHeadUsage.getMax());
     }
 
-    public void getThread(ServerInfo serverInfo) {
+    private void getThread(ServerInfo serverInfo) {
         ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
         serverInfo.setThreadCount(threadMXBean.getThreadCount());
         serverInfo.setDaemonThreadCount(threadMXBean.getDaemonThreadCount());
@@ -122,7 +122,7 @@ public class ThreadDumpServlet extends HttpServlet {
     }
 
 
-    public void getGitRepositoryState(ServerInfo serverInfo) {
+    private void getGitRepositoryState(ServerInfo serverInfo) {
         Properties properties = new Properties();
         try {
             properties.load(getClass().getClassLoader().getResourceAsStream("git.properties"));

@@ -171,6 +171,7 @@
 			<if test="fmeyeId != null">
 				fmeye_id = #{fmeyeId,jdbcType=VARCHAR},
 			</if>
+			update_time = now()
 		</set>
 		where uid = #{uid,jdbcType=VARCHAR}
 	</update>
@@ -185,7 +186,8 @@
 		retry_time = #{retryTime,jdbcType=BIGINT},
 		retry_tally = #{retryTally,jdbcType=INTEGER},
 		remark = #{remark,jdbcType=VARCHAR},
-		fmeye_id = #{fmeyeId,jdbcType=VARCHAR}
+		fmeye_id = #{fmeyeId,jdbcType=VARCHAR},
+		update_time = now()
 		where uid = #{uid,jdbcType=VARCHAR}
 	</update>
 	<delete id="deleteByRid" parameterType="java.lang.String">
@@ -203,15 +205,14 @@
 		from dz_transaction
 		where rid = #{rid,jdbcType=VARCHAR}
 	</select>
-	<select id="queryTimeoutTransactions" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
+	<select id="queryTimeoutTransactions" resultMap="BaseResultMap" parameterType="map">
 		SELECT
 		t.*
 		FROM
 		dz_transaction t
 		LEFT JOIN dz_transaction p ON t.pid = p.uid
 		WHERE
-		t.retry_time &lt; UNIX_TIMESTAMP(now())* 1000
+		t.retry_time &lt; #{currentDateMsec}
 		AND (p.uid IS NULL OR p.`STATUS` != 10)
 		and t.`STATUS` = 10
 		order by t.retry_time

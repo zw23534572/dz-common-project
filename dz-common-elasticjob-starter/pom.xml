@@ -14,33 +14,20 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<elastic.version>2.1.5</elastic.version>
-		<lombok.version>1.16.18</lombok.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-core</artifactId>
-			<version>${elastic.version}</version>
-		</dependency>
-		<dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-lite-spring</artifactId>
-            <version>${elastic.version}</version>
-        </dependency>
-        <!-- 以下不会直接依赖 -->
-        <dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <version>${lombok.version}</version>
-		    <scope>provided</scope>
-		</dependency>
 		<dependency>
         	<groupId>com.dazong.pom</groupId>
         	<artifactId>dz-springboot-pom</artifactId>
         	<version>${dz-pom.version}</version>
         	<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-elastic-job-pom</artifactId>
+			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
