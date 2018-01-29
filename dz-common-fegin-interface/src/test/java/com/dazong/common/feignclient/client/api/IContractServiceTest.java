@@ -55,9 +55,9 @@ public class IContractServiceTest {
         request.setSellType(1);
         request.setBoardMode(1);
         request.setInvoiceMode(1);
-        request.setBuyDealerId(Long.valueOf(1002574));
+        request.setBuyDealerId(Long.valueOf(1001995));
         request.setBuyDealerName("UTest");
-        request.setSellDealerId(Long.valueOf(1002550));
+        request.setSellDealerId(Long.valueOf(1002558));
         request.setSellDealerName("sellUTest");
         request.setBrandId(1);
         request.setBrandName("ABA");
@@ -79,7 +79,7 @@ public class IContractServiceTest {
         request.setDepositRadio("5");
         request.setPenaltyRadio("10");
         request.setTradeMode(10);
-        logger.info("requset:{}",request);
+        logger.info("request:{}",request);
         DataResponse<String> response = this.contractService.createContract(request);
         if (20271==response.getCode()){
             logger.info("执行结果：{}",response);
