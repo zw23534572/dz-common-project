@@ -1,8 +1,10 @@
 package com.dazong.common.lock.redis;
 
+import com.dazong.common.lock.BaseDistributionLock;
 import com.dazong.common.lock.DistributionLock;
 import com.dazong.common.lock.LockException;
 import com.dazong.common.lock.LockInfo;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -11,21 +13,22 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import redis.clients.jedis.Jedis;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Condition;
 
 /**
+ * redis分布式业务锁，基于Redis的这个命令实现：SET key value [EX seconds] [PX milliseconds] [NX|XX]
+ * 详见：http://redisdoc.com/string/set.html
  * @author Sam
  * @version 1.0.0
  */
-public class RedisDistributionLock implements DistributionLock {
+public class RedisDistributionLock extends BaseDistributionLock implements DistributionLock {
 
-    private static Logger logger = LoggerFactory.getLogger(RedisDistributionLock.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RedisDistributionLock.class);
 
+    //redis
     private RedisTemplate redisTemplate;
 
     //锁信息
@@ -37,7 +40,7 @@ public class RedisDistributionLock implements DistributionLock {
     //本地VM的锁缓存
     private static Map<Thread,LockInfo> threadData = new ConcurrentHashMap<>();
 
-
+    //锁状态
     private static Map<String,Object> lockStatusData = new ConcurrentHashMap<>();
 
     public RedisDistributionLock(RedisTemplate redisTemplate,LockInfo lockInfo) {
@@ -52,16 +55,13 @@ public class RedisDistributionLock implements DistributionLock {
         }
     }
 
-    @Override
-    public void lockInterruptibly() throws InterruptedException {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public boolean tryLock() {
         try {
             return tryLock(lockInfo.getWaitTime(),TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new LockException(e,"获取锁失败了！");
         }
     }
@@ -70,9 +70,22 @@ public class RedisDistributionLock implements DistributionLock {
     public boolean tryLock(long waitTime, TimeUnit unit) throws InterruptedException {
 
         //当前线程是否已经获得锁
+        StopWatch stopWatch     = new StopWatch();
         Thread currentThread    = Thread.currentThread();
-        LockInfo lockInfo       = threadData.get(currentThread);
-        if (lockInfo != null) {//重入加1
+        LockInfo existsLockInfo = threadData.get(currentThread);
+        stopWatch.start();
+
+        //logging
+        LOG.info(" Try to get lock-> lockId:{},lockURI:{},lockProvider:{},waitTime:{},expiredTime:{},startMills:{}",
+                this.lockInfo.getId(),
+                this.lockInfo.getLockURI(),
+                this.lockInfo.getProvider(),
+                this.lockInfo.getWaitTime(),
+                this.lockInfo.getExpiredTime(),
+                stopWatch.getStartTime());
+
+        //重入加1
+        if (existsLockInfo != null) {
             lockCount.incrementAndGet();
             return true;
         }
@@ -83,22 +96,25 @@ public class RedisDistributionLock implements DistributionLock {
 
         //获取实际的锁
         long timeout = unit.toMillis(waitTime);
-        synchronized (this.lockInfo.getLockURI().intern()) {
-            while ( timeout >= 0 && lockInfo == null) {
+        Object lock  = this.lockInfo.getLockURI().intern();
+        synchronized (lock) {
+            while ( timeout >= 0 && existsLockInfo == null) {
                 timeout -= 100;
                 if (timeout >= 100) {
-//                    Thread.sleep(100);
-                    this.lockInfo.getLockURI().intern().wait(100);
+                    lock.wait(100);
                 }
-                if (attemptRedisLock(waitTime,unit)) {
+                if (attemptRedisLock()) {
                     lockCount.incrementAndGet();
                     threadData.put(currentThread, this.lockInfo);
                     lockStatusData.put(this.lockInfo.getLockURI(),new Object());
+                    LOG.info("Get a Lock ^-^ ");
                     return true;
                 }
             }
         }
         //在waitTime时间内获取不到锁
+        stopWatch.stop();
+        LOG.warn("wait timeout[{}]",stopWatch.getTime());
         return false;
     }
 
@@ -116,12 +132,8 @@ public class RedisDistributionLock implements DistributionLock {
 
     }
 
-    @Override
-    public Condition newCondition() {
-        throw  new UnsupportedOperationException();
-    }
-
-    private Boolean attemptRedisLock(long time, TimeUnit unit) {
+    /** 从redis获取分布式锁 */
+    private Boolean attemptRedisLock() {
 
         return (Boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
@@ -132,6 +144,7 @@ public class RedisDistributionLock implements DistributionLock {
         });
     }
 
+    /** 释放redis锁 */
     private Boolean releaseRedisLock() {
         return (Boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
@@ -140,7 +153,7 @@ public class RedisDistributionLock implements DistributionLock {
                     connection.del(lockInfo.getLockURI().getBytes());
                     return Boolean.TRUE;
                 } catch (Exception e) {
-                    logger.error(e.getMessage(),e);
+                    LOG.error(e.getMessage(),e);
                     throw new LockException(e,"释放锁出错了！");
                 }
             }
@@ -149,8 +162,5 @@ public class RedisDistributionLock implements DistributionLock {
 
     private static final String SUCCESS = "OK";
 
-    @Override
-    public void close() throws IOException {
-        unlock();
-    }
+
 }
