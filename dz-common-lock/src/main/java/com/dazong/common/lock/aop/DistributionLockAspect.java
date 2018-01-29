@@ -74,6 +74,9 @@ public class DistributionLockAspect implements ApplicationContextAware {
         if (method != null) {
             Locking locking = method.getAnnotation(Locking.class);
 
+            if (locking.expiredTime() < locking.waitTime())
+                throw new LockException("锁的失效时间不能小于等待时间!!!");
+
             //构建 SPEL
             ExpressionParser parser           = new SpelExpressionParser();
             StandardEvaluationContext context =

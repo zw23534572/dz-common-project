@@ -16,8 +16,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.annotation.Resource;
-
 /**
  * LockManager实现类
  * @author Sam
@@ -25,23 +23,22 @@ import javax.annotation.Resource;
  */
 public class LockManagerImpl extends ApplicationObjectSupport implements LockManager,ApplicationContextAware,InitializingBean {
 
-
     //LOG
-    private static Logger LOG = LoggerFactory.getLogger(LockManagerImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LockManagerImpl.class);
 
     /**用于创建redis锁，以及管理锁的相关信息*/
-    @Autowired
     private RedisTemplate redisTemplate;
 
     /**基于zookeeper锁节点的工具类*/
-    @Autowired
     private ZKClient zkClient;
 
 
+    @Autowired
     public void setRedisTemplate(RedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
+    @Autowired
     public void setZkClient(ZKClient zkClient) {
         this.zkClient = zkClient;
     }
@@ -51,7 +48,7 @@ public class LockManagerImpl extends ApplicationObjectSupport implements LockMan
 
         Assert.notNull(lockInfo);
 
-        LOG.debug(lockInfo.toString());
+        LOG.debug("即将创建一个新的锁->ID:{},URI:{}",lockInfo.getId(),lockInfo.getLockURI());
 
         if (lockInfo.getProvider() == LockProviderTypeEnum.ZOOKEEPER)
             return new ZookeeperDistributionLock(this.zkClient,lockInfo);
@@ -60,13 +57,13 @@ public class LockManagerImpl extends ApplicationObjectSupport implements LockMan
 
     @Override
     public DistributionLock createLock(String module, String id) {
-
         return createLock(SimpleLockInfo.New(id,module));
     }
 
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        Assert.notNull(this.zkClient,"ZKClient为空！");
     }
 
 }

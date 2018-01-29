@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZookeeperDistributionLock extends BaseDistributionLock implements DistributionLock {
 
-    private static Logger logger = LoggerFactory.getLogger(ZookeeperDistributionLock.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperDistributionLock.class);
 
     private InterProcessMutex innerLock;
 
@@ -45,7 +45,7 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
             stopWatch.start();
 
             //logging
-            logger.info(" Try to get lock-> lockId:{},lockURI:{},lockProvider:{},waitTime:{},expiredTime:{},startMills:{}",
+            LOG.info(" Try to get lock-> lockId:{},lockURI:{},lockProvider:{},waitTime:{},expiredTime:{},startMills:{}",
                             lockInfo.getId(),
                             lockInfo.getLockURI(),
                             lockInfo.getProvider(),
@@ -59,7 +59,7 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
             if (innerLock.acquire(lockInfo.getWaitTime(), timeUnit)) {
                 //设置当前时间到这个锁的路径中的value，用于计算超时
                 zkclient.setData(lockInfo.getLockURI(), System.currentTimeMillis());
-                logger.info(" Get a lock~" );
+                LOG.info(" Get a lock~" );
                 return;
             }
             //持有锁的线程是否时间超时了，如果超时了，直接干掉
@@ -72,14 +72,14 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
                     lock();//retry
                 } else {
                     stopWatch.stop();
-                    logger.warn(" Wait timeout[{}]! ",stopWatch.getTime());
+                    LOG.warn(" Wait timeout[{}]! ",stopWatch.getTime());
                     throw new LockException(lockInfo.getLockedAlert());
                 }
             }
         } catch (LockException ex) {
                 throw   ex;
         } catch (Exception ex) {
-            logger.error(ex.getMessage(),ex);
+            LOG.error(ex.getMessage(),ex);
             throw new LockException(ex,String.format("获取锁%s失败了!",lockInfo.getLockURI()));
         }
     }
@@ -95,7 +95,7 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
         try {
             return innerLock.acquire(time, unit);
         } catch (Exception ex) {
-            logger.error(ex.getMessage(),ex);
+            LOG.error(ex.getMessage(),ex);
             throw new LockException(ex,String.format("获取锁%s失败了！",lockInfo.getLockURI()));
         }
     }

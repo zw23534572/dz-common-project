@@ -28,24 +28,26 @@ public class SimpleLockInfo implements LockInfo {
 
     public static SimpleLockInfo New(String id, String module) {
         SimpleLockInfo lock = new SimpleLockInfo();
-        lock.id = id;
-        lock.module = module;
-        lock.expiredTime = DEFAULT_EXPIRED_TIME;
-        lock.waitTime = DEFAULT_WAIT_TIME;
-        lock.provider = DEFAULT_LOCK_PROVIDER;
+        lock.setId(id);
+        lock.setModule(module);
+        lock.setExpiredTime(DEFAULT_EXPIRED_TIME);
+        lock.setWaitTime(DEFAULT_WAIT_TIME);
+        lock.setProvider(DEFAULT_LOCK_PROVIDER);
         lock.createTime = System.currentTimeMillis();
         return lock;
     }
 
     public static SimpleLockInfo of(Locking locking, String targetLockid) {
         SimpleLockInfo lock = new SimpleLockInfo();
-        lock.id = targetLockid;
-        lock.module = locking.module();
-        lock.expiredTime = locking.expiredTime();
-        lock.waitTime = locking.waitTime();
-        lock.provider = locking.provider();
-        lock.lockedAlert = locking.lockedAlert();
+
         lock.createTime = System.currentTimeMillis();
+        lock.setId(targetLockid);
+        lock.setModule(locking.module());
+        lock.setExpiredTime(locking.expiredTime());
+        lock.setWaitTime(locking.waitTime());
+        lock.setProvider(locking.provider());
+        lock.setLockedAlert(locking.lockedAlert());
+
         return lock;
     }
 

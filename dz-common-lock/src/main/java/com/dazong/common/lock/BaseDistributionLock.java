@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.concurrent.locks.Condition;
 
 /**
+ * 分布式锁基类
  * @author Sam
  * @version 1.0.0
  */
