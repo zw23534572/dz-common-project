@@ -8,10 +8,11 @@ import com.dazong.common.mq.domian.Message;
  * @author huqichao
  * @date 2018-01-19 15:27
  **/
-@Subscribe(queue = "mq.test", notifyMaxCount = 1, notifyMaxCountPropKey = "max.retry.count3")
-public class MQConsumerTest3 implements IMessageListener {
+@Subscribe(topic = "mq.test")
+public class MQConsumerTest4 implements IMessageListener {
     @Override
     public void receive(Message message) {
         System.out.println(message.getBody());
+        message.acknowledge();
     }
 }

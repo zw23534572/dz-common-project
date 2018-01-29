@@ -3,7 +3,6 @@ package com.dazong.common.util;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.ArgumetException;
 import com.dazong.common.exceptions.BusinessException;
-import com.dazong.common.exceptions.PlatformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
@@ -28,13 +27,15 @@ public class Assert {
      * @param o
      */
     public static void notNull(Object o) {
-        if (o == null)
+        if (o == null) {
             throw new ArgumetException(CommonStatus.ILLEGAL_PARAM);
+        }
     }
 
     public static void notNull(Object o,String msg) {
-        if (o == null)
-            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.getCode(),msg);
+        if (o == null) {
+            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.getCode(), msg);
+        }
     }
 
     /**

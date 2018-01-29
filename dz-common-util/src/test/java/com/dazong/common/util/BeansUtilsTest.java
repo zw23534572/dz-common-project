@@ -3,11 +3,7 @@ package com.dazong.common.util;
 import com.dazong.common.util.entity.Student2;
 import com.dazong.common.util.entity.Student3;
 import com.dazong.common.util.reflect.BeansUtils;
-import com.dazong.common.util.reflect.ReflectUtil;
 import org.junit.Test;
-import org.mockito.internal.util.reflection.Fields;
-
-import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,6 +23,13 @@ public class BeansUtilsTest {
         BeansUtils.copyPropertiesWithout(student2, student3,"name");
         System.out.println("id=" + student3.getId() + " name=" + student3.getName());
         assertThat(student3.getName()).isNull();
+
+//        student2 = new Student2();
+//        student2.setId(100);
+//        student2.setName("example");
+//        student3 = new Student3();
+//        BeansUtils.copy(student2, student3.getClass());
+//        System.out.println("id=" + student3.getId() + " name=" + student3.getName());
 
 
     }

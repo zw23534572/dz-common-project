@@ -5,6 +5,7 @@ import com.dazong.common.util.codec.DigestUtils;
 import com.dazong.common.util.codec.EncoderUtils;
 import org.junit.Test;
 
+import static org.assertj.core.api.Java6Assertions.assertThat;
 
 
 /**
@@ -21,11 +22,12 @@ public class AesUtilsTest {
         System.out.println("--------------- 字母+数字  ------------");
         System.out.println("生成md5码：" + AesUtils.digest32(str));
         System.out.println("生成md5码：" + AesUtils.digest(str));
+        assertThat(AesUtils.digest32(str)).isEqualTo(AesUtils.digest(str));
 
         System.out.println("--------------- 字段+数据+中文字符 （字段集UTF8、ISO-8859-1不致导致生成不同加密结果） ------------");
         System.out.println("生成md5码：" + AesUtils.digest32(str + "中文"));
         System.out.println("生成md5码：" + AesUtils.digest(str + "中文"));
-
+        assertThat(AesUtils.digest32(AesUtils.digest32(str + "中文"))).isNotEqualTo(AesUtils.digest(str + "中文"));
 
         System.out.println("\n\n>>>>>>>>>>>>>>>>>>> AES对称加/解密  >>>>>>>>>>>>>>>>>>>");
         // 生成salt
@@ -41,6 +43,7 @@ public class AesUtilsTest {
 
         String deSaltSec = AesUtils.decrypt(saltSec);
         System.err.println("给salt解密 saltSec=" + deSaltSec);
+        assertThat(deSaltSec).isEqualTo(saltStr);
 
     }
 

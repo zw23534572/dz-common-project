@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -34,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:hsql-test-spring-config.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@SpringBootTest
 public class BaseTest {
 
     @Autowired
@@ -90,6 +92,10 @@ public class BaseTest {
 
         reTrySendJob.execute();
 
+        for (int i = 0;i<5;i++){
+            reTryNotifyJob.execute();
+        }
+
         List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
         System.out.println(list);
 
@@ -97,7 +103,7 @@ public class BaseTest {
 
         List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
         System.out.println(list1);
-        assertThat(list1.size()).isEqualTo(3).as("消费消息成功");
+        assertThat(list1.size()).isEqualTo(4).as("消费消息成功");
 
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
@@ -121,7 +127,9 @@ public class BaseTest {
         }
 
         reTrySendJob.execute();
-        reTryNotifyJob.execute();
+        for (int i = 0;i<4;i++){
+            reTryNotifyJob.execute();
+        }
 
         try {
             TimeUnit.SECONDS.sleep(2);
@@ -136,7 +144,7 @@ public class BaseTest {
 
         List<DZConsumerMessage> list1 = mqMessageMapper.queryConsumerMessageByStatus(DZConsumerMessage.STATUS_DONE);
         System.out.println(list1);
-        assertThat(list1.size()).isEqualTo(5).as("消费消息成功");
+        assertThat(list1.size()).isEqualTo(7).as("消费消息成功");
 
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, MQAutoConfiguration.TABLE_NAME);
@@ -161,6 +169,9 @@ public class BaseTest {
         }
 
         reTrySendJob.execute();
+        for (int i = 0;i<4;i++){
+            reTryNotifyJob.execute();
+        }
 
         List<DZMessage> list = mqMessageMapper.queryMessageByStatus(DZMessage.STATUS_DONE, 10);
         System.out.println(list);

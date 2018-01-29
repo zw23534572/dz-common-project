@@ -7,6 +7,7 @@ import com.dazong.common.mq.exception.MQException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.core.env.Environment;
 
 /**
  * @author huqichao
@@ -25,7 +26,9 @@ public class Consumer {
 
     private boolean queue;
 
-    public static Consumer create(Subscribe subscribe, Class clazz){
+    private int notifyMaxCount;
+
+    public static Consumer create(Subscribe subscribe, Class clazz, Environment env){
         Consumer consumer = new Consumer();
         consumer.setType(subscribe.type());
         if (subscribe.queue().length() > 0){
@@ -43,6 +46,26 @@ public class Consumer {
             consumer.setName(clazz.getSimpleName());
         }
 
+        if (subscribe.notifyMaxCount() > -1 && subscribe.notifyMaxCountPropKey().length() == 0){
+            consumer.setNotifyMaxCount(subscribe.notifyMaxCount());
+        } else if (subscribe.notifyMaxCount() == -1 && subscribe.notifyMaxCountPropKey().length() > 0){
+            String countStr = env.getProperty(subscribe.notifyMaxCountPropKey());
+            if (countStr == null){
+                throw new MQException("could not resolve placeholder %s", subscribe.notifyMaxCountPropKey());
+            }
+            int count = Integer.parseInt(countStr);
+            consumer.setNotifyMaxCount(count);
+        } else if (subscribe.notifyMaxCount() > -1 && subscribe.notifyMaxCountPropKey().length() > 0){
+            String countStr = env.getProperty(subscribe.notifyMaxCountPropKey());
+            if (countStr == null){
+                throw new MQException("could not resolve placeholder %s", subscribe.notifyMaxCountPropKey());
+            }
+            int count = Integer.parseInt(countStr);
+            consumer.setNotifyMaxCount(subscribe.notifyMaxCount() > count ? subscribe.notifyMaxCount() : count);
+        }
+        if (consumer.getNotifyMaxCount() == 1){
+            throw new MQException("notifyMaxCount must be more then 1", subscribe.notifyMaxCountPropKey());
+        }
         return consumer;
     }
 }
