@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>dz-common-elasticjob-starter</artifactId>
 	<packaging>jar</packaging>
-	<name>Spring Boot :: elasticjob Starter</name>
+	<name>dz-common-elasticjob-starter</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
