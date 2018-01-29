@@ -1,24 +1,32 @@
 package com.dazong.common.web.support.monitor;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 
 
 /**
  * @author manson.zhou on 2018/1/23.
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:hsql-test-spring-config.xml"})
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@SpringBootTest
 public class DatabaseMonitorTest {
+    @Autowired
+    DataSource dataSource;
 
     @Test
     public void check() throws PropertyVetoException {
-        ComboPooledDataSource source = new ComboPooledDataSource();
-        source.setDriverClass("com.mysql.jdbc.Driver");
-        source.setUser("maoyi");
-        source.setPassword("6qjiaVv6!nlz1JSo");
-        source.setJdbcUrl("jdbc:mysql://172.16.21.15:3306/message_platform");
-        DatabaseMonitor databaseMonitor = new DatabaseMonitor(source);
+        DatabaseMonitor databaseMonitor = new DatabaseMonitor(dataSource);
         databaseMonitor.check();
     }
 }
