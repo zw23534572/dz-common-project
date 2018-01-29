@@ -18,14 +18,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 /**
  * @author DanielLi
  * @description Redis Cache自动化配置
- * 方式1:可以获取到redis链接
- * @Configuration
- @ImportResource("/META-INF/dz-common-cache.xml")
- @ConditionalOnClass({AbstractAutoConfigure.class, RedisCacheHandler.class})
-
- * 方式2:不可以获取到redis链接
- * @ConditionalOnClass({RedisCacheHandler.class})
- * public class RedisAutoConfigure extends AbstractAutoConfigure
  **/
 @Configuration
 @ImportResource("classpath:/META-INF/dz-common-cache.xml")
