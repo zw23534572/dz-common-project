@@ -327,4 +327,25 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             }
         });
     }
+    /**
+     * Increment an integer value stored of {@code key} by {@code delta}.
+     *
+     * @param key must not be {@literal null}.
+     * @param value
+     * @return
+     * @see <a href="http://redis.io/commands/incrby">Redis Documentation: INCRBY</a>
+     */
+    @Override
+    public Long incrBy(final String key, final long value, final int expireMilliseconds){
+        Validate.notBlank(key);
+
+        return redisTemplate.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection redisConnection){
+                Long result = redisConnection.incrBy(key.getBytes(), value);
+                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                return result;
+            }
+        });
+    }
 }

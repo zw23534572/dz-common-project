@@ -194,4 +194,25 @@ public class RedisCacheHandlerTest {
         assertEquals (valueTemp, null);
     }
 
+    /**
+     * 需要补充更多测试用例
+     */
+    @Test
+    public void incryBy(){
+        {
+            String key = "number";
+            Long delta = 100L;
+            Long reult = redisCacheHandler.incrBy(key, delta,IExpire.EXPIRE_MAX);
+            assertEquals(delta, reult);
+
+        }
+        {
+            String key = "number";
+            Long delta = 1L;
+            Long reult = redisCacheHandler.incrBy(key, delta,IExpire.EXPIRE_MAX);
+            assertEquals(101L, reult.longValue());
+        }
+
+
+    }
 }

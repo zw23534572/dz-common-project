@@ -115,4 +115,14 @@ public interface ICacheHandler {
      * @return
      */
     public <T>List<T> getList(final String key,final Class<T> type);
+
+    /**
+     * Increment an integer value stored of {@code key} by {@code delta}.
+     *
+     * @param key must not be {@literal null}.
+     * @param value
+     * @return
+     * @see <a href="http://redis.io/commands/incrby">Redis Documentation: INCRBY</a>
+     */
+    public Long incrBy(final String key, final long value, final int expireMilliseconds);
 }
