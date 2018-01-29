@@ -1,6 +1,7 @@
 package com.dazong.common.trans.jdbc.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.dazong.common.trans.support.DzTransactionObject;
 
@@ -88,7 +89,7 @@ public interface DzTransactionObjectMapper {
 	 * @param retryBatchSize
 	 * @return
 	 */
-	List<DzTransactionObject> queryTimeoutTransactions(int retryBatchSize);
+	List<DzTransactionObject> queryTimeoutTransactions(Map<String,Object> params);
 
 	/**
 	 * 按bussinessid删除

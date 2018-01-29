@@ -1,12 +1,16 @@
 package com.dazong.common.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
+/**
+ * mybatis plus 公用基类
+ * @author luobinwen
+ *
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public abstract class AbstractEntity {

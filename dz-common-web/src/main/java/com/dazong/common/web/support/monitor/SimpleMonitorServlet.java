@@ -105,7 +105,7 @@ public class SimpleMonitorServlet extends HttpServlet {
 			jmsMonitor(context);
 			redisMonitor(context);
 
-			Map<EchoService, String> dubboConsumerMap = new HashMap<>();
+			Map<EchoService, String> dubboConsumerMap = new HashMap<>(20);
 			String dataSourceEqualsName = null;
 			String dataSourceContainsName = null;
 			String[] names = context.getBeanDefinitionNames();
