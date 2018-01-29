@@ -53,14 +53,14 @@ public class Consumer {
             if (countStr == null){
                 throw new MQException("could not resolve placeholder %s", subscribe.notifyMaxCountPropKey());
             }
-            int count = Integer.valueOf(countStr);
+            int count = Integer.parseInt(countStr);
             consumer.setNotifyMaxCount(count);
         } else if (subscribe.notifyMaxCount() > -1 && subscribe.notifyMaxCountPropKey().length() > 0){
             String countStr = env.getProperty(subscribe.notifyMaxCountPropKey());
             if (countStr == null){
                 throw new MQException("could not resolve placeholder %s", subscribe.notifyMaxCountPropKey());
             }
-            int count = Integer.valueOf(countStr);
+            int count = Integer.parseInt(countStr);
             consumer.setNotifyMaxCount(subscribe.notifyMaxCount() > count ? subscribe.notifyMaxCount() : count);
         }
         if (consumer.getNotifyMaxCount() == 1){
