@@ -18,11 +18,10 @@ public class CharsetUtils {
 
     }
 
-    public static final String CODING_ISO_8859_1 = "ISO-8859-1";
-    public static final String CODING_GBK = "GBK";
-    public static final String CODING_GB2312 = "GB2312";
-    public static final String CODING_UTF8 = "UTF-8";
-
+    private static final String CODING_ISO_8859_1 = "ISO-8859-1";
+    private static final String CODING_GBK = "GBK";
+    private static final String CODING_GB2312 = "GB2312";
+    private static final String CODING_UTF8 = "UTF-8";
 
     public static String defaultEncoding() {
         return Charset.defaultCharset().name();
@@ -67,6 +66,5 @@ public class CharsetUtils {
         return str;
     }
 
-    public static final Charset CHARSET_UTF8 = Charset.forName(CODING_UTF8);
 
 }

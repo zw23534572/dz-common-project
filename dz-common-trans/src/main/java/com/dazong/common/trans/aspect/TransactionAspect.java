@@ -348,5 +348,9 @@ public class TransactionAspect
 	public void setTransactionManager(DzTransactionManager dzTransactionManager) {
 		this.dzTransactionManager = dzTransactionManager;
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(Math.max(5*60*1000, 10*1000));
+	}
 
 }

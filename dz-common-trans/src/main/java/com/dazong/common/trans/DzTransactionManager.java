@@ -43,6 +43,7 @@ public interface DzTransactionManager {
 	
 	/**
 	 * 查询超时的事务
+	 * @param currentDateMsec 当前时间的毫秒数
 	 * @return
 	 */
 	List<DzTransactionObject> queryTimeoutTransactions();

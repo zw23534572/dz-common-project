@@ -15,9 +15,6 @@ import org.apache.ibatis.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -26,6 +23,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.jms.core.JmsTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -64,7 +62,8 @@ public class MQAutoConfiguration implements ApplicationContextAware {
 
     private volatile boolean inited;
 
-    private void init() {
+    @PostConstruct
+    public void init() {
         try {
             TableInfo tableInfo = dbManager.selectTable(dbName, TABLE_NAME);
             String root = dbManager.sqlPath();
@@ -105,25 +104,11 @@ public class MQAutoConfiguration implements ApplicationContextAware {
             IMessageListener listener = context.getBean(name, IMessageListener.class);
             Subscribe subscribe = AnnotationUtils.findAnnotation(listener.getClass(), Subscribe.class);
             Object targetBean = AopTargetUtils.getTarget(listener);
-            Consumer consumer = Consumer.create(subscribe, targetBean.getClass());
+            Consumer consumer = Consumer.create(subscribe, targetBean.getClass(), context.getEnvironment());
             mqNotifyManager.registerListener(consumer, listener);
         }
     }
 
-    /**
-     * Set the ApplicationContext that this object runs in.
-     * Normally this call will be used to initialize the object.
-     * <p>Invoked after population of normal bean properties but before an init callback such
-     * as {@link InitializingBean#afterPropertiesSet()}
-     * or a custom init-method. Invoked after {@link ResourceLoaderAware#setResourceLoader},
-     * {@link ApplicationEventPublisherAware#setApplicationEventPublisher} and
-     * {@link MessageSourceAware}, if applicable.
-     *
-     * @param applicationContext the ApplicationContext object to be used by this object
-     * @throws ApplicationContextException in case of context initialization errors
-     * @throws BeansException              if thrown by application context methods
-     * @see BeanInitializationException
-     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (inited){
@@ -132,11 +117,5 @@ public class MQAutoConfiguration implements ApplicationContextAware {
         }
         inited = true;
         this.context = applicationContext;
-        try {
-            init();
-        } catch (Exception e) {
-            logger.error("mq init fail", e);
-            throw new FatalBeanException(e.getMessage());
-        }
     }
 }

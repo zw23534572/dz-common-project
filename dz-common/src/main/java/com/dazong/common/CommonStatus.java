@@ -21,6 +21,11 @@ public enum CommonStatus implements IErrors<CommonResponse> {
 	 */
 	ILLEGAL_PARAM(101, "参数[{0}]错误"),
 	/**
+	 * 序列化异常
+	 */
+	SERIALIZE_ERROR(102, "序列化异常"),
+	
+	/**
 	 * 成功
 	 */
 	SUCCESS(200, "成功"),

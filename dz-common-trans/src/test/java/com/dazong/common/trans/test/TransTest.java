@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dazong.common.trans.DzTransactionException;
+import com.dazong.common.trans.DzTransactionScheduler;
 import com.dazong.common.trans.jdbc.mapper.DzTransactionObjectMapper;
 import com.dazong.common.trans.support.DzTransactionObject;
 import com.dazong.common.trans.test.service.ITransService;
@@ -172,6 +173,21 @@ public class TransTest {
 			DzTransactionObject o = this.mapper.selectByPrimaryKey(
 					TransContext.getCurrentContext().get("doTransBussinessId-uid").toString());
 			Assert.assertTrue(o.getBussinessId().equals(String.valueOf(1000L)));
+		}
+	}
+	
+	@Test
+	public void testDoTransRetry(){
+		try {
+			this.transService.doTransRetry("doTransRetry");
+		} catch (Exception e) {
+			e.printStackTrace();
+			String uid = TransContext.getCurrentContext().get("doTransRetry-uid").toString();
+			DzTransactionObject o = this.mapper.selectByPrimaryKey(uid);
+			Assert.assertTrue(o != null);
+			DzTransactionScheduler.get().scheduleTask();
+			o = this.mapper.selectByPrimaryKey(uid);
+			Assert.assertTrue(o == null);
 		}
 	}
 }

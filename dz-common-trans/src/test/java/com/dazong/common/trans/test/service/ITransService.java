@@ -55,4 +55,6 @@ public interface ITransService {
 	
 	void doTransBussinessId(Long id);
 	
+	void doTransRetry(String name);
+	
 }
