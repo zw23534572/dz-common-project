@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.lang.reflect.Field;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author: zisong.wang
  * @date: 2018/1/11
@@ -29,6 +31,7 @@ public class ReflectUtilsTest {
         System.out.println("\n-------- 利用反射获取指定对象的指定属性 -------- ");
         Object obj1 = ReflectUtil.getFieldValue(student1, "stuPhone");
         System.out.println("获取值1:" + obj1);
+        assertThat(obj1).isEqualTo("18589020587");
         Field field1 = ReflectUtil.getField(student1, "DEFAULT_GENDER");
         System.out.println("获取值2:" + field1);
 
@@ -44,6 +47,7 @@ public class ReflectUtilsTest {
         System.out.println("\n-------- 使用getter方法获取属性值 -------- ");
         Object obj = ReflectUtil.getFieldValueWithGetterMethod(objs, stuClass, field);
         System.out.println("获取值:" + obj);
+        assertThat(obj).isEqualTo("设置值为110");
 
     }
 

@@ -43,11 +43,13 @@ public class ValidatorInterceptor implements MethodInterceptor {
 		Method method = invocation.getMethod();
 		Object target = invocation.getThis();
 		Object[] args = invocation.getArguments();
-		Set<ConstraintViolation<Object>> violations = executableValidator.validateParameters(target, method, args);
-		if (!violations.isEmpty()) {
-			throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.joinSystemStatusCode(getViolationMsg(violations)));
+		if (args != null) {
+			Set<ConstraintViolation<Object>> violations = executableValidator.validateParameters(target, method, args);
+			if (!violations.isEmpty()) {
+				throw new ArgumetException(
+						CommonStatus.ILLEGAL_PARAM.joinSystemStatusCode(getViolationMsg(violations)));
+			}
 		}
-
 		return invocation.proceed();
 	}
 

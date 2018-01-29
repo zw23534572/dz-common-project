@@ -4,8 +4,8 @@ import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.Assert;
 import com.dazong.common.util.CommonUtils;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,13 +24,13 @@ public class BeansUtils extends BeanUtils {
     /**
      * bean copy
      *
-     * @param target        目标Bean
      * @param source        来源Bean
+     * @param target        目标Bean
      * @param withOutFields 不需要COPY值的字段
      */
-    public static void copyPropertiesWithout(Object target, Object source, String... withOutFields) {
+    public static void copyPropertiesWithout(Object source, Object target, String... withOutFields) {
         try {
-            org.springframework.beans.BeanUtils.copyProperties(target, source);
+            BeanUtils.copyProperties(source, target);
             if (withOutFields != null) {
                 for (String f : withOutFields) {
                     PropertyUtils.setProperty(target, f, null);
@@ -54,7 +54,7 @@ public class BeansUtils extends BeanUtils {
             return null;
         }
         T targetObject = ClassWrapper.wrap(targetObjectClass).newOne();
-        copyProperties(targetObject, sourceObject);
+        copyProperties( sourceObject, targetObject);
         try {
             if (withOutFields != null) {
                 for (String f : withOutFields) {
@@ -96,8 +96,8 @@ public class BeansUtils extends BeanUtils {
      * @param target 目标Bean
      * @param source 来源Bean
      */
-    public static void copyProperties(Object target, Object source) {
-        org.springframework.beans.BeanUtils.copyProperties(source, target);
+    public static void copyProperties(Object source, Object target) {
+        BeanUtils.copyProperties(source, target);
     }
 
     /**

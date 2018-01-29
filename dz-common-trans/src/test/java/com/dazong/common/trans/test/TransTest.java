@@ -1,6 +1,7 @@
 package com.dazong.common.trans.test;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -15,6 +16,7 @@ import com.dazong.common.trans.DzTransactionException;
 import com.dazong.common.trans.jdbc.mapper.DzTransactionObjectMapper;
 import com.dazong.common.trans.support.DzTransactionObject;
 import com.dazong.common.trans.test.service.ITransService;
+import com.dazong.common.trans.test.utils.CacheUtil;
 
 
 @RunWith(SpringRunner.class)
@@ -77,18 +79,25 @@ public class TransTest {
 			Assert.assertTrue(o == null);
 		}
 	}
+	/**
+	 * <B>方法名称：测试嵌套事务</B><BR>
+	 * <B>概要说明：测试属性MANDATORY</B><BR>
+	 */
 	@Test
 	public void testDoTransPropagationForMandatory1(){
 		try {
 			this.transService.doTransPropagationForMandatory1("doTransPropagationForMandatory1");
 			Assert.assertTrue(false);
 		} catch (Exception e) {
-			e.printStackTrace();
 			String rid = TransContext.getCurrentContext().get("doTransPropagationForMandatory1-rid").toString();
 			List<DzTransactionObject> os = this.mapper.queryTransactionsByRid(rid);
 			Assert.assertTrue(os != null && os.size() == 1);
 		}
 	}
+	/**
+	 * <B>方法名称：测试嵌套事务</B><BR>
+	 * <B>概要说明：测试属性MANDATORY</B><BR>
+	 */
 	@Test
 	public void testDoTransPropagationForMandatory2(){
 		try {
@@ -96,6 +105,73 @@ public class TransTest {
 			Assert.assertTrue(false);
 		} catch (Exception e) {
 			Assert.assertTrue(e instanceof DzTransactionException);
+		}
+	}
+	/**
+	 * <B>方法名称：测试嵌套事务</B><BR>
+	 * <B>概要说明：测试属性INTERRUPT_NOT_NEW</B><BR>
+	 */
+	@Test
+	public void testDoTransPropagationForInterruptNotNew(){
+		try {
+			this.transService.doTransPropagationForInterruptNotNew("doTransPropagationForInterruptNotNew");
+			Assert.assertTrue(false);
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof DzTransactionException);
+		}
+	}
+	
+	/**
+	 * <B>方法名称：测试嵌套事务</B><BR>
+	 * <B>概要说明：测试属性NESTED</B><BR>
+	 */
+	@Test
+	public void testDoTransPropagationForNested(){
+		try {
+			this.transService.doTransPropagationForNested("doTransPropagationForNested");
+			Assert.assertTrue(false);
+		} catch (Exception e) {
+			String rid = TransContext.getCurrentContext().get("doTransPropagationForNested-rid").toString();
+			List<DzTransactionObject> os = this.mapper.queryTransactionsByRid(rid);
+			Assert.assertTrue(os != null && os.size() == 2);
+		}
+	}
+	@Test
+	public void testDoTransAsync(){
+		CountDownLatch cd = new CountDownLatch(1);
+		long threadId = Thread.currentThread().getId();
+		this.transService.doTransAsync(cd);
+		try {
+			cd.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Long doTransAsyncThreadId = (Long)CacheUtil.get("doTransAsync-thread-id");
+		Assert.assertTrue(threadId != doTransAsyncThreadId);
+	}
+	
+	@Test
+	public void testDoTransAsyncException(){
+		CountDownLatch cd = new CountDownLatch(1);
+		this.transService.doTransAsyncException(cd);
+		try {
+			cd.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		DzTransactionObject o = this.mapper.selectByPrimaryKey(CacheUtil.get("test4-uid").toString());
+		Assert.assertTrue(o != null);
+	}
+	
+	@Test
+	public void testDoTransBussinessId(){
+		try {
+			this.transService.doTransBussinessId(1000L);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DzTransactionObject o = this.mapper.selectByPrimaryKey(
+					TransContext.getCurrentContext().get("doTransBussinessId-uid").toString());
+			Assert.assertTrue(o.getBussinessId().equals(String.valueOf(1000L)));
 		}
 	}
 }

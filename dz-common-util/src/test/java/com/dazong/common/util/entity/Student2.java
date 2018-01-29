@@ -10,7 +10,16 @@ public class Student2 {
 
     }
 
+    public Integer id;
     public String name;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         if (name == null || name == "") {
@@ -29,7 +38,7 @@ public class Student2 {
 
     @Override
     public String toString() {
-        return "Student12 [name=" + name + ", age=" + age + ", sex=" + sex
+        return "Student12 [id=" + id + "name=" + name + ", age=" + age + ", sex=" + sex
                 + ", phoneNum=" + phoneNum + "]";
     }
 }

@@ -26,11 +26,11 @@ public class SignatureUtilsTest {
         String charset = "1";
         String sign = "1";
 
-        String str = SignatureUtils.rsaSign(map, privateKey, charset);
-        System.out.println("使用RSA算法加签: " + str);
-
-        boolean flag = SignatureUtils.rsaVerify(map, sign, publicKey, charset);
-        System.out.println("使用RSA算法验签: " + flag);
+//        String str = SignatureUtils.rsaSign(map, privateKey, charset);
+//        System.out.println("使用RSA算法加签: " + str);
+//
+//        boolean flag = SignatureUtils.rsaVerify(map, sign, publicKey, charset);
+//        System.out.println("使用RSA算法验签: " + flag);
 
     }
 
