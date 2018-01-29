@@ -171,6 +171,7 @@
 			<if test="fmeyeId != null">
 				fmeye_id = #{fmeyeId,jdbcType=VARCHAR},
 			</if>
+			update_time = now()
 		</set>
 		where uid = #{uid,jdbcType=VARCHAR}
 	</update>
@@ -185,7 +186,8 @@
 		retry_time = #{retryTime,jdbcType=BIGINT},
 		retry_tally = #{retryTally,jdbcType=INTEGER},
 		remark = #{remark,jdbcType=VARCHAR},
-		fmeye_id = #{fmeyeId,jdbcType=VARCHAR}
+		fmeye_id = #{fmeyeId,jdbcType=VARCHAR},
+		update_time = now()
 		where uid = #{uid,jdbcType=VARCHAR}
 	</update>
 	<delete id="deleteByRid" parameterType="java.lang.String">
