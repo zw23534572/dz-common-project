@@ -149,4 +149,29 @@ public class TransTest {
 		Long doTransAsyncThreadId = (Long)CacheUtil.get("doTransAsync-thread-id");
 		Assert.assertTrue(threadId != doTransAsyncThreadId);
 	}
+	
+	@Test
+	public void testDoTransAsyncException(){
+		CountDownLatch cd = new CountDownLatch(1);
+		this.transService.doTransAsyncException(cd);
+		try {
+			cd.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		DzTransactionObject o = this.mapper.selectByPrimaryKey(CacheUtil.get("test4-uid").toString());
+		Assert.assertTrue(o != null);
+	}
+	
+	@Test
+	public void testDoTransBussinessId(){
+		try {
+			this.transService.doTransBussinessId(1000L);
+		} catch (Exception e) {
+			e.printStackTrace();
+			DzTransactionObject o = this.mapper.selectByPrimaryKey(
+					TransContext.getCurrentContext().get("doTransBussinessId-uid").toString());
+			Assert.assertTrue(o.getBussinessId().equals(String.valueOf(1000L)));
+		}
+	}
 }
