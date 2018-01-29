@@ -1,4 +1,4 @@
-package com.dazong.common.lock.spring;
+package com.dazong.common.lock.config;
 
 import com.dazong.common.lock.LockManager;
 import com.dazong.common.lock.annotation.EnableDistrbutionLock;

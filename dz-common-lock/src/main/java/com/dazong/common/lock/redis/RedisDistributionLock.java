@@ -29,6 +29,7 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
 
     private static Logger logger = LoggerFactory.getLogger(RedisDistributionLock.class);
 
+    //redis
     private RedisTemplate redisTemplate;
 
     //锁信息
@@ -87,7 +88,6 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
             while ( timeout >= 0 && lockInfo == null) {
                 timeout -= 100;
                 if (timeout >= 100) {
-//                    Thread.sleep(100);
                     this.lockInfo.getLockURI().intern().wait(100);
                 }
                 if (attemptRedisLock(waitTime,unit)) {

@@ -8,21 +8,22 @@ import com.dazong.common.lock.annotation.Locking;
  * @author Sam
  * @version 1.0.0
  */
-public class LockAopService {
+public class LockDemoService {
 
     @Locking(id = "'hehe'",module = "hello")
     public void hello(String hello) {
         System.out.println("hello");
-//        try {
-//            Thread.sleep(50);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
-    @Locking(id = "'#num'",module = "hello")
-    public void sayNumber(Integer num) {
-        System.out.println("Num:" + num);
+    @Locking(id = "'num'",module = "hello",waitTime = 1000)
+    public void sayNum(Integer num) {
+        System.out.printf("Thread:%s,Num:%d\n" , Thread.currentThread().getName() , num );
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Locking(id = "#hello",module = "hello",provider = LockProviderTypeEnum.REDIS)

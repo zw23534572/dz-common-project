@@ -4,6 +4,7 @@ import com.dazong.common.lock.BaseDistributionLock;
 import com.dazong.common.lock.DistributionLock;
 import com.dazong.common.lock.LockException;
 import com.dazong.common.lock.LockInfo;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,12 +40,26 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
     @Override
     public void lock() {
         try {
+            //计时器
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+
+            //logging
+            logger.info(" Try to get lock-> lockId:{},lockURI:{},lockProvider:{},waitTime:{},expiredTime:{},startMills:{}",
+                            lockInfo.getId(),
+                            lockInfo.getLockURI(),
+                            lockInfo.getProvider(),
+                            lockInfo.getWaitTime(),
+                            lockInfo.getExpiredTime(),
+                            stopWatch.getStartTime());
+
             if (innerLock.isAcquiredInThisProcess())
                 return;
 
             if (innerLock.acquire(lockInfo.getWaitTime(), timeUnit)) {
                 //设置当前时间到这个锁的路径中的value，用于计算超时
                 zkclient.setData(lockInfo.getLockURI(), System.currentTimeMillis());
+                logger.info(" Get a lock~" );
                 return;
             }
             //持有锁的线程是否时间超时了，如果超时了，直接干掉
@@ -56,6 +71,8 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
                     zkclient.delete(lockInfo.getLockURI());
                     lock();//retry
                 } else {
+                    stopWatch.stop();
+                    logger.warn(" Wait timeout[{}]! ",stopWatch.getTime());
                     throw new LockException(lockInfo.getLockedAlert());
                 }
             }
