@@ -3,6 +3,7 @@ package com.dazong.common.util;
 
 import com.dazong.common.util.reflect.ClassWrapper;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.IterableUtils;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -192,10 +193,20 @@ public class CommonUtils {
         return CollectionUtils.isEmpty(c);
     }
 
+    /**
+     * 判断某个数组是否为空
+     * @param args
+     * @return
+     */
     public static boolean isEmpty(Object[] args) {
         return args == null || args.length == 0;
     }
 
+    /**
+     * 判断某个数组是否不为空
+     * @param args
+     * @return
+     */
     public static boolean isNotEmpty(Object[] args) {
         return !isEmpty(args);
     }
@@ -245,7 +256,7 @@ public class CommonUtils {
     }
 
     /**
-     * 删除一个map中的空值
+     * 删除map中的空值
      *
      * @param map
      * @return
@@ -394,11 +405,12 @@ public class CommonUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> T first(Collection<T> c) {
-        return isNotEmpty(c) ? CollectionUtils.get(c, 0) : null;
+        return isNotEmpty(c) ? IterableUtils.get(c, 0) : null;
+
     }
 
     /**
-     * 删除列表中的空项
+     * 删除中的空项
      *
      * @param c
      * @return
@@ -419,14 +431,14 @@ public class CommonUtils {
     }
 
     /**
-     * 把某个list转成 map
+     * 把某个list<VO>分组转成 map
      *
      * @param list        要转成map的集合
-     * @param keyProperty 生成map的key
-     * @param <V>         map中value的类型
+     * @param keyProperty 分组的属性字段
+     * @param <V>         map中value的类型,VO
      * @return
      */
-    public static <V> Map<String, V> listToMap(List<V> list, String keyProperty) {
+    public static <V> Map<String, V> list2MapByGroup(List<V> list, String keyProperty) {
         if (isEmpty(list)) {
             return null;
         }
