@@ -1,7 +1,8 @@
 package com.dazong.common.cache.core.impl;
 
-import com.dazong.common.cache.serialize.JdkSerializer;
-import com.dazong.common.cache.serialize.ObjectSerializer;
+import com.dazong.common.IObjectSerializer;
+import com.dazong.common.serialize.JdkSerializer;
+
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +30,13 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
-    private ObjectSerializer objectSerializer;
+    private IObjectSerializer objectSerializer;
 
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void setObjectSerializer(ObjectSerializer objectSerializer) {
+    public void setObjectSerializer(IObjectSerializer objectSerializer) {
         this.objectSerializer = objectSerializer;
     }
 

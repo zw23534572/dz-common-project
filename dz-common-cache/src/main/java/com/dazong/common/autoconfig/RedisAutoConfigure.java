@@ -2,7 +2,8 @@ package com.dazong.common.autoconfig;
 
 
 import com.dazong.common.cache.core.impl.RedisCacheHandler;
-import com.dazong.common.cache.serialize.JdkSerializer;
+import com.dazong.common.serialize.JdkSerializer;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
