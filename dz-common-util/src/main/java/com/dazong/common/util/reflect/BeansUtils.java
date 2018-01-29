@@ -54,7 +54,7 @@ public class BeansUtils extends BeanUtils {
             return null;
         }
         T targetObject = ClassWrapper.wrap(targetObjectClass).newOne();
-        copyProperties(targetObject, sourceObject);
+        copyProperties( sourceObject, targetObject);
         try {
             if (withOutFields != null) {
                 for (String f : withOutFields) {
@@ -96,7 +96,7 @@ public class BeansUtils extends BeanUtils {
      * @param target 目标Bean
      * @param source 来源Bean
      */
-    public static void copyProperties(Object target, Object source) {
+    public static void copyProperties(Object source, Object target) {
         BeanUtils.copyProperties(source, target);
     }
 
