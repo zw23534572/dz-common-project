@@ -43,6 +43,9 @@ public class DzTransactionScheduler {
 	 * 定时任务调度入口.
 	 */
 	public void scheduleTask(){
+		if(this.manager == null){
+			return;
+		}
 		scheduleBussinessFinished();
 		retryTimeoutTransaction();
 	}
