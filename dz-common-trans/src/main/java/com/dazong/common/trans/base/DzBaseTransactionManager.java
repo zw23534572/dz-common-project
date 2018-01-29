@@ -17,7 +17,6 @@ import com.dazong.common.trans.support.DzTransactionSyncManager;
  */
 @Lazy
 @Component
-@SuppressWarnings("serial")
 public class DzBaseTransactionManager extends AbstractDzTransactionManager {
 
 	@Override

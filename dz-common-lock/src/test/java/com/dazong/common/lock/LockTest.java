@@ -1,13 +1,14 @@
 package com.dazong.common.lock;
 
-import com.dazong.cc.common.util.Randoms;
+import com.dazong.common.lock.service.LockDemoService;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.Executor;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
@@ -17,41 +18,43 @@ import java.util.concurrent.locks.Lock;
  * @version 1.0.0
  */
 @RunWith(SpringRunner.class)
-@ContextConfiguration("/spring-config.xml")
+@SpringBootTest(classes = {LockTestApplication.class})
 public class LockTest {
 
     @Autowired
     LockManager lockManager;
 
     @Autowired
-    LockAopService lockAopService;
+    LockDemoService lockDemoService;
 
     @Test
     public void testLock() {
-        Lock lock = lockManager.createLock("WR","10001");
-        try {
-            lock.lock();
+
+        try( DistributionLock lock = lockManager.createLock("WR","10001")) {
+            if (lock != null)
+                lock.lock();
             System.out.println("I 'm get the lock ");
-        } finally {
-            lock.unlock();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Test
     public void testConcurrency() {
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
 
-        for (int i = 0,  len = 3000;i < len; i++ ) {
+        for (int i = 0,  len = 6;i < len; i++ ) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    lockAopService.sayNumber(Randoms.randomInt(3));
+                    lockDemoService.sayNum(RandomUtils.nextInt());
 
                 }
             });
         }
+
         try {
-            Thread.sleep(50000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -61,16 +64,16 @@ public class LockTest {
 
     @Test
     public void testAop() {
-        lockAopService.hello("XXXX");
+        lockDemoService.hello("XXXX");
     }
 
     @Test
     public void testAopRedis() {
-        lockAopService.helloRedis("XXXX","NIHao");
+        lockDemoService.helloRedis("XXXX","NIHao");
     }
 
     @Test
     public void testSaveSimple() {
-        lockAopService.saveSimple(new LockAopService.Simple("1","simpl Name 1"));
+        lockDemoService.saveSimple(new LockDemoService.Simple("1","simpl Name 1"));
     }
 }

@@ -15,13 +15,7 @@
 	</parent>
 
 	<properties>
-		<elastic.job.version>2.1.5</elastic.job.version>
-		<elasticjob-satrter.version>1.0.0-RELEASES</elasticjob-satrter.version>
-		<curator.version>2.10.0</curator.version>
-		<curator-test.version>1.3.3</curator-test.version>
-
-
-		<dz.common.version>4.0.0-SNAPSHOT</dz.common.version>
+		<jdk.version>1.8</jdk.version>
 
 		<clearing.version>1.0.0-SNAPSHOT</clearing.version>
 		<orderNumber.version>3.0</orderNumber.version>
@@ -35,6 +29,10 @@
 		<dependency>
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common-trans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common-elasticjob-starter</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.common</groupId>
@@ -54,11 +52,6 @@
 			<version>${message-platform.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.dazong</groupId>
-			<artifactId>transaction</artifactId>
-			<version>${transaction.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-disconf-pom</artifactId>
 		</dependency>
@@ -70,7 +63,17 @@
 
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-elastic-job-pom</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-fmeye-pom</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-activemq-pom</artifactId>
 		</dependency>
 
 		<dependency>
@@ -84,44 +87,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-dubbo-pom</artifactId>
 		</dependency>
 
-		<!-- import elastic-job lite core -->
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-core</artifactId>
-			<version>${elastic.job.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.dangdang</groupId>
-			<artifactId>elastic-job-lite-spring</artifactId>
-			<version>${elastic.job.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-client</artifactId>
-			<version>${curator.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-framework</artifactId>
-			<version>${curator.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.curator</groupId>
-			<artifactId>curator-recipes</artifactId>
-			<version>${curator.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.netflix.curator</groupId>
-			<artifactId>curator-test</artifactId>
-			<version>${curator-test.version}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<modules>

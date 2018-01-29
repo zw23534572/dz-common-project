@@ -31,15 +31,24 @@ public class MQNotifyManager {
     @Async("mqTaskExecutor")
     public void notifyMessage(final DZConsumerMessage message){
         IMessageListener listener = null;
+        boolean canNotify = true;
         try {
             logger.debug("通知消息------>{}", message);
             for (Map.Entry<Consumer, IMessageListener> entry : listenerMap.entrySet()){
                 //消息为队列时，则只判断消息目标。消息为topic时，判断消息目标和名称
                 if (entry.getKey().getDestination().equals(message.getDestination())
                         && isMatchSubscribeNameOrQueue(entry.getKey(), message)){
-                    listener = entry.getValue();
+                    canNotify = checkMaxCount(entry.getKey(), message);
+                    if (canNotify){
+                        listener = entry.getValue();
+                    }
                     break;
                 }
+            }
+            //消息通知达到最大次数时，将修改消息状态，不再通知
+            if (!canNotify){
+                messageMapper.updateConsumerMessageStatusById(message.getId(), DZMessage.STATUS_DONE);
+                return;
             }
             if (listener == null){
                 logger.warn("没有 Listener 监听 {} 消息", message);
@@ -55,6 +64,15 @@ public class MQNotifyManager {
                 messageMapper.updateConsumerMessage(message);
             }
         }
+    }
+
+    private boolean checkMaxCount(Consumer consumer, DZConsumerMessage message){
+        if (consumer.getNotifyMaxCount() != 0 && consumer.getNotifyMaxCount() > message.getNotifyCount()){
+            logger.warn("this message was maximum number of notifications:[name: {}, maxCount: {}, curCount: message.getNotifyCount()]",
+                    consumer.getName(), consumer.getNotifyMaxCount());
+            return false;
+        }
+        return true;
     }
 
     private boolean isMatchSubscribeNameOrQueue(Consumer consumer, DZConsumerMessage message){

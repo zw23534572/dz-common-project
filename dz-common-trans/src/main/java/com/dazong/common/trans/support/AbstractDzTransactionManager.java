@@ -16,16 +16,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.dazong.common.IObjectSerializer;
+import com.dazong.common.exceptions.SerializeException;
 import com.dazong.common.trans.DzTransactionDurableManger;
 import com.dazong.common.trans.DzTransactionException;
 import com.dazong.common.trans.DzTransactionManager;
-import com.dazong.common.trans.SerializeException;
 import com.dazong.common.trans.SimpleThreadFactory;
 import com.dazong.common.trans.TransactionDefinition;
 import com.dazong.common.trans.TransactionStatus;
 import com.dazong.common.trans.annotation.Propagation;
 import com.dazong.common.trans.properties.DzTransactionProperties;
-import com.dazong.common.trans.serialize.IParamSerialize;
 import com.google.common.collect.Maps;
 
 /**
@@ -49,7 +49,7 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 
 	protected boolean usedFmeye;
 
-	protected IParamSerialize paramSerialize;
+	protected IObjectSerializer paramSerialize;
 
 	@PostConstruct
 	public void init() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -59,7 +59,7 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 		logger.info("初始化事务提交线程池,线程数:{}", nThreads);
 		transactionDeclearMap = Maps.newHashMap();
 		usedFmeye = isUsedFmeye();
-		paramSerialize = (IParamSerialize) Class.forName(this.dzTransactionConfig.getParamSerializeClass())
+		paramSerialize = (IObjectSerializer) Class.forName(this.dzTransactionConfig.getParamSerializeClass())
 				.newInstance();
 	}
 
@@ -90,6 +90,8 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 			if (!hasTransaction) {
 				throw new DzTransactionException("MANDATORY:不存在事务,不允许新建事务!");
 			}
+			status.setTransaction(false);
+			return status;
 		} else if (pagation == Propagation.REQUIRED && hasTransaction) {
 			status.setTransaction(false);
 			return status;
@@ -111,11 +113,12 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 
 	public void commit(final TransactionStatus status, final boolean rootTransactionSuccess) {
 		// 异步提交,减少对业务流程的影响
-		executor.execute(new Runnable() {
-			public void run() {
-				docommit(status, rootTransactionSuccess);
-			}
-		});
+		docommit(status, rootTransactionSuccess);
+//		executor.execute(new Runnable() {
+//			public void run() {
+//				docommit(status, rootTransactionSuccess);
+//			}
+//		});
 	}
 
 	/**

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 /**
  * @author huqichao
- * @create 2017-10-30 15:32
+ * @date 2017-10-30 15:32
  **/
 @Component
 public class ActiveMQProducer extends AbstractProducer {

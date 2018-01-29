@@ -42,12 +42,57 @@ public class IContractServiceTest {
     }
 
     @Test
+    public void testCreateContract(){
+        //用户ID及货主要存在于CRM中
+        CreateContractRequest request = new CreateContractRequest();
+        request.setOrderNo(System.currentTimeMillis());
+        request.setPayType(0);
+        request.setBoardNo(System.currentTimeMillis());
+        request.setWhId(1);
+        request.setWhName("UTest");
+        request.setRealWhReceipt("buy"+System.currentTimeMillis());
+        request.setBoardWhReceipt("sell"+System.currentTimeMillis());
+        request.setSellType(1);
+        request.setBoardMode(1);
+        request.setInvoiceMode(1);
+        request.setBuyDealerId(Long.valueOf(1001995));
+        request.setBuyDealerName("UTest");
+        request.setSellDealerId(Long.valueOf(1002558));
+        request.setSellDealerName("sellUTest");
+        request.setBrandId(1);
+        request.setBrandName("ABA");
+        request.setClassId(1);
+        request.setClassName("铜");
+        request.setCategoryId(1);
+        request.setCategoryName("铜");
+        request.setRealQuantity(new BigDecimal(25));
+        request.setDealPrice(BigDecimal.valueOf(4000));
+        request.setTaxPrice(BigDecimal.valueOf(42000));
+        request.setTotalAmount(BigDecimal.valueOf(1000000));
+        request.setPremium(BigDecimal.valueOf(20));
+        request.setBuyCoId(Long.valueOf(100001188));
+        request.setBuyCoName("UTestBuy");
+        request.setBuyCoTel("321321321");
+        request.setSellCoId(Long.valueOf(1001));
+        request.setSellCoName("UTestSell");
+        request.setSellCoTel("321213221");
+        request.setDepositRadio("5");
+        request.setPenaltyRadio("10");
+        request.setTradeMode(10);
+        logger.info("request:{}",request);
+        DataResponse<String> response = this.contractService.createContract(request);
+        if (20271==response.getCode()){
+            logger.info("执行结果：{}",response);
+        }
+    }
+
+    @Test
     public void testCheckIsAgreement() {
         AgreementRequest agreementRequest = new AgreementRequest();
         agreementRequest.setCompanyIds("1001");
         agreementRequest.setUrl("/taohua/sell/add_sell");
         agreementRequest.setWarehouseCode("1");
-        DataResponse<?> result = this.contractService.checkIsAgreement(agreementRequest);
+        DataResponse<String> result = this.contractService.checkIsAgreement(agreementRequest);
         System.out.println(result);
     }
 

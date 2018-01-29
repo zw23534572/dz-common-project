@@ -1,7 +1,8 @@
 package com.dazong.common.cache.core.impl;
 
-import com.dazong.common.cache.serialize.FstObjectSerializer;
-import com.dazong.common.cache.serialize.ObjectSerializer;
+import com.dazong.common.IObjectSerializer;
+import com.dazong.common.serialize.JdkSerializer;
+
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,20 +30,20 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
-    private ObjectSerializer objectSerializer;
+    private IObjectSerializer objectSerializer;
 
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void setObjectSerializer(ObjectSerializer objectSerializer) {
+    public void setObjectSerializer(IObjectSerializer objectSerializer) {
         this.objectSerializer = objectSerializer;
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         if (objectSerializer == null){
-            objectSerializer = new FstObjectSerializer();
+            objectSerializer = new JdkSerializer();
         }
     }
 
@@ -57,7 +58,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.pSetEx(key.getBytes(),expireMilliseconds, str.getBytes());
+                redisConnection.pSetEx(key.getBytes(), expireMilliseconds, str.getBytes());
                 return true;
             }
         });
@@ -126,7 +127,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
             public Boolean doInRedis(RedisConnection redisConnection){
-                redisConnection.hSet(key.getBytes(), itemKey.getBytes(),objectSerializer.serialize(value));
+                redisConnection.hSet(key.getBytes(), itemKey.getBytes(), objectSerializer.serialize(value));
                 redisConnection.pExpire(key.getBytes(), expireMilliseconds);
                 return true;
             }
@@ -214,6 +215,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Override
     public String getString(final String key) {
         Validate.notBlank(key);
+
         return redisTemplate.execute(new RedisCallback<String>() {
             @Override
             public String doInRedis(RedisConnection connection){
@@ -280,7 +282,7 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
         Validate.notBlank(key);
         return redisTemplate.execute(new RedisCallback<Map<String, T>>() {
             @Override
-            public Map<String, T> doInRedis(RedisConnection connection){
+            public Map<String, T> doInRedis(RedisConnection connection) {
                 Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
                 if(value == null || value.isEmpty()){
                     logger.info(IS_NULL_VALUE_WARN);
@@ -322,6 +324,27 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
                     targetlist.add(objectSerializer.deserialize(l,type));
                 }
                 return targetlist;
+            }
+        });
+    }
+    /**
+     * Increment an integer value stored of {@code key} by {@code delta}.
+     *
+     * @param key must not be {@literal null}.
+     * @param value
+     * @return
+     * @see <a href="http://redis.io/commands/incrby">Redis Documentation: INCRBY</a>
+     */
+    @Override
+    public Long incrBy(final String key, final long value, final int expireMilliseconds){
+        Validate.notBlank(key);
+
+        return redisTemplate.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection redisConnection){
+                Long result = redisConnection.incrBy(key.getBytes(), value);
+                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                return result;
             }
         });
     }

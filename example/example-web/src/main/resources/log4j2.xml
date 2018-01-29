@@ -76,7 +76,7 @@
             <appender-ref ref="async_flume" />
         </logger>
 
-        <root level="DEBUG">
+        <root level="INFO">
             <appender-ref ref="CONSOLE" />
             <appender-ref ref="FILE" />
             <appender-ref ref="async_flume" />

@@ -1,6 +1,8 @@
 package com.dazong.example.web.controller;
 
+import com.dazong.common.cache.constants.CacheType;
 import com.dazong.common.cache.constants.IExpire;
+import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.manager.CacheFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,29 +21,62 @@ import java.util.List;
 public class RedisController {
 
     @Autowired
+    ICacheHandler redisCacheHandler;
+
+    @Autowired
     CacheFactory cacheFactory;
 
+    /**
+     * 使用自动注入处理器对象
+     */
 
     /**
-     * 统一正常封包
+     * 设置key值
      */
-    @RequestMapping("/set")
+    @RequestMapping("/set1")
     @ResponseBody
-    public void testSetList() {
+    public void testSetList1() {
         List<String> stringList = new ArrayList<>();
         String key = "demo";
         stringList.add("hello");
         stringList.add("world");
-        cacheFactory.getDefaultCacheHandler().saveList(key, stringList, IExpire.FIVE_MIN);
+        redisCacheHandler.saveList(key, stringList, IExpire.FIVE_MIN);
     }
 
     /**
-     * 统一异常拦截
+     * 获取key值
      */
-    @RequestMapping("/get")
+    @RequestMapping("/get1")
     @ResponseBody
     public List<String> testGetList() {
         String key = "demo";
-        return cacheFactory.getDefaultCacheHandler().getList(key, String.class);
+        return redisCacheHandler.getList(key, String.class);
     }
+
+    /**
+     * 使用工厂获取实例
+     */
+    /**
+     * 设置key值
+     */
+    @RequestMapping("/set2")
+    @ResponseBody
+    public void testSetList2() {
+        List<String> stringList = new ArrayList<>();
+        String key = "demo";
+        stringList.add("hello");
+        stringList.add("world");
+        cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).saveList(key, stringList, IExpire.FIVE_MIN);
+    }
+
+    /**
+     * 获取key值
+     */
+    @RequestMapping("/get2")
+    @ResponseBody
+    public List<String> testGetList2() {
+        String key = "demo";
+        return cacheFactory.getCacheHandler(CacheType.CACHE_REDIS).getList(key, String.class);
+    }
+
 }

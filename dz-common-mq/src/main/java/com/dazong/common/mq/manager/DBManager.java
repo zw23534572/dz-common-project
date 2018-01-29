@@ -23,15 +23,62 @@ public class DBManager {
 
     private Logger logger = LoggerFactory.getLogger(DBManager.class);
 
+    private String dbType;
+
     @Autowired
     private DataSource dataSource;
 
+    private String getDBType(Connection conn) throws SQLException {
+        return conn.getMetaData().getDatabaseProductName();
+    }
+
     public TableInfo selectTable(String dbName, String tableName) throws SQLException {
         Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            if (dbType == null){
+                dbType = getDBType(conn);
+            }
+            TableInfo tableInfo;
+            if (dbType.equalsIgnoreCase(TableInfo.DBTYPE_H2)){
+                tableInfo = getTableInfo4H2(conn, dbName, tableName);
+            } else {
+                tableInfo = getTableInfo4MySql(conn, dbName, tableName);
+            }
+            return tableInfo;
+        } finally {
+            close(null, null, conn);
+        }
+    }
+
+    private TableInfo getTableInfo4H2(Connection conn, String dbName, String tableName) throws SQLException {
+        ResultSet rs = null;
+        try {
+            String[] types = { "TABLE" };
+            rs = conn.getMetaData().getTables(null, null, "%", types);
+            while (rs.next()) {
+                String name = rs.getString("TABLE_NAME");
+                String cat = rs.getString("TABLE_CAT");
+                String comment = rs.getString("REMARKS");
+                if (cat.equalsIgnoreCase(dbName) && tableName.equalsIgnoreCase(name)){
+                    TableInfo tableInfo = new TableInfo();
+                    tableInfo.setDbName(dbName);
+                    tableInfo.setTableName(tableName);
+                    tableInfo.setTableDesc(comment);
+
+                    return tableInfo;
+                }
+            }
+            return null;
+        } finally {
+            close(rs, null, null);
+        }
+    }
+
+    private TableInfo getTableInfo4MySql(Connection conn, String dbName, String tableName) throws SQLException {
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            conn = dataSource.getConnection();
             stmt = conn.createStatement();
             String sql = String.format("select `table_schema`, `table_name`, `table_comment` " +
                     "from `information_schema`.`tables` where `table_schema`='%s' and `table_name`='%s';", dbName, tableName);
@@ -46,7 +93,7 @@ public class DBManager {
             }
             return tableInfo;
         } finally {
-            close(rs, stmt, conn);
+            close(rs, stmt, null);
         }
     }
 
@@ -95,7 +142,20 @@ public class DBManager {
         Statement stmt = conn.createStatement();
         String sql = String.format("ALTER TABLE `%s`.`%s` COMMENT='%s';",
                 tableInfo.getDbName(), tableInfo.getTableName(), tableInfo.getComment(version));
+        if (dbType.equalsIgnoreCase(TableInfo.DBTYPE_H2)){
+            sql = String.format("COMMENT ON TABLE `%s` IS '%s';", tableInfo.getTableName(), tableInfo.getComment(version));
+        }
+
         stmt.execute(sql);
         close(null, stmt, null);
+    }
+
+
+    public String sqlPath(){
+        if (TableInfo.DBTYPE_H2.equalsIgnoreCase(dbType)){
+            return "META-INF/sql/h2";
+        } else {
+            return "META-INF/sql/mysql";
+        }
     }
 }

@@ -29,7 +29,8 @@ public class AesUtils {
     protected static Logger logger = LoggerFactory.getLogger(ClassWrapper.class);
 
     private static final String SECRET_KEY = "^&U2T$E200#A1C%E";
-    private static final String CHAE_SET = "UTF-8";
+    private static final String CHAR_SET_UTF = "UTF-8";
+    private static final String CHAR_SET_ISO = "ISO_8859_1";
     private static MessageDigest md;
     private static Lock md5Lock = new ReentrantLock();
 
@@ -47,7 +48,7 @@ public class AesUtils {
         String random = String.valueOf(System.currentTimeMillis()) + String.valueOf(new Random().nextLong());
         StringBuilder rs = new StringBuilder();
         try {
-            byte[] input = random.getBytes(CHAE_SET);
+            byte[] input = random.getBytes(CHAR_SET_UTF);
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(input);
             byte[] security = md.digest(input);
@@ -62,8 +63,8 @@ public class AesUtils {
     }
 
     /**
-     * 生成32位md5码
-     *
+     * 生成md5码
+     * 字符UTF-8
      * @param encryptStr
      * @return
      */
@@ -72,7 +73,7 @@ public class AesUtils {
         String encrypt;
         try {
             md5 = MessageDigest.getInstance("MD5");
-            byte[] md5Bytes = md5.digest(encryptStr.getBytes(CHAE_SET));
+            byte[] md5Bytes = md5.digest(encryptStr.getBytes(CHAR_SET_UTF));
             StringBuilder hexValue = new StringBuilder();
             for (int i = 0; i < md5Bytes.length; i++) {
                 int val = ((int) md5Bytes[i]) & 0xff;
@@ -91,7 +92,7 @@ public class AesUtils {
     /**
      * 获取字符数据摘要，并以16进制字符串格式返回
      *
-     * @param data 目标字符串
+     * @param data 目标字符串  ISO_8859_1
      * @param base 进制表示（默认输出16进制）
      * @return
      */
@@ -117,7 +118,7 @@ public class AesUtils {
                 }
 
                 md.reset();
-                md.update(data.getBytes("ISO_8859_1"));
+                md.update(data.getBytes(CHAR_SET_ISO));
                 digest = md.digest();
             } finally {
                 md5Lock.unlock();
@@ -206,9 +207,9 @@ public class AesUtils {
      */
     public static String encrypt(String content, String key, boolean md5Key, String iv) {
         try {
-            byte[] tmpContent = content.getBytes(CHAE_SET);
-            byte[] tmpKey = key.getBytes(CHAE_SET);
-            byte[] tmpIv = iv.getBytes(CHAE_SET);
+            byte[] tmpContent = content.getBytes(CHAR_SET_UTF);
+            byte[] tmpKey = key.getBytes(CHAR_SET_UTF);
+            byte[] tmpIv = iv.getBytes(CHAR_SET_UTF);
 
             if (md5Key) {
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -240,8 +241,8 @@ public class AesUtils {
                 return "";
             }
             byte[] tmpContent = new BASE64Decoder().decodeBuffer(content);
-            byte[] tmpKey = key.getBytes(CHAE_SET);
-            byte[] tmpIv = iv.getBytes(CHAE_SET);
+            byte[] tmpKey = key.getBytes(CHAR_SET_UTF);
+            byte[] tmpIv = iv.getBytes(CHAR_SET_UTF);
 
             if (md5Key) {
                 MessageDigest md = MessageDigest.getInstance("MD5");
@@ -254,7 +255,7 @@ public class AesUtils {
             IvParameterSpec ivps = new IvParameterSpec(tmpIv);
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, ivps);
             byte[] bytes = cipher.doFinal(tmpContent);
-            return new String(bytes, CHAE_SET);
+            return new String(bytes, CHAR_SET_UTF);
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "decrypt");
         }

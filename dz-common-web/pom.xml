@@ -16,21 +16,25 @@
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-web-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-redis-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-dubbo-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-activemq-pom</artifactId>
 			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.dazong.common</groupId>
@@ -39,6 +43,24 @@
 		<dependency>
 			<groupId>com.dazong.common</groupId>
 			<artifactId>dz-common-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-fmeye-pom</artifactId>
+			<version>${dz-pom.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-jdbc-pom</artifactId>
+			<version>${dz-pom.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
