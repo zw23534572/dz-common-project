@@ -3,7 +3,6 @@ package com.dazong.common.serialize;
 import java.math.BigDecimal;
 
 import com.dazong.common.IObjectSerializer;
-import com.dazong.common.exceptions.SerializeException;
 
 /**
  * 
@@ -56,7 +55,7 @@ public abstract class AbstractObjectSerializer implements IObjectSerializer {
 			return (T) new BigDecimal(new String(bytes));
 		}
 
-		return doDeserialize(bytes);
+		return doDeserialize(bytes, type);
 
 	}
 
@@ -98,7 +97,7 @@ public abstract class AbstractObjectSerializer implements IObjectSerializer {
 	 * @param <T>
 	 * @return
 	 */
-	protected abstract <T> T doDeserialize(byte[] bytes);
+	protected abstract <T> T doDeserialize(byte[] bytes, Class<T> type);
 
 	/**
 	 * 序列化

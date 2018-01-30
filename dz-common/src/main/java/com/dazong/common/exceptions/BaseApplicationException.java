@@ -7,7 +7,7 @@ import com.dazong.common.IResultStatus;
 
 /**
  * 异常基类，扩展了异常码code 与 异常参数 args
- * 
+ * 序列化坑说明，fastjson序列化exception,必须要有适合的构造函数，否则会向上遍历找继承类的构造函数,会找不到code的值设置方法
  * @author wzy
  * 
  */
