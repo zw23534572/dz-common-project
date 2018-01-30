@@ -29,7 +29,7 @@ public class CharsetUtils {
 
     public static String encode(CharSequence str, String encoding) {
         Assert.notEmpty(str, "the encode string can not be null!");
-        if (StringUtils.isNotEmpty(str)) {
+        if (StringsUtils.isNotEmpty(str)) {
             try {
                 return new String(str.toString().getBytes(), encoding);
             } catch (UnsupportedEncodingException e) {

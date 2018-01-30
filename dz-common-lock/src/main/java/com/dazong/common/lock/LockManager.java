@@ -9,12 +9,17 @@ public interface LockManager {
 
     /**
      * 创建一个锁
-     * @param lockInfo
+     * @param lockInfo 锁信息
      * @return
      */
     DistributionLock createLock(LockInfo lockInfo);
 
+    /**
+     * 创建一个新的分布式锁
+     * @param module 模块
+     * @param id 锁ID
+     * @return
+     */
     DistributionLock createLock(String module,String id);
 
-    void removeLock(LockInfo lockInfo);
 }

@@ -2,7 +2,7 @@ package com.dazong.common.util.codec;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
-import com.dazong.common.util.StringUtils;
+import com.dazong.common.util.StringsUtils;
 import com.dazong.common.util.reflect.ClassWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -237,7 +237,7 @@ public class AesUtils {
      */
     public static String decrypt(String content, String key, boolean md5Key, String iv) {
         try {
-            if (StringUtils.isBlank(content) || StringUtils.isBlank(key) || StringUtils.isBlank(iv)) {
+            if (StringsUtils.isBlank(content) || StringsUtils.isBlank(key) || StringsUtils.isBlank(iv)) {
                 return "";
             }
             byte[] tmpContent = new BASE64Decoder().decodeBuffer(content);

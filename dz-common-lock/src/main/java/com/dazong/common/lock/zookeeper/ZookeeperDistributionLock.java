@@ -1,25 +1,24 @@
 package com.dazong.common.lock.zookeeper;
 
+import com.dazong.common.lock.BaseDistributionLock;
 import com.dazong.common.lock.DistributionLock;
 import com.dazong.common.lock.LockException;
 import com.dazong.common.lock.LockInfo;
-import com.dazong.common.lock.util.ZKClient;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 
 /**
  * 基于ZK的InterProcessMutex实现的分布式锁
  * @author Sam
  * @version 1.0.0
  */
-public class ZookeeperDistributionLock implements DistributionLock {
+public class ZookeeperDistributionLock extends BaseDistributionLock implements DistributionLock {
 
-    private static Logger logger = LoggerFactory.getLogger(ZookeeperDistributionLock.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperDistributionLock.class);
 
     private InterProcessMutex innerLock;
 
@@ -41,12 +40,26 @@ public class ZookeeperDistributionLock implements DistributionLock {
     @Override
     public void lock() {
         try {
+            //计时器
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+
+            //logging
+            LOG.info(" Try to get lock-> lockId:{},lockURI:{},lockProvider:{},waitTime:{},expiredTime:{},startMills:{}",
+                            lockInfo.getId(),
+                            lockInfo.getLockURI(),
+                            lockInfo.getProvider(),
+                            lockInfo.getWaitTime(),
+                            lockInfo.getExpiredTime(),
+                            stopWatch.getStartTime());
+
             if (innerLock.isAcquiredInThisProcess())
                 return;
 
             if (innerLock.acquire(lockInfo.getWaitTime(), timeUnit)) {
                 //设置当前时间到这个锁的路径中的value，用于计算超时
                 zkclient.setData(lockInfo.getLockURI(), System.currentTimeMillis());
+                LOG.info(" Get a lock~" );
                 return;
             }
             //持有锁的线程是否时间超时了，如果超时了，直接干掉
@@ -58,21 +71,19 @@ public class ZookeeperDistributionLock implements DistributionLock {
                     zkclient.delete(lockInfo.getLockURI());
                     lock();//retry
                 } else {
+                    stopWatch.stop();
+                    LOG.warn(" Wait timeout[{}]! ",stopWatch.getTime());
                     throw new LockException(lockInfo.getLockedAlert());
                 }
             }
         } catch (LockException ex) {
                 throw   ex;
         } catch (Exception ex) {
-            logger.error(ex.getMessage(),ex);
+            LOG.error(ex.getMessage(),ex);
             throw new LockException(ex,String.format("获取锁%s失败了!",lockInfo.getLockURI()));
         }
     }
 
-    @Override
-    public void lockInterruptibly() throws InterruptedException {
-        throw  new UnsupportedOperationException();
-    }
 
     @Override
     public boolean tryLock() {
@@ -84,7 +95,7 @@ public class ZookeeperDistributionLock implements DistributionLock {
         try {
             return innerLock.acquire(time, unit);
         } catch (Exception ex) {
-            logger.error(ex.getMessage(),ex);
+            LOG.error(ex.getMessage(),ex);
             throw new LockException(ex,String.format("获取锁%s失败了！",lockInfo.getLockURI()));
         }
     }
@@ -100,13 +111,4 @@ public class ZookeeperDistributionLock implements DistributionLock {
         }
     }
 
-    @Override
-    public Condition newCondition() {
-        throw   new UnsupportedOperationException();
-    }
-
-    @Override
-    public void close() throws IOException {
-        unlock();
-    }
 }

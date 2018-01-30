@@ -3,7 +3,7 @@ package com.dazong.common.util.reflect;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.CommonUtils;
-import com.dazong.common.util.StringUtils;
+import com.dazong.common.util.StringsUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,7 +152,7 @@ public class ClassWrapper<T> {
     public <T extends Annotation> Method getMethod(String methodName, Class<T> ann) {
         Method[] methods = getMethods(ann);
         for (Method m : methods) {
-            if (StringUtils.equals(methodName, m.getName())) {
+            if (StringsUtils.equals(methodName, m.getName())) {
                 return m;
             }
         }
@@ -271,7 +271,7 @@ public class ClassWrapper<T> {
     public Method getSetter(Field field) throws NoSuchMethodException {
         try {
             try {
-                return klass.getMethod("set" +  StringUtils.capitalize(field.getName()), field.getType());
+                return klass.getMethod("set" +  StringsUtils.capitalize(field.getName()), field.getType());
             } catch (Exception e) {
                 try {
                     if (field.getName().startsWith(PREFIX_IS)
@@ -700,7 +700,7 @@ public class ClassWrapper<T> {
      * @return 是否相等
      */
     public boolean is(String className) {
-        return StringUtils.equals(klass.getName(),className);
+        return StringsUtils.equals(klass.getName(),className);
     }
 
     /**
@@ -910,7 +910,7 @@ public class ClassWrapper<T> {
         Matcher m = PTN.matcher(gts);
         if (m.find()) {
             String s = m.group(2);
-            String[] ss = StringUtils.splitIgnoreBlank(s);
+            String[] ss = StringsUtils.splitIgnoreBlank(s);
             if (ss.length > 0) {
                 Class<?>[] re = new Class<?>[ss.length];
                 try {

@@ -1,6 +1,6 @@
 package com.dazong.common.web.support.jsonConverter;
 
-import com.dazong.common.util.FastJsonUtils;
+import com.dazong.common.util.JsonUtils;
 import org.springframework.web.servlet.view.AbstractView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ public class JsonViewer extends AbstractView {
 		response.setCharacterEncoding("UTF-8");
 		response.setHeader("Content-type", "application/json;charset=UTF-8");
 		PrintWriter writer = response.getWriter();
-		writer.write(FastJsonUtils.toJson(model));
+		writer.write(JsonUtils.toJson(model));
 		writer.flush();
 
 	}

@@ -45,7 +45,13 @@ public enum CommonStatus implements IErrors<CommonResponse> {
 	/**
 	 * mq系统错误
 	 */
-	RETRY_UTIL_ERROR(506, "重试组件发生异常");
+	RETRY_UTIL_ERROR(506, "重试组件发生异常"),
+
+	/**
+	 *  分布式锁错误
+	 */
+	LOCKING_ERROR(510,"分布式锁组件发生异常"),
+		;
 
 	private int code;
 	private String message;

@@ -6,7 +6,7 @@ import com.dazong.common.lock.LockInfo;
 import com.dazong.common.lock.LockManager;
 import com.dazong.common.lock.annotation.Locking;
 import com.dazong.common.lock.impl.SimpleLockInfo;
-import com.dazong.common.util.StringUtils;
+import com.dazong.common.util.StringsUtils;
 import com.dazong.common.util.reflect.ClassWrapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -57,6 +57,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
 
     }
 
+    /** 根据被拦截的方法参数创建一个分布式锁 */
     private DistributionLock createLock(JoinPoint jp) {
         LockInfo lockInfo = createLockID(jp);
         if (lockInfo != null)
@@ -64,6 +65,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
         return null;
     }
 
+    /** 根据被拦截的参数生成一个锁定义 */
     private LockInfo createLockID(JoinPoint joinPoint) {
         Class<? extends Object> targetClass = joinPoint.getTarget().getClass();
         String methodName                   = joinPoint.getSignature().getName();
@@ -71,6 +73,9 @@ public class DistributionLockAspect implements ApplicationContextAware {
         Method method                       = ClassWrapper.wrap(targetClass).getMethod(methodName,Locking.class);
         if (method != null) {
             Locking locking = method.getAnnotation(Locking.class);
+
+            if (locking.expiredTime() < locking.waitTime())
+                throw new LockException("锁的失效时间不能小于等待时间!!!");
 
             //构建 SPEL
             ExpressionParser parser           = new SpelExpressionParser();
@@ -80,14 +85,14 @@ public class DistributionLockAspect implements ApplicationContextAware {
             context.setBeanResolver(new BeanFactoryResolver(applicationContext));
 
             //condition为true时不加锁
-            if (StringUtils.isNotBlank(locking.condition())) {
+            if (StringsUtils.isNotBlank(locking.condition())) {
                 boolean conditionValue = parser.parseExpression(locking.condition()).getValue(context,boolean.class);
                 if (!conditionValue)
                     return null;
             }
 
             String lockId       = parser.parseExpression(locking.id()).getValue(context,String.class);
-            if (StringUtils.isBlank(lockId)) {
+            if (StringsUtils.isBlank(lockId)) {
                 throw new LockException(String.format("不能创建锁，获取不到要指定参数为'%s'的锁ID值",locking.id()));
             }
             LockInfo lockInfo   = SimpleLockInfo.of(locking,lockId);

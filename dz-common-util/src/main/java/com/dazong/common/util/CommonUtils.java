@@ -68,7 +68,7 @@ public class CommonUtils {
      */
     public static Map<String, String> string2Map(String string, String keySplitStr, String entrySplitStr) {
         Map<String, String> map = new HashMap<>();
-        if (StringUtils.isNotBlank(string)) {
+        if (StringsUtils.isNotBlank(string)) {
             String[] groups = string.split(entrySplitStr);
             for (String group : groups) {
                 String[] entry = group.split(keySplitStr);
@@ -234,7 +234,7 @@ public class CommonUtils {
             return true;
         }
         if (obj instanceof String) {
-            return StringUtils.isEmpty(obj.toString());
+            return StringsUtils.isEmpty(obj.toString());
         } else if (obj instanceof Collection) {
             return isEmpty(((Collection) obj));
         } else if (obj instanceof Map) {
@@ -444,7 +444,7 @@ public class CommonUtils {
         }
         Map<String, V> map = new HashMap<>();
         for (V v : list) {
-            String[] comboProperty = StringUtils.splitIgnoreBlank(keyProperty, ",");
+            String[] comboProperty = StringsUtils.splitIgnoreBlank(keyProperty, ",");
             StringBuilder key = new StringBuilder();
             for (String prop : comboProperty) {
                 String keyItem = Objects.toString(ClassWrapper.wrap(v).getValue(v, prop));
