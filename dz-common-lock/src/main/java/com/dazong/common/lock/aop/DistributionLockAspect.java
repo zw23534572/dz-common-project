@@ -57,6 +57,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
 
     }
 
+    /** 根据被拦截的方法参数创建一个分布式锁 */
     private DistributionLock createLock(JoinPoint jp) {
         LockInfo lockInfo = createLockID(jp);
         if (lockInfo != null)
@@ -64,6 +65,7 @@ public class DistributionLockAspect implements ApplicationContextAware {
         return null;
     }
 
+    /** 根据被拦截的参数生成一个锁定义 */
     private LockInfo createLockID(JoinPoint joinPoint) {
         Class<? extends Object> targetClass = joinPoint.getTarget().getClass();
         String methodName                   = joinPoint.getSignature().getName();
@@ -71,6 +73,9 @@ public class DistributionLockAspect implements ApplicationContextAware {
         Method method                       = ClassWrapper.wrap(targetClass).getMethod(methodName,Locking.class);
         if (method != null) {
             Locking locking = method.getAnnotation(Locking.class);
+
+            if (locking.expiredTime() < locking.waitTime())
+                throw new LockException("锁的失效时间不能小于等待时间!!!");
 
             //构建 SPEL
             ExpressionParser parser           = new SpelExpressionParser();

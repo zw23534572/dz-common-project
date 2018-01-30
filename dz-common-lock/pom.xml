@@ -16,6 +16,21 @@
 
 
 	<dependencies>
+
+		<!-- dazong commons-->
+		<dependency>
+			<groupId>com.dazong.common</groupId>
+			<artifactId>dz-common-util</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dazong.pom</groupId>
+			<artifactId>dz-springboot-pom</artifactId>
+			<version>${dz-pom.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+
 		<!-- redis -->
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
@@ -40,21 +55,20 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 
+		<!-- test -->
 		<dependency>
 			<groupId>com.dazong.pom</groupId>
 			<artifactId>dz-test-pom</artifactId>
 			<version>${dz-pom.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>com.dazong.common</groupId>
-            <artifactId>dz-common-util</artifactId>
-        </dependency>
+
     </dependencies>
 
 	<dependencyManagement>

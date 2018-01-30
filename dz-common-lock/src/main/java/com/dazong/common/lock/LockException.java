@@ -1,5 +1,6 @@
 package com.dazong.common.lock;
 
+import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.BusinessException;
 
 /**
@@ -9,13 +10,11 @@ import com.dazong.common.exceptions.BusinessException;
  */
 public class LockException extends BusinessException {
 
-    private static final int ERROR_CODE = 10521;
-
     public LockException(String message) {
-        super(ERROR_CODE,message);
+        super(CommonStatus.LOCKING_ERROR.getCode(),message);
     }
 
     public LockException(Throwable cause,String message) {
-        super(ERROR_CODE,message,cause);
+        super(CommonStatus.LOCKING_ERROR.getCode(),message,cause);
     }
 }

@@ -1,11 +1,10 @@
 package com.dazong.common.feignclient.client.api;
 
 import com.dazong.common.feign.client.api.IUserInfoService;
-import com.dazong.common.feign.client.dto.request.BankInfoRequest;
-import com.dazong.common.feign.client.dto.request.PageRequest;
-import com.dazong.common.feign.client.dto.request.WarehouseRequest;
-import com.dazong.common.feign.client.dto.request.WhiteRequest;
+import com.dazong.common.feign.client.dto.request.*;
+import com.dazong.common.feign.client.dto.response.BankInfoResponse;
 import com.dazong.common.feign.client.dto.response.Company;
+import com.dazong.common.feign.client.dto.response.UserInfo;
 import com.dazong.common.feign.client.dto.response.WhiteListResponse;
 import com.dazong.common.feignclient.FeignclientApplication;
 import com.dazong.common.resp.DataResponse;
@@ -28,6 +27,60 @@ public class IUserInfoServiceTest {
 
     @Autowired
     private IUserInfoService iUserInfoService;
+
+    @Test
+    public void testQueryUserByUserId(){
+        UserRequest request = new UserRequest();
+        request.setUserId(Long.valueOf(1001995));
+        DataResponse<UserInfo> response = this.iUserInfoService.queryUserByUserId(request);
+        if (response.isSuccess()){
+            logger.info("执行结果：{}",response);
+        }
+    }
+
+    @Test
+    public void testCheckSensitiveWords(){
+        SensitiveRequest request = new SensitiveRequest();
+        List<String> list = new ArrayList<>();
+        list.add("8899");
+        request.setKeywords(list);
+        DataResponse<String> response = this.iUserInfoService.checkSensitiveWords(request);
+        if (response.isSuccess()){
+            logger.info("执行结果：{}",response);
+        }
+    }
+
+    @Test
+    public void testQueryCompanyByComId(){
+        CompanyRequest request = new CompanyRequest();
+        request.setCompanyId(Long.valueOf(1001));
+        DataResponse<Company> response = this.iUserInfoService.queryCompanyByComId(request);
+        if (response.isSuccess()){
+            logger.info("执行结果：{}",response);
+        }
+    }
+
+    @Test
+    public void testCheckIsWhite(){
+        WhiteRequest request = new WhiteRequest();
+        List<Long> list = new ArrayList<>();
+        list.add(Long.valueOf(1001));
+        request.setCompanyIds(list);
+        DataResponse<String> response = this.iUserInfoService.checkIsWhite(request);
+        if (response.isSuccess()){
+            logger.info("执行结果：{}",response);
+        }
+    }
+
+    @Test
+    public void testGetBankInfo(){
+        BankInfoRequest request = new BankInfoRequest();
+        request.setCompanyId(Long.valueOf(1001));
+        DataResponse<List<BankInfoResponse>> response = this.iUserInfoService.getBankInfo(request);
+        if (response.isSuccess()){
+            logger.info("执行结果：{}",response);
+        }
+    }
 
     @Test
     public void testGetWhiteList() {

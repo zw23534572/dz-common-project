@@ -8,5 +8,5 @@ import java.util.concurrent.locks.Lock;
  * @author Sam
  * @version 1.0.0
  */
-public interface DistributionLock extends Lock ,Closeable{
+public interface DistributionLock extends Lock ,Closeable {
 }

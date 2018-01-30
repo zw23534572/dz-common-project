@@ -30,13 +30,13 @@ public @interface Locking {
     String module() ;
 
     /**
-     * 锁的等待时间，默认等待时间为30秒，时间单位为微秒
+     * 获取锁的等待时间，默认等待时间为30秒，时间单位为微秒
      * @return
      */
     long waitTime() default 30 * 1000;
 
     /**
-     * 锁的超时时间，默认过期时间为30分，过了这个时间这个锁就无效了，时间单位为微秒
+     * 锁的失效时间，此时间必须大于waitTime，默认过期时间为30分，过了这个时间这个锁就无效了，时间单位为微秒
      * @return
      */
     long expiredTime() default 30 * 60 * 1000;
@@ -51,10 +51,10 @@ public @interface Locking {
      * 锁的提供方式，可以是redis，也可以是zookeeper，根据实际的场景来做选择
      * @return
      */
-    LockProviderTypeEnum provider() default LockProviderTypeEnum.REDIS;
+    LockProviderTypeEnum provider() default LockProviderTypeEnum.ZOOKEEPER;
 
     /**
-     * 如果被锁了要提示什么信息给用户，默认为“有用户正执行此操作，请稍候重试！”
+     * 如果被锁了(即获取锁的时间超过了waitTime)要提示什么信息给用户，默认为“有用户正执行此操作，请稍候重试！”
      * @return
      */
     String lockedAlert() default LockInfo.DEFAULT_LOCKED_ALERT;
