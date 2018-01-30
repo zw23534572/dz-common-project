@@ -6,7 +6,7 @@ import com.dazong.common.lock.LockInfo;
 import com.dazong.common.lock.LockManager;
 import com.dazong.common.lock.annotation.Locking;
 import com.dazong.common.lock.impl.SimpleLockInfo;
-import com.dazong.common.util.StringUtils;
+import com.dazong.common.util.StringsUtils;
 import com.dazong.common.util.reflect.ClassWrapper;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -80,14 +80,14 @@ public class DistributionLockAspect implements ApplicationContextAware {
             context.setBeanResolver(new BeanFactoryResolver(applicationContext));
 
             //condition为true时不加锁
-            if (StringUtils.isNotBlank(locking.condition())) {
+            if (StringsUtils.isNotBlank(locking.condition())) {
                 boolean conditionValue = parser.parseExpression(locking.condition()).getValue(context,boolean.class);
                 if (!conditionValue)
                     return null;
             }
 
             String lockId       = parser.parseExpression(locking.id()).getValue(context,String.class);
-            if (StringUtils.isBlank(lockId)) {
+            if (StringsUtils.isBlank(lockId)) {
                 throw new LockException(String.format("不能创建锁，获取不到要指定参数为'%s'的锁ID值",locking.id()));
             }
             LockInfo lockInfo   = SimpleLockInfo.of(locking,lockId);

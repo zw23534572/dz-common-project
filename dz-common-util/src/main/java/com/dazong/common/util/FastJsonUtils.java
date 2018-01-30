@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *  fastjson工具类
  *  @author zisong.wang
  *  @updateDate 2018/01/15
  */

@@ -1,6 +1,6 @@
 package com.dazong.common.lock;
 
-import com.dazong.common.util.DateUtils;
+import com.dazong.common.util.DatesUtils;
 
 /**
  * @author Sam
@@ -25,10 +25,10 @@ public interface LockInfo {
     Boolean isExpired();
 
     /** 默认锁的等待时间为30秒 */
-    Long DEFAULT_WAIT_TIME = 30 * DateUtils.MILLIS_PER_SECOND;
+    Long DEFAULT_WAIT_TIME = 30 * DatesUtils.MILLIS_PER_SECOND;
 
     /** 默认锁的超时时间，过了这个时间这个锁就可以被干掉 */
-    Long DEFAULT_EXPIRED_TIME = 30 * DateUtils.MILLIS_PER_MINUTE;
+    Long DEFAULT_EXPIRED_TIME = 30 * DatesUtils.MILLIS_PER_MINUTE;
 
     /** 默认锁的提供方式为'zookeeper' */
     LockProviderTypeEnum DEFAULT_LOCK_PROVIDER = LockProviderTypeEnum.ZOOKEEPER;
