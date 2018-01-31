@@ -29,6 +29,7 @@ public class AesUtils {
     private static final String SECRET_KEY = "^&U2T$E200#A1C%E";
     private static final String CHAR_SET_UTF = "UTF-8";
     private static final String CHAR_SET_ISO = "ISO_8859_1";
+    private static final int NUM_TWO = 2;
     private static MessageDigest md;
     private static Lock md5Lock = new ReentrantLock();
 
@@ -192,9 +193,9 @@ public class AesUtils {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, key);
-            byte[] b = new byte[inStr.length() / 2];
-            for (int i = 0; i < inStr.length(); i += 2) {
-                b[i / 2] = (byte) (Integer.valueOf(inStr.substring(i, i + 2), 16) - 128);
+            byte[] b = new byte[inStr.length() / NUM_TWO];
+            for (int i = 0; i < inStr.length(); i += NUM_TWO) {
+                b[i / NUM_TWO] = (byte) (Integer.valueOf(inStr.substring(i, i + NUM_TWO), 16) - 128);
             }
             secret = cipher.doFinal(b);
         } catch (Exception e) {

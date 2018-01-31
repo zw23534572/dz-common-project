@@ -14,12 +14,10 @@ import java.util.Map;
  * @author Sam
  * @version 1.0.0
  */
-public abstract class SignatureUtils {
+public class SignatureUtils {
 
     private SignatureUtils(){
-
     }
-
 
     /**
      * 签名前要对参数进行排序
