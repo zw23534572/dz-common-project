@@ -1,8 +1,6 @@
 package com.dazong.common.serialize;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.parser.Feature;
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.dazong.common.exceptions.SerializeException;
 
 /**
@@ -37,11 +35,7 @@ public class FastJsonSerializer extends AbstractObjectSerializer {
 	@Override
 	protected <T> T doDeserialize(byte[] bytes, Class<T> type) {
 		try {
-//			ParserConfig config=new ParserConfig();
-//			config.addAccept("com.dazong.");
-//			JSON.parseObject(new String(bytes, CHARSET), type, config, null);
-			
-			return (T) JSON.parseObject(new String(bytes, CHARSET),type);
+			return JSON.parseObject(new String(bytes, CHARSET),type);
 		} catch (Exception e) {
 			throw new SerializeException("json序列化异常,当前使用编码为:" + CHARSET, e);
 		}
