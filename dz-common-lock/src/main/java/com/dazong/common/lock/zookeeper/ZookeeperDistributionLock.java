@@ -26,10 +26,10 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
 
     private TimeUnit timeUnit;
 
-    private ZKClient zkclient;
+    private ZookeeperClient zkclient;
 
 
-    public ZookeeperDistributionLock(ZKClient zkclient, LockInfo lockInfo) {
+    public ZookeeperDistributionLock(ZookeeperClient zkclient, LockInfo lockInfo) {
         this.zkclient   = zkclient;
         this.innerLock  = new InterProcessMutex(zkclient.getCuratorFramework(),lockInfo.getLockURI());
         this.timeUnit   = TimeUnit.MILLISECONDS;
@@ -53,8 +53,9 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
                             lockInfo.getExpiredTime(),
                             stopWatch.getStartTime());
 
-            if (innerLock.isAcquiredInThisProcess())
+            if (innerLock.isAcquiredInThisProcess()) {
                 return;
+            }
 
             if (innerLock.acquire(lockInfo.getWaitTime(), timeUnit)) {
                 //设置当前时间到这个锁的路径中的value，用于计算超时
@@ -62,6 +63,7 @@ public class ZookeeperDistributionLock extends BaseDistributionLock implements D
                 LOG.info(" Get a lock~" );
                 return;
             }
+
             //持有锁的线程是否时间超时了，如果超时了，直接干掉
             Long lockCreateTime = zkclient.getData(lockInfo.getLockURI(),Long.class);
             if (lockCreateTime != null) {

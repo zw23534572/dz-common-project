@@ -2,7 +2,7 @@ package com.dazong.common.lock;
 
 import com.dazong.common.lock.annotation.EnableDistrbutionLock;
 import com.dazong.common.lock.service.LockDemoService;
-import com.dazong.common.lock.zookeeper.ZKClient;
+import com.dazong.common.lock.zookeeper.ZookeeperClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -33,10 +33,10 @@ public class LockTestApplication {
     }
 
     @Bean
-    public ZKClient zkClient() {
-        ZKClient zkClient = new ZKClient();
-        zkClient.setServer("172.16.21.12:2181");
-        return zkClient;
+    public ZookeeperClient zkClient() {
+        ZookeeperClient zookeeperClient = new ZookeeperClient();
+        zookeeperClient.setServer("172.16.21.12:2181");
+        return zookeeperClient;
     }
 
     @Bean

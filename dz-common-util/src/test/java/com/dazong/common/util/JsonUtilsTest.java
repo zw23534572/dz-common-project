@@ -1,13 +1,12 @@
 package com.dazong.common.util;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.junit.Test;
 
 /**
  * @author: zisong.wang
  * @date: 2018/1/11
  */
-public class FastJsonUtilsTest {
+public class JsonUtilsTest {
 
     @Test
     public void test() {
@@ -32,7 +31,7 @@ public class FastJsonUtilsTest {
                 "    ]\n" +
                 "}";
 
-        String str = FastJsonUtils.toJsonSuccess("转换", json);
+        String str = JsonUtils.toJsonSuccess("转换", json);
         System.out.println(str);
 
 

@@ -1,6 +1,7 @@
 package com.dazong.common.lock;
 
 import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.BaseApplicationException;
 import com.dazong.common.exceptions.BusinessException;
 
 /**
@@ -8,7 +9,7 @@ import com.dazong.common.exceptions.BusinessException;
  * @author Sam
  * @version 1.0.0
  */
-public class LockException extends BusinessException {
+public class LockException extends BaseApplicationException {
 
     public LockException(String message) {
         super(CommonStatus.LOCKING_ERROR.getCode(),message);

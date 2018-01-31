@@ -1,5 +1,6 @@
 package com.dazong.common.lock.impl;
 
+import com.dazong.common.lock.LockConstants;
 import com.dazong.common.lock.LockInfo;
 import com.dazong.common.lock.LockProviderTypeEnum;
 import com.dazong.common.lock.annotation.Locking;
@@ -26,13 +27,13 @@ public class SimpleLockInfo implements LockInfo {
 
     private Long createTime;
 
-    public static SimpleLockInfo New(String id, String module) {
+    public static SimpleLockInfo of(String id, String module) {
         SimpleLockInfo lock = new SimpleLockInfo();
         lock.setId(id);
         lock.setModule(module);
-        lock.setExpiredTime(DEFAULT_EXPIRED_TIME);
-        lock.setWaitTime(DEFAULT_WAIT_TIME);
-        lock.setProvider(DEFAULT_LOCK_PROVIDER);
+        lock.setExpiredTime(LockConstants.DEFAULT_EXPIRED_TIME);
+        lock.setWaitTime(LockConstants.DEFAULT_WAIT_TIME);
+        lock.setProvider(LockConstants.DEFAULT_LOCK_PROVIDER);
         lock.createTime = System.currentTimeMillis();
         return lock;
     }
@@ -92,9 +93,9 @@ public class SimpleLockInfo implements LockInfo {
     public String getLockURI() {
         StringBuilder sb = new StringBuilder();
         if (provider == LockProviderTypeEnum.REDIS) {
-            sb.append(DEFAULT_REDIS_KEY_PREFIX).append(module).append(":").append(id);
+            sb.append(LockConstants.DEFAULT_REDIS_KEY_PREFIX).append(module).append(":").append(id);
         } else {
-            sb.append(DEFAULT_ZOOKEEPER_PATH_PREFIX).append(module).append("/").append(id);
+            sb.append(LockConstants.DEFAULT_ZOOKEEPER_PATH_PREFIX).append(module).append("/").append(id);
         }
         return sb.toString();
     }

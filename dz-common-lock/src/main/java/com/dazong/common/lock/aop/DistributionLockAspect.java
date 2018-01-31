@@ -19,6 +19,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
+import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.annotation.Order;
 import org.springframework.expression.ExpressionParser;
@@ -35,24 +36,24 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Order(3)
-public class DistributionLockAspect implements ApplicationContextAware {
+public class DistributionLockAspect extends ApplicationObjectSupport {
 
     @Autowired
     LockManager lockManager;
 
-    ApplicationContext applicationContext;
-
     @Pointcut("@annotation(com.dazong.common.lock.annotation.Locking)")
-    public void pointcut(){}
+    public void pointcut(){
+        // 这里不执行任何逻辑，只是用于定义Pointcut
+    }
 
     @Around(value="pointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         try(DistributionLock lock = createLock(proceedingJoinPoint)) {
-            if (lock != null)
+            if (lock != null) {
                 lock.lock();
-            Object result = proceedingJoinPoint.proceed();
-            return result;
+            }
+            return proceedingJoinPoint.proceed();
         }
 
     }
@@ -60,8 +61,9 @@ public class DistributionLockAspect implements ApplicationContextAware {
     /** 根据被拦截的方法参数创建一个分布式锁 */
     private DistributionLock createLock(JoinPoint jp) {
         LockInfo lockInfo = createLockID(jp);
-        if (lockInfo != null)
+        if (lockInfo != null) {
             return lockManager.createLock(lockInfo);
+        }
         return null;
     }
 
@@ -74,35 +76,35 @@ public class DistributionLockAspect implements ApplicationContextAware {
         if (method != null) {
             Locking locking = method.getAnnotation(Locking.class);
 
-            if (locking.expiredTime() < locking.waitTime())
+            if (locking.expiredTime() < locking.waitTime()) {
                 throw new LockException("锁的失效时间不能小于等待时间!!!");
+            }
 
             //构建 SPEL
             ExpressionParser parser           = new SpelExpressionParser();
             StandardEvaluationContext context =
                     new MethodBasedEvaluationContext(
                             joinPoint.getTarget(),method,arguments,new DefaultParameterNameDiscoverer());
-            context.setBeanResolver(new BeanFactoryResolver(applicationContext));
+            context.setBeanResolver(new BeanFactoryResolver(getApplicationContext()));
 
             //condition为true时不加锁
             if (StringsUtils.isNotBlank(locking.condition())) {
                 boolean conditionValue = parser.parseExpression(locking.condition()).getValue(context,boolean.class);
-                if (!conditionValue)
+                if (!conditionValue) {
                     return null;
+                }
             }
 
+            // 执行spel，获取 lock id 的值
             String lockId       = parser.parseExpression(locking.id()).getValue(context,String.class);
             if (StringsUtils.isBlank(lockId)) {
                 throw new LockException(String.format("不能创建锁，获取不到要指定参数为'%s'的锁ID值",locking.id()));
             }
-            LockInfo lockInfo   = SimpleLockInfo.of(locking,lockId);
-            return lockInfo;
+
+            return SimpleLockInfo.of(locking,lockId);
         }
         return null;
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+
 }
