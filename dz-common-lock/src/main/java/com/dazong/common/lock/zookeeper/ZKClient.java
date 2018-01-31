@@ -4,7 +4,7 @@ import com.dazong.common.IObjectSerializer;
 import com.dazong.common.lock.LockException;
 import com.dazong.common.serialize.FastJsonSerializer;
 import com.dazong.common.util.Assert;
-import com.dazong.common.util.NumberUtils;
+import com.dazong.common.util.NumbersUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -75,8 +75,8 @@ public class ZKClient extends ApplicationObjectSupport implements InitializingBe
             this.curatorFramework = getApplicationContext().getBean(CuratorFramework.class);
         } catch (NoSuchBeanDefinitionException e) {
             Assert.notEmpty(server);
-            this.baseSleepTimeMs    = NumberUtils.defaultNumber(this.baseSleepTimeMs,20);
-            this.maxRetries         = NumberUtils.defaultNumber(this.maxRetries,20);
+            this.baseSleepTimeMs    = NumbersUtils.defaultNumber(this.baseSleepTimeMs,20);
+            this.maxRetries         = NumbersUtils.defaultNumber(this.maxRetries,20);
             this.objectSerializer   = new FastJsonSerializer();
             try {
                 RetryPolicy retryPolicy = new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries);

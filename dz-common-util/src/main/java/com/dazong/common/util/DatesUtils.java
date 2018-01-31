@@ -26,7 +26,6 @@ public class DatesUtils extends DateUtils {
     private static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
     private static final String FORMAT_DATE = "yyyy-MM-dd";
     private static final String FORMAT_MONTH = "yyyy-MM";
-    private static final String FORMAT_TIME = "HH:mm:ss";
 
     private DatesUtils(){
 

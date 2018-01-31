@@ -36,6 +36,11 @@ public class Student2 {
     char sex;
     private String phoneNum;
 
+    @SuppressWarnings("unchecked")
+    public String test;
+
+
+
     @Override
     public String toString() {
         return "Student12 [id=" + id + "name=" + name + ", age=" + age + ", sex=" + sex

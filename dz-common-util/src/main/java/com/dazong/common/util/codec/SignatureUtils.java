@@ -16,6 +16,10 @@ import java.util.Map;
  */
 public abstract class SignatureUtils {
 
+    private SignatureUtils(){
+
+    }
+
 
     /**
      * 签名前要对参数进行排序
