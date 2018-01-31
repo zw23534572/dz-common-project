@@ -19,8 +19,7 @@ public class LockAutoConfiguration {
 
     @Bean
     public LockManager lockManager() {
-        LockManagerImpl lockManager = new LockManagerImpl();
-        return lockManager;
+        return new LockManagerImpl();
     }
 
     @Bean

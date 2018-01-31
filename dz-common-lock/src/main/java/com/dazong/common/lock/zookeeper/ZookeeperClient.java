@@ -21,9 +21,9 @@ import org.springframework.context.support.ApplicationObjectSupport;
  * @author Sam
  * @version 1.0.0
  */
-public class ZKClient extends ApplicationObjectSupport implements InitializingBean,DisposableBean {
+public class ZookeeperClient extends ApplicationObjectSupport implements InitializingBean,DisposableBean {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ZKClient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ZookeeperClient.class);
 
     private Integer baseSleepTimeMs;
 
