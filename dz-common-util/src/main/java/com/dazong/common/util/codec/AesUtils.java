@@ -216,8 +216,10 @@ public class AesUtils {
                 tmpKey = md.digest(tmpKey);
             }
             SecretKeySpec skeySpec = new SecretKeySpec(tmpKey, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding"); //"算法/模式/补码方式"
-            IvParameterSpec ivps = new IvParameterSpec(tmpIv);//使用CBC模式，需要一个向量iv，可增加加密算法的强度
+            //"算法/模式/补码方式"
+            Cipher cipher = Cipher.getInstance("AES/CBC/ISO10126Padding");
+            //使用CBC模式，需要一个向量iv，可增加加密算法的强度
+            IvParameterSpec ivps = new IvParameterSpec(tmpIv);
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivps);
             byte[] bytes = cipher.doFinal(tmpContent);
             return new BASE64Encoder().encode(bytes);

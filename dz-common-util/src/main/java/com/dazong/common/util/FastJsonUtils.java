@@ -54,7 +54,7 @@ public class FastJsonUtils {
     }
 
     public static String toJsonSuccess(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<>();
+        Map<String, Object> mp = new HashMap<>(4);
         mp.put("status", 1);
         mp.put("state", "success");
         mp.put("msg", msg);
@@ -63,7 +63,7 @@ public class FastJsonUtils {
     }
 
     public static String toJsonError(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<>();
+        Map<String, Object> mp = new HashMap<>(4);
         mp.put("status", 0);
         mp.put("state", "error");
         mp.put("msg", msg);

@@ -67,7 +67,7 @@ public class CommonUtils {
      * @return
      */
     public static Map<String, String> string2Map(String string, String keySplitStr, String entrySplitStr) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(16);
         if (StringsUtils.isNotBlank(string)) {
             String[] groups = string.split(entrySplitStr);
             for (String group : groups) {
@@ -96,7 +96,7 @@ public class CommonUtils {
         if (keyValues != null && keyValues.length > 1) {
             Class<?> kClass = keyValues[0].getClass();
             Class<?> vClass = keyValues[1].getClass();
-            return (Map<K, V>) map(kClass, vClass, keyValues);
+            return (Map) map(kClass, vClass, keyValues);
         }
         return null;
     }
@@ -115,7 +115,7 @@ public class CommonUtils {
      */
     public static <K, V> Map<K, V> map(Class<K> kClass, Class<V> vClass, Object... keyValues) {
 
-        Map<K, V> m = new HashMap<>();
+        Map<K, V> m = new HashMap<>(16);
         int i = 1;
         Object preObj = null;
         for (Object o : keyValues) {
@@ -141,7 +141,7 @@ public class CommonUtils {
      * @return
      */
     public static Map<Object, Object> mapByAarray(Object... keyValues) {
-        Map<Object, Object> m = new HashMap<>();
+        Map<Object, Object> m = new HashMap<>(20);
         int i = 1;
         Object key = null;
         for (Object value : keyValues) {
@@ -262,7 +262,7 @@ public class CommonUtils {
      * @return
      */
     public static Map<String, Object> removeEmptyFromMap(Map<String, Object> map) {
-        Map<String, Object> mapTemp = new HashMap<>();
+        Map<String, Object> mapTemp = new HashMap<>(map.size());
         Iterator<?> iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             @SuppressWarnings("rawtypes")
@@ -442,7 +442,7 @@ public class CommonUtils {
         if (isEmpty(list)) {
             return null;
         }
-        Map<String, V> map = new HashMap<>();
+        Map<String, V> map = new HashMap<>(list.size());
         for (V v : list) {
             String[] comboProperty = StringsUtils.splitIgnoreBlank(keyProperty, ",");
             StringBuilder key = new StringBuilder();
