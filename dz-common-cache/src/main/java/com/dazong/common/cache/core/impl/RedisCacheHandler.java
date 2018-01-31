@@ -348,4 +348,28 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
             }
         });
     }
+
+    /**
+     * map中item增减原子性操作
+     *
+     * @param key
+     * @param itemKey
+     * @param value
+     * @param expireMilliseconds
+     * @return
+     */
+    @Override
+    public Long mapItemIncrBy(final String key, final String itemKey, final long value, final int expireMilliseconds) {
+        Validate.notBlank(key);
+        Validate.notBlank(itemKey);
+
+        return redisTemplate.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection redisConnection){
+                Long result = redisConnection.hIncrBy(key.getBytes(),itemKey.getBytes(),value);
+                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                return result;
+            }
+        });
+    }
 }

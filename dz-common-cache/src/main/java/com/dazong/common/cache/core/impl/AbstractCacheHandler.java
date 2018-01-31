@@ -88,4 +88,9 @@ public abstract class AbstractCacheHandler implements ICacheHandler {
         return 0L;
     }
 
+    @Override
+    public Long mapItemIncrBy(final String key, final String itemKey, final long value, final int expireMilliseconds) {
+        return 0L;
+    }
+
 }

@@ -215,4 +215,30 @@ public class RedisCacheHandlerTest {
 
 
     }
+
+    /**
+     * 需要补充更多测试用例
+     */
+    @Test
+    public void mapItemIncrBy(){
+        {
+            String key = "number";
+            String itemKey = "mimi";
+            redisCacheHandler.saveMapItem(key, itemKey, 0,IExpire.EXPIRE_MAX);
+
+            Long delta = 100L;
+            Long reult = redisCacheHandler.mapItemIncrBy(key, itemKey, delta,IExpire.EXPIRE_MAX);
+            assertEquals(delta, reult);
+
+        }
+        {
+            String key = "number";
+            String itemKey = "mimi";
+            Long delta = 1L;
+            Long reult = redisCacheHandler.mapItemIncrBy(key, itemKey, delta,IExpire.EXPIRE_MAX);
+            assertEquals(101L, reult.longValue());
+        }
+
+
+    }
 }

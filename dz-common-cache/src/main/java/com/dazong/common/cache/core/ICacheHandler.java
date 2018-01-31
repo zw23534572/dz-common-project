@@ -125,4 +125,14 @@ public interface ICacheHandler {
      * @see <a href="http://redis.io/commands/incrby">Redis Documentation: INCRBY</a>
      */
     public Long incrBy(final String key, final long value, final int expireMilliseconds);
+
+    /**
+     * map中item增减原子性操作
+     * @param key
+     * @param itemKey
+     * @param value
+     * @param expireMilliseconds
+     * @return
+     */
+    public Long mapItemIncrBy(final String key,final String itemKey,final long value, final int expireMilliseconds);
 }
