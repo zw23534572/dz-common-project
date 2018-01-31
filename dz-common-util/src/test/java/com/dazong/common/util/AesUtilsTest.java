@@ -22,28 +22,28 @@ public class AesUtilsTest {
         System.out.println("--------------- 字母+数字  ------------");
         System.out.println("生成md5码：" + AesUtils.digest32(str));
         System.out.println("生成md5码：" + AesUtils.digest(str));
+
         assertThat(AesUtils.digest32(str)).isEqualTo(AesUtils.digest(str));
 
         System.out.println("--------------- 字段+数据+中文字符 （字段集UTF8、ISO-8859-1不致导致生成不同加密结果） ------------");
         System.out.println("生成md5码：" + AesUtils.digest32(str + "中文"));
         System.out.println("生成md5码：" + AesUtils.digest(str + "中文"));
+
         assertThat(AesUtils.digest32(AesUtils.digest32(str + "中文"))).isNotEqualTo(AesUtils.digest(str + "中文"));
 
-        System.out.println("\n\n>>>>>>>>>>>>>>>>>>> AES对称加/解密  >>>>>>>>>>>>>>>>>>>");
-        // 生成salt
-        byte[] salt = DigestUtils.generateSalt(16);
 
-        //将salt转成16进制字符串
-        String saltStr = EncoderUtils.hexEncode(salt);
-        System.err.println("生成字符串 saltStr=" + saltStr);
+        System.out.println("\n\n>>>>>>>>>>>>>>>>>>> 加密 - 解密（自选加密规则）  >>>>>>>>>>>>>>>>>>>");
+        String content = AesUtils.md5RandomString();
+        String key = "123456";
+        boolean md5Key = true;
+        String iv = "1234567891234567";
+        String encrypt = AesUtils.encrypt(content, key, md5Key, iv);
+        String decrypt = AesUtils.decrypt(encrypt, key, md5Key, iv);
 
-        //给salt加密
-        String saltSec = AesUtils.encrypt(saltStr);
-        System.err.println("给salt加密 saltSec=" + saltSec);
+        System.out.println(" content: " + content + "\n encrypt: " + encrypt + "\n decrypt: " + decrypt);
 
-        String deSaltSec = AesUtils.decrypt(saltSec);
-        System.err.println("给salt解密 saltSec=" + deSaltSec);
-        assertThat(deSaltSec).isEqualTo(saltStr);
+        //assertThat(encrypt).isEqualTo(decrypt);
+
 
     }
 

@@ -16,7 +16,7 @@ import java.util.Map.Entry;
  */
 public class CommonUtils {
 
-    private CommonUtils(){
+    private CommonUtils() {
 
     }
 
@@ -92,11 +92,10 @@ public class CommonUtils {
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> map(Object... keyValues) {
-
         if (keyValues != null && keyValues.length > 1) {
             Class<?> kClass = keyValues[0].getClass();
             Class<?> vClass = keyValues[1].getClass();
-            return (Map) map(kClass, vClass, keyValues);
+            return (Map<K, V>) map(kClass, vClass, keyValues);
         }
         return null;
     }
@@ -114,7 +113,6 @@ public class CommonUtils {
      * @return
      */
     public static <K, V> Map<K, V> map(Class<K> kClass, Class<V> vClass, Object... keyValues) {
-
         Map<K, V> m = new HashMap<>(16);
         int i = 1;
         Object preObj = null;
@@ -195,6 +193,7 @@ public class CommonUtils {
 
     /**
      * 判断某个数组是否为空
+     *
      * @param args
      * @return
      */
@@ -204,6 +203,7 @@ public class CommonUtils {
 
     /**
      * 判断某个数组是否不为空
+     *
      * @param args
      * @return
      */
@@ -371,7 +371,7 @@ public class CommonUtils {
      */
     public static <T> T[] removeIfEmpty(T[] arys) {
         if (isEmpty(arys)) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         return toArray(removeIfEmpty(asArrayList(arys)));
     }
@@ -386,11 +386,11 @@ public class CommonUtils {
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(Collection<T> c) {
         if (isEmpty(c)) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         T t = first(c);
         if (isEmpty(t)) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         T[] tArray = (T[]) Array.newInstance(t.getClass(), c.size());
         c.toArray(tArray);

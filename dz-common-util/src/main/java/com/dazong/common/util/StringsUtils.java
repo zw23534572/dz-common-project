@@ -12,7 +12,11 @@ import org.apache.commons.lang3.StringUtils;
  * @author: zisong.wang
  * @date: 2018/1/10
  */
-public abstract class StringsUtils extends StringUtils {
+public class StringsUtils extends StringUtils {
+
+    private StringsUtils(){
+
+    }
 
     /**
      * 逗号
