@@ -48,7 +48,7 @@ public class JdkSerializer extends AbstractObjectSerializer {
 	}
 
 	@Override
-	protected <T> T doDeserialize(byte[] bytes) {
+	protected <T> T doDeserialize(byte[] bytes, Class<T> type) {
 		try {
 			ByteArrayInputStream bin = new ByteArrayInputStream(bytes);
 			ObjectInputStream inputStream = new ObjectInputStream(bin);
