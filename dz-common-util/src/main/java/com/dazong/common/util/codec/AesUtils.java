@@ -4,11 +4,9 @@ import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.StringsUtils;
 import com.dazong.common.util.reflect.ClassWrapper;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -65,6 +63,7 @@ public class AesUtils {
     /**
      * 生成md5码
      * 字符UTF-8
+     *
      * @param encryptStr
      * @return
      */
@@ -110,11 +109,10 @@ public class AesUtils {
             md5Lock.lock();
             try {
                 if (md == null) {
-                    try {
-                        md = MessageDigest.getInstance("MD5");
-                    } catch (Exception e) {
-                        return null;
-                    }
+                    md = getMd();
+                }
+                if (md == null) {
+                    return null;
                 }
 
                 md.reset();
@@ -126,6 +124,15 @@ public class AesUtils {
             return bytesToString(digest, localBase);
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "digest");
+        }
+
+    }
+
+    private static MessageDigest getMd() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -222,14 +229,15 @@ public class AesUtils {
             IvParameterSpec ivps = new IvParameterSpec(tmpIv);
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivps);
             byte[] bytes = cipher.doFinal(tmpContent);
-            return new BASE64Encoder().encode(bytes);
+            return Base64.encodeBase64String(bytes);
+
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL, "加密");
+            throw new PlatformException(e, CommonStatus.FAIL, "encrypt加密");
         }
     }
 
     /**
-     * AesUtils 解密
+     *  解密
      *
      * @param content 需要解密的内容
      * @param key     密码
@@ -242,7 +250,7 @@ public class AesUtils {
             if (StringsUtils.isBlank(content) || StringsUtils.isBlank(key) || StringsUtils.isBlank(iv)) {
                 return "";
             }
-            byte[] tmpContent = new BASE64Decoder().decodeBuffer(content);
+            byte[] tmpContent = Base64.decodeBase64(content);
             byte[] tmpKey = key.getBytes(CHAR_SET_UTF);
             byte[] tmpIv = iv.getBytes(CHAR_SET_UTF);
 
@@ -259,7 +267,7 @@ public class AesUtils {
             byte[] bytes = cipher.doFinal(tmpContent);
             return new String(bytes, CHAR_SET_UTF);
         } catch (Exception e) {
-            throw new PlatformException(e, CommonStatus.FAIL, "decrypt");
+            throw new PlatformException(e, CommonStatus.FAIL, "decrypt解密");
         }
     }
 
