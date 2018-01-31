@@ -2,8 +2,8 @@ package com.dazong.common.util;
 
 import java.math.BigDecimal;
 import java.util.*;
+import org.apache.commons.lang3.StringUtils;
 
-import static org.apache.commons.lang3.StringUtils.split;
 
 /**
  * String工具类
@@ -12,7 +12,11 @@ import static org.apache.commons.lang3.StringUtils.split;
  * @author: zisong.wang
  * @date: 2018/1/10
  */
-public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
+public class StringsUtils extends StringUtils {
+
+    private StringsUtils(){
+
+    }
 
     /**
      * 逗号
@@ -20,11 +24,10 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
     public static final String SEP_COMMA = ",";
     private static final String UNDER_LINE = "_";
     public static final String REGEX_EMAIL = "^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
-    public static final String REGEX_URL = "((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?";
-
+    public static final String REGEX_URL = "(ht|f)tp(s?)\\:\\/\\/[0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*(:(0-9)*)*(\\/?)([a-zA-Z0-9\\-\\.\\?\\,\\'\\/\\\\\\+&amp;%\\$#_]*)?";
 
     /**
-     * 下划线转驼峰法
+     * 下划线转驼峰
      *
      * @param line  源字符串
      * @return 转换后的字符串
@@ -359,7 +362,7 @@ public abstract class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     public static String[] splitIgnoreBlank(String s) {
-        return splitIgnoreBlank(s, StringUtils.SEP_COMMA);
+        return splitIgnoreBlank(s, StringsUtils.SEP_COMMA);
     }
 
     /**

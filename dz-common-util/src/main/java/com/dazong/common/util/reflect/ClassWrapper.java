@@ -3,7 +3,7 @@ package com.dazong.common.util.reflect;
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.CommonUtils;
-import com.dazong.common.util.StringUtils;
+import com.dazong.common.util.StringsUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,7 @@ public class ClassWrapper<T> {
     protected static Logger logger = LoggerFactory.getLogger(ClassWrapper.class);
 
     public static final String PREFIX_IS = "is";
+    private static final Pattern PTN = Pattern.compile("(<)(.+)(>)");
     private Class<T> klass;
 
     private ClassWrapper(Class<T> cls) {
@@ -118,7 +119,7 @@ public class ClassWrapper<T> {
             try {
                 return superClass.getDeclaredMethod(methodName, parameterTypes);
             } catch (NoSuchMethodException e) {
-                logger.info("循环向上转型,获取对象的DeclaredMethod {}",e);
+                logger.info("循环向上转型,获取对象的DeclaredMethod {}", e);
             }
         }
         return null;
@@ -152,7 +153,7 @@ public class ClassWrapper<T> {
     public <T extends Annotation> Method getMethod(String methodName, Class<T> ann) {
         Method[] methods = getMethods(ann);
         for (Method m : methods) {
-            if (StringUtils.equals(methodName, m.getName())) {
+            if (StringsUtils.equals(methodName, m.getName())) {
                 return m;
             }
         }
@@ -177,60 +178,56 @@ public class ClassWrapper<T> {
      */
     public Constructor getConstructor(Class... paramTypes) {
         Constructor[] creators = klass.getDeclaredConstructors();
-        Constructor isme = null;
         for (Constructor c : creators) {
             Class[] types = c.getParameterTypes();
             if (CommonUtils.isEmpty(paramTypes) && CommonUtils.isEmpty(types)) {
-                isme = c;
-                break;
-            } else if (CommonUtils.isNotEmpty(types) && types.length == paramTypes.length) {
-                boolean equals = true;
-                for (int i = 0, len = types.length; i < len; i++) {
-                    if (!isChildOf(types[i], paramTypes[i])) {
-                        equals = false;
-                        break;
-                    }
-                }
-                if (equals) {
-                    isme = c;
-                    break;
-                }
+                return c;
+            }
+            if (CommonUtils.isNotEmpty(types) && types.length == paramTypes.length && isEquals(types, paramTypes)) {
+                return c;
             }
         }
-        if (isme == null) {
-            throw new PlatformException(CommonStatus.FAIL, "Can't find the Constructor!");
-        }
-        return isme;
+        throw new PlatformException(CommonStatus.FAIL, "Can't find the Constructor!");
+
     }
 
+    private boolean isEquals(Class[] types, Class... paramTypes) {
+        boolean equals = true;
+        for (int i = 0, len = types.length; i < len; i++) {
+            if (!isChildOf(types[i], paramTypes[i])) {
+                equals = false;
+                break;
+            }
+        }
+        return equals;
+    }
+
+
     /**
-     * 根据名称获取一个 Getter。
+     * 根据名称获取一个 Getter
      * <p>
      * 比如，你想获取 abc 的 getter ，那么优先查找 getAbc()，如果 没有，则查找 abc()。
      *
      * @param fieldName
      * @return 方法
-     * @throws NoSuchMethodException 没有找到 Getter
      */
-    public Method getGetter(String fieldName) throws NoSuchMethodException {
+    public Method getGetter(String fieldName) {
         try {
-            String fn = org.apache.commons.lang.StringUtils.capitalize(fieldName);
-            try {
-                try {
-                    return klass.getMethod("get" + fn);
-                } catch (NoSuchMethodException e) {
-                    Method m = klass.getMethod("is" + fn);
-                    if (!ClassWrapper.wrap(m.getReturnType()).isBoolean()) {
-                        throw new NoSuchMethodException();
-                    }
-                    return m;
-                }
-            } catch (NoSuchMethodException e) {
-                return klass.getMethod(fieldName);
+            String fn = StringsUtils.capitalize(fieldName);
+            Method varMethod = getMethodByName("get" + fn);
+            if (varMethod != null) {
+                return varMethod;
             }
+            varMethod = getMethodByName("is" + fn);
+
+            if (varMethod != null && !ClassWrapper.wrap(varMethod.getReturnType()).isBoolean()) {
+                return getMethodByName(fieldName);
+            }
+            return varMethod;
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "Fail to find getter for [%s]->[%s]", klass.getName(), fieldName);
         }
+
     }
 
     /**
@@ -240,20 +237,24 @@ public class ClassWrapper<T> {
      *
      * @param field
      * @return 方法
-     * @throws NoSuchMethodException 没有找到 Getter
      */
-    public Method getGetter(Field field) throws NoSuchMethodException {
+    public Method getGetter(Field field) {
         try {
-            try {
-                String fn = org.apache.commons.lang.StringUtils.capitalize(field.getName());
-                if (ClassWrapper.wrap(field.getType()).is(boolean.class)) {
-                    return klass.getMethod("is" + fn);
-                } else {
-                    return klass.getMethod("get" + fn);
+            String fn = StringsUtils.capitalize(field.getName());
+            Method varMethod;
+            if (ClassWrapper.wrap(field.getType()).is(boolean.class)) {
+                varMethod = getMethodByName("is" + fn);
+                if (varMethod != null) {
+                    return varMethod;
                 }
-            } catch (NoSuchMethodException e) {
-                return klass.getMethod(field.getName());
+            } else {
+                varMethod = getMethodByName("get" + fn);
+                if (varMethod != null) {
+                    return varMethod;
+                }
             }
+
+            return getMethodByName(field.getName());
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "Fail to find getter for [%s]->[%s]", klass.getName(), field.getName());
         }
@@ -266,31 +267,29 @@ public class ClassWrapper<T> {
      *
      * @param field 字段
      * @return 方法
-     * @throws NoSuchMethodException 没找到 Setter
      */
-    public Method getSetter(Field field) throws NoSuchMethodException {
+    public Method getSetter(Field field) {
         try {
-            try {
-                return klass.getMethod("set" +  StringUtils.capitalize(field.getName()), field.getType());
-            } catch (Exception e) {
-                try {
-                    if (field.getName().startsWith(PREFIX_IS)
-                            && ClassWrapper.wrap(field.getType()).is(boolean.class)) {
-                        return klass.getMethod("set" + field.getName().substring(2),
-                                field.getType());
-                    }
-                    return klass.getMethod(field.getName(), field.getType());
-                } catch (Exception e1) {
-                    return klass.getMethod(field.getName(), field.getType());
+            Method varMethod = getMethodByName("set" + StringsUtils.capitalize(field.getName()), field.getType());
+            if (varMethod != null) {
+                return varMethod;
+            }
+
+            if (field.getName().startsWith(PREFIX_IS) && ClassWrapper.wrap(field.getType()).is(boolean.class)) {
+                varMethod = getMethodByName("set" + field.getName().substring(2), field.getType());
+                if (varMethod != null) {
+                    return varMethod;
                 }
             }
+            return getMethodByName(field.getName(), field.getType());
+
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "Fail to find setter for [%s]->[%s]", klass.getName(), field.getName());
         }
     }
 
     /**
-     * 根据一个字段名了字段类型获取 Setter
+     * 根据一个字段名、字段类型获取 Setter
      *
      * @param fieldName 字段名
      * @param paramType 字段类型
@@ -301,26 +300,38 @@ public class ClassWrapper<T> {
         try {
             String setterName = getSetterName(fieldName);
             Method varMethod = getMethodByName(setterName, paramType);
-            if (varMethod == null) {
-                varMethod = getMethodByName(fieldName, paramType);
+            if (varMethod != null) {
+                return varMethod;
             }
 
-            if (varMethod == null) {
-                ClassWrapper<?> type = ClassWrapper.wrap(paramType);
-                for (Method method : klass.getMethods()) {
-                    boolean flag1 = method.getParameterTypes().length == 1;
-                    boolean flag2 = method.getName().equals(setterName) || method.getName().equals(fieldName);
-                    boolean flag3 = null == paramType || type.canCastToDirectly(method.getParameterTypes()[0]);
-                    if (flag1 && flag2 && flag3) {
-                        return method;
-                    }
+            varMethod = getMethodByName(fieldName, paramType);
+            if (varMethod != null) {
+                return varMethod;
+            }
+
+            ClassWrapper<?> type = ClassWrapper.wrap(paramType);
+            for (Method method : klass.getMethods()) {
+                boolean flag1 = method.getParameterTypes().length == 1;
+                boolean flag2 = method.getName().equals(setterName) || method.getName().equals(fieldName);
+                boolean flag3 = null == paramType || type.canCastToDirectly(method.getParameterTypes()[0]);
+                if (flag1 && flag2 && flag3) {
+                    return method;
                 }
             }
+
             throw new PlatformException(CommonStatus.FAIL, "根据一个字段名了字段类型获取 Setter");
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL, "Fail to find setter for [%s]->[%s(%s)]", klass.getName(), fieldName, null == paramType ? paramType : paramType.getName());
         }
 
+    }
+
+    private Method getMethodByName(String name) {
+        try {
+            return klass.getMethod(name);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
     }
 
     private Method getMethodByName(String name, Class<?> paramType) {
@@ -337,7 +348,7 @@ public class ClassWrapper<T> {
      * @return Setter 的名字
      */
     public static String getSetterName(String fieldName) {
-        return new StringBuilder("set").append(org.apache.commons.lang.StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder("set").append(StringsUtils.capitalize(fieldName)).toString();
     }
 
     /**
@@ -349,7 +360,7 @@ public class ClassWrapper<T> {
         if (str.startsWith(PREFIX_IS)) {
             str = fieldName.substring(2);
         }
-        return new StringBuilder("set").append(org.apache.commons.lang.StringUtils.capitalize(str)).toString();
+        return new StringBuilder("set").append(StringsUtils.capitalize(str)).toString();
     }
 
     /**
@@ -357,7 +368,7 @@ public class ClassWrapper<T> {
      * @return Getter 的名字
      */
     public static String getGetterName(String fieldName) {
-        return new StringBuilder("get").append(org.apache.commons.lang.StringUtils.capitalize(fieldName)).toString();
+        return new StringBuilder("get").append(StringsUtils.capitalize(fieldName)).toString();
     }
 
     /**
@@ -369,7 +380,7 @@ public class ClassWrapper<T> {
         if (fieldName.startsWith(PREFIX_IS)) {
             tmpFieldName = fieldName.substring(PREFIX_IS.length());
         }
-        return new StringBuilder(PREFIX_IS).append(org.apache.commons.lang.StringUtils.capitalize(tmpFieldName)).toString();
+        return new StringBuilder(PREFIX_IS).append(StringsUtils.capitalize(tmpFieldName)).toString();
     }
 
 
@@ -398,7 +409,7 @@ public class ClassWrapper<T> {
      * @return 函数数组
      */
     public Method[] findSetters(String fieldName) {
-        String mName = "set" + org.apache.commons.lang.StringUtils.capitalize(fieldName);
+        String mName = "set" + StringsUtils.capitalize(fieldName);
         ArrayList<Method> ms = new ArrayList<>();
         for (Method m : this.klass.getMethods()) {
             if (Modifier.isStatic(m.getModifiers()) || m.getParameterTypes().length != 1) {
@@ -528,7 +539,7 @@ public class ClassWrapper<T> {
 
 
     /**
-     * 获取当前对象，所有的方法，包括私有方法。递归查找至自己某一个父类为止 。
+     * 获取当前对象，所有的方法，包括私有方法。递归查找至自己某一个父类为止
      * <p>
      * 并且这个按照名称，消除重复的方法。子类方法优先
      *
@@ -561,6 +572,8 @@ public class ClassWrapper<T> {
     }
 
     /**
+     * 获取所有静态方法
+     *
      * @return 所有静态方法
      */
     public Method[] getStaticMethods() {
@@ -617,7 +630,7 @@ public class ClassWrapper<T> {
     }
 
     /**
-     * 为对象的一个字段设值。优先调用 setter 方法。
+     * 为对象的一个字段设值。优先调用 setter 方法
      *
      * @param obj       对象
      * @param fieldName 字段名
@@ -700,10 +713,12 @@ public class ClassWrapper<T> {
      * @return 是否相等
      */
     public boolean is(String className) {
-        return StringUtils.equals(klass.getName(),className);
+        return StringsUtils.equals(klass.getName(), className);
     }
 
     /**
+     * 判断当前对象是否为一个类型的子类或者接口的实现类
+     *
      * @param type 类型或接口名
      * @return 当前对象是否为一个类型的子类，或者一个接口的实现类
      */
@@ -833,7 +848,7 @@ public class ClassWrapper<T> {
             return true;
         }
         boolean flag = klass.isPrimitive() && type.isPrimitive() && this.isPrimitiveNumber() && ClassWrapper.wrap(type).isPrimitiveNumber();
-        ;
+
         if (flag) {
             return true;
         }
@@ -890,14 +905,12 @@ public class ClassWrapper<T> {
             return new Type[0];
         }
         Type superclass = klass.getGenericSuperclass();
-      
+
         if (superclass instanceof ParameterizedType) {
             return ((ParameterizedType) superclass).getActualTypeArguments();
         }
         return getTypeParams(klass.getSuperclass());
     }
-
-    private static final Pattern PTN = Pattern.compile("(<)(.+)(>)");
 
     /**
      * 获取一个字段的泛型参数数组，如果这个字段没有泛型，返回空数组
@@ -910,31 +923,36 @@ public class ClassWrapper<T> {
         Matcher m = PTN.matcher(gts);
         if (m.find()) {
             String s = m.group(2);
-            String[] ss = StringUtils.splitIgnoreBlank(s);
+            String[] ss = StringsUtils.splitIgnoreBlank(s);
             if (ss.length > 0) {
-                Class<?>[] re = new Class<?>[ss.length];
-                try {
-                    for (int i = 0; i < ss.length; i++) {
-                        String className = ss[i];
-                        if (className.startsWith("?")) {
-                            re[i] = Object.class;
-                        } else {
-                            int pos = className.indexOf('<');
-                            if (pos < 0) {
-                                re[i] = Class.forName(className);
-                            } else {
-                                re[i] = Class.forName(className.substring(0, pos));
-                            }
-                        }
-                    }
-                    return re;
-                } catch (ClassNotFoundException e) {
-                    throw new PlatformException(CommonStatus.FAIL, e);
-                }
+                return getClass(ss);
             }
         }
         return new Class<?>[0];
     }
+
+    private static Class<?>[] getClass(String[] ss){
+        Class<?>[] re = new Class<?>[ss.length];
+        try {
+            for (int i = 0; i < ss.length; i++) {
+                String className = ss[i];
+                if (className.startsWith("?")) {
+                    re[i] = Object.class;
+                } else {
+                    int pos = className.indexOf('<');
+                    if (pos < 0) {
+                        re[i] = Class.forName(className);
+                    } else {
+                        re[i] = Class.forName(className.substring(0, pos));
+                    }
+                }
+            }
+            return re;
+        } catch (ClassNotFoundException e) {
+            throw new PlatformException(CommonStatus.FAIL, e);
+        }
+    }
+
 
     /**
      * @return 获得外覆类

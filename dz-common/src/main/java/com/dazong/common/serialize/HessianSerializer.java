@@ -51,7 +51,7 @@ public class HessianSerializer extends AbstractObjectSerializer {
 	}
 
 	@Override
-	protected <T> T doDeserialize(byte[] bytes) {
+	protected <T> T doDeserialize(byte[] bytes, Class<T> type) {
 		try (InputStream in = new ByteArrayInputStream(bytes)) {
 			Hessian2Input hessianInput = new Hessian2Input(in);
 			hessianInput.getSerializerFactory().setAllowNonSerializable(allowUnSerializable);

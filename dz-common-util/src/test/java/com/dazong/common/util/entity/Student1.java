@@ -62,4 +62,8 @@ public class Student1 extends StudentBase {
         }
     }
 
+    public static String test(){
+        return "test";
+    }
+
 }

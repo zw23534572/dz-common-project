@@ -12,6 +12,10 @@ public class BusinessException extends BaseApplicationException {
 
     private static final long serialVersionUID = -8943298004576967279L;
     
+    public BusinessException(String message) {
+        super(message, null);
+    }
+    
     public BusinessException(String message, Object[] args) {
         super(message, args);
     }
