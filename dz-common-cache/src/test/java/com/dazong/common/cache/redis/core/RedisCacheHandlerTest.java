@@ -200,14 +200,14 @@ public class RedisCacheHandlerTest {
     @Test
     public void incryBy(){
         {
-            String key = "number";
+            String key = "number1";
             Long delta = 100L;
             Long reult = redisCacheHandler.incrBy(key, delta,IExpire.EXPIRE_MAX);
             assertEquals(delta, reult);
 
         }
         {
-            String key = "number";
+            String key = "number1";
             Long delta = 1L;
             Long reult = redisCacheHandler.incrBy(key, delta,IExpire.EXPIRE_MAX);
             assertEquals(101L, reult.longValue());
