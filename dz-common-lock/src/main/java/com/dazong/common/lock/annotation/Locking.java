@@ -1,6 +1,6 @@
 package com.dazong.common.lock.annotation;
 
-import com.dazong.common.lock.LockInfo;
+import com.dazong.common.lock.LockConstants;
 import com.dazong.common.lock.LockProviderTypeEnum;
 
 import java.lang.annotation.*;
@@ -57,6 +57,6 @@ public @interface Locking {
      * 如果被锁了(即获取锁的时间超过了waitTime)要提示什么信息给用户，默认为“有用户正执行此操作，请稍候重试！”
      * @return
      */
-    String lockedAlert() default LockInfo.DEFAULT_LOCKED_ALERT;
+    String lockedAlert() default LockConstants.DEFAULT_LOCKED_ALERT;
 
 }

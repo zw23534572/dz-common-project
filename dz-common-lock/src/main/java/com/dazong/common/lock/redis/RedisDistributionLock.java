@@ -7,7 +7,6 @@ import com.dazong.common.lock.LockInfo;
 import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,19 +27,19 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
 
     private static final Logger LOG = LoggerFactory.getLogger(RedisDistributionLock.class);
 
-    //redis
+    /** redisTemplate 引用 */
     private RedisTemplate redisTemplate;
 
-    //锁信息
+    /** 锁信息 */
     private LockInfo lockInfo;
 
-    //重入次数
+    /** 重入次数*/
     private AtomicLong lockCount = new AtomicLong(0);
 
-    //本地VM的锁缓存
+    /** 本地VM的锁缓存 */
     private static Map<Thread,LockInfo> threadData = new ConcurrentHashMap<>();
 
-    //锁状态
+    /** 锁状态*/
     private static Map<String,Object> lockStatusData = new ConcurrentHashMap<>();
 
     public RedisDistributionLock(RedisTemplate redisTemplate,LockInfo lockInfo) {
@@ -95,13 +94,13 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
             return false;
 
         //获取实际的锁
-        long timeout = unit.toMillis(waitTime);
-        Object lock  = this.lockInfo.getLockURI().intern();
-        synchronized (lock) {
-            while ( timeout >= 0 && existsLockInfo == null) {
+        long timeout       = unit.toMillis(waitTime);
+        Object synchLock   = this.lockInfo.getLockURI().intern();
+        synchronized (synchLock) {
+            while ( timeout >= 0 ) {
                 timeout -= 100;
                 if (timeout >= 100) {
-                    lock.wait(100);
+                    synchLock.wait(100);
                 }
                 if (attemptRedisLock()) {
                     lockCount.incrementAndGet();
@@ -122,22 +121,23 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
     public void unlock() {
         //当前线程是否已经获得锁
         Thread currentThread    = Thread.currentThread();
-        LockInfo lockInfo       = threadData.get(currentThread);
-        if (lockInfo == null || lockCount.decrementAndGet() > 0)
+        LockInfo existsLockInfo = threadData.get(currentThread);
+        if (existsLockInfo == null || lockCount.decrementAndGet() > 0) {
             return;
+        }
         threadData.remove(currentThread);
-        lockStatusData.remove(lockInfo.getLockURI());
+        lockStatusData.remove(existsLockInfo.getLockURI());
         lockCount.set(0);
         releaseRedisLock();
 
     }
 
     /** 从redis获取分布式锁 */
-    private Boolean attemptRedisLock() {
+    private boolean attemptRedisLock() {
 
         return (Boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection redisConnection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection redisConnection) {
                 Jedis jedis = (Jedis) redisConnection.getNativeConnection();
                 return SUCCESS.equals(jedis.set(lockInfo.getLockURI(),lockInfo.getId(),"NX","PX",lockInfo.getExpiredTime()));
             }
@@ -145,10 +145,10 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
     }
 
     /** 释放redis锁 */
-    private Boolean releaseRedisLock() {
+    private boolean releaseRedisLock() {
         return (Boolean) redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection connection) {
                 try {
                     connection.del(lockInfo.getLockURI().getBytes());
                     return Boolean.TRUE;
