@@ -2,8 +2,6 @@ package com.dazong.common.util.reflect;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
-import org.springframework.beans.BeanUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -92,9 +92,8 @@ public abstract class AbstractObjectSerializer implements IObjectSerializer {
 
 	/**
 	 * 反序列化
-	 * 
 	 * @param bytes
-	 * @param <T>
+	 * @param type
 	 * @return
 	 */
 	protected abstract <T> T doDeserialize(byte[] bytes, Class<T> type);

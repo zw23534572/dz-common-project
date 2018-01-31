@@ -16,7 +16,7 @@ import java.util.Map.Entry;
  */
 public class CommonUtils {
 
-    private CommonUtils(){
+    private CommonUtils() {
 
     }
 
@@ -67,7 +67,7 @@ public class CommonUtils {
      * @return
      */
     public static Map<String, String> string2Map(String string, String keySplitStr, String entrySplitStr) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(16);
         if (StringsUtils.isNotBlank(string)) {
             String[] groups = string.split(entrySplitStr);
             for (String group : groups) {
@@ -92,7 +92,6 @@ public class CommonUtils {
      */
     @SuppressWarnings("unchecked")
     public static <K, V> Map<K, V> map(Object... keyValues) {
-
         if (keyValues != null && keyValues.length > 1) {
             Class<?> kClass = keyValues[0].getClass();
             Class<?> vClass = keyValues[1].getClass();
@@ -114,8 +113,7 @@ public class CommonUtils {
      * @return
      */
     public static <K, V> Map<K, V> map(Class<K> kClass, Class<V> vClass, Object... keyValues) {
-
-        Map<K, V> m = new HashMap<>();
+        Map<K, V> m = new HashMap<>(16);
         int i = 1;
         Object preObj = null;
         for (Object o : keyValues) {
@@ -141,7 +139,7 @@ public class CommonUtils {
      * @return
      */
     public static Map<Object, Object> mapByAarray(Object... keyValues) {
-        Map<Object, Object> m = new HashMap<>();
+        Map<Object, Object> m = new HashMap<>(20);
         int i = 1;
         Object key = null;
         for (Object value : keyValues) {
@@ -195,6 +193,7 @@ public class CommonUtils {
 
     /**
      * 判断某个数组是否为空
+     *
      * @param args
      * @return
      */
@@ -204,6 +203,7 @@ public class CommonUtils {
 
     /**
      * 判断某个数组是否不为空
+     *
      * @param args
      * @return
      */
@@ -262,7 +262,7 @@ public class CommonUtils {
      * @return
      */
     public static Map<String, Object> removeEmptyFromMap(Map<String, Object> map) {
-        Map<String, Object> mapTemp = new HashMap<>();
+        Map<String, Object> mapTemp = new HashMap<>(map.size());
         Iterator<?> iter = map.entrySet().iterator();
         while (iter.hasNext()) {
             @SuppressWarnings("rawtypes")
@@ -371,7 +371,7 @@ public class CommonUtils {
      */
     public static <T> T[] removeIfEmpty(T[] arys) {
         if (isEmpty(arys)) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         return toArray(removeIfEmpty(asArrayList(arys)));
     }
@@ -386,11 +386,11 @@ public class CommonUtils {
     @SuppressWarnings("unchecked")
     public static <T> T[] toArray(Collection<T> c) {
         if (isEmpty(c)) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         T t = first(c);
         if (isEmpty(t)) {
-            return (T[])new Object[0];
+            return (T[]) new Object[0];
         }
         T[] tArray = (T[]) Array.newInstance(t.getClass(), c.size());
         c.toArray(tArray);
@@ -442,7 +442,7 @@ public class CommonUtils {
         if (isEmpty(list)) {
             return null;
         }
-        Map<String, V> map = new HashMap<>();
+        Map<String, V> map = new HashMap<>(list.size());
         for (V v : list) {
             String[] comboProperty = StringsUtils.splitIgnoreBlank(keyProperty, ",");
             StringBuilder key = new StringBuilder();

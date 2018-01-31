@@ -1,8 +1,8 @@
 package com.dazong.common.util;
 
 import com.dazong.common.CommonStatus;
-import com.dazong.common.IResultStatus;
 import com.dazong.common.exceptions.ArgumetException;
+import org.apache.commons.lang.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
  * @author zisong.wang
  * @date 2018/01/09
  */
-public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
+public class NumbersUtils extends NumberUtils {
 
     /**
      * 默认除法运算精度
@@ -26,7 +26,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
      */
     private static String scaleStr = "小数位数必须为大于等于0的正整数";
 
-    private NumberUtils() {
+    private NumbersUtils() {
 
     }
 
