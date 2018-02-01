@@ -1,7 +1,8 @@
 package com.dazong.common.cache.core.impl;
 
-import com.dazong.common.cache.serialize.JdkSerializer;
-import com.dazong.common.cache.serialize.ObjectSerializer;
+import com.dazong.common.IObjectSerializer;
+import com.dazong.common.serialize.JdkSerializer;
+
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,13 +30,13 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
-    private ObjectSerializer objectSerializer;
+    private IObjectSerializer objectSerializer;
 
     public void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void setObjectSerializer(ObjectSerializer objectSerializer) {
+    public void setObjectSerializer(IObjectSerializer objectSerializer) {
         this.objectSerializer = objectSerializer;
     }
 
@@ -323,6 +324,51 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
                     targetlist.add(objectSerializer.deserialize(l,type));
                 }
                 return targetlist;
+            }
+        });
+    }
+    /**
+     * Increment an integer value stored of {@code key} by {@code delta}.
+     *
+     * @param key must not be {@literal null}.
+     * @param value
+     * @return
+     * @see <a href="http://redis.io/commands/incrby">Redis Documentation: INCRBY</a>
+     */
+    @Override
+    public Long incrBy(final String key, final long value, final int expireMilliseconds){
+        Validate.notBlank(key);
+
+        return redisTemplate.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection redisConnection){
+                Long result = redisConnection.incrBy(key.getBytes(), value);
+                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                return result;
+            }
+        });
+    }
+
+    /**
+     * map中item增减原子性操作
+     *
+     * @param key
+     * @param itemKey
+     * @param value
+     * @param expireMilliseconds
+     * @return
+     */
+    @Override
+    public Long mapItemIncrBy(final String key, final String itemKey, final long value, final int expireMilliseconds) {
+        Validate.notBlank(key);
+        Validate.notBlank(itemKey);
+
+        return redisTemplate.execute(new RedisCallback<Long>() {
+            @Override
+            public Long doInRedis(RedisConnection redisConnection){
+                Long result = redisConnection.hIncrBy(key.getBytes(),itemKey.getBytes(),value);
+                redisConnection.pExpire(key.getBytes(), expireMilliseconds);
+                return result;
             }
         });
     }

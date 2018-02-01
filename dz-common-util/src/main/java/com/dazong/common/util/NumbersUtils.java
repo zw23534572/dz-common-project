@@ -1,5 +1,9 @@
 package com.dazong.common.util;
 
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.ArgumetException;
+import org.apache.commons.lang.math.NumberUtils;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -10,7 +14,7 @@ import java.text.DecimalFormat;
  * @author zisong.wang
  * @date 2018/01/09
  */
-public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
+public class NumbersUtils extends NumberUtils {
 
     /**
      * 默认除法运算精度
@@ -22,7 +26,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
      */
     private static String scaleStr = "小数位数必须为大于等于0的正整数";
 
-    private NumberUtils(){
+    private NumbersUtils() {
 
     }
 
@@ -132,7 +136,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
      */
     public static double div(double v1, double v2, int scale) {
         if (scale < 0) {
-            throw new IllegalArgumentException(scaleStr);
+            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.getCode(), scaleStr);
         }
         BigDecimal b1 = new BigDecimal(Double.toString(v1));
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
@@ -140,7 +144,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
     }
 
     /**
-     * 提供精确的小数位四舍五入处理。
+     * 提供精确的小数位四舍五入处理
      *
      * @param v     需要四舍五入的数字
      * @param scale 小数点后保留几位
@@ -148,7 +152,7 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
      */
     public static double round(double v, int scale) {
         if (scale < 0) {
-            throw new IllegalArgumentException(scaleStr);
+            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.getCode(), scaleStr);
         }
         BigDecimal b = new BigDecimal(Double.toString(v));
         BigDecimal one = new BigDecimal("1");
@@ -164,34 +168,36 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
      */
     public static double roundForEval(Object object, int scale) {
         if (scale < 0) {
-            throw new IllegalArgumentException(scaleStr);
+            throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.getCode(), scaleStr);
         }
         return round(Double.valueOf(object.toString()), scale);
     }
 
     /**
      * 如果输入一个为空的数字返回0
+     *
      * @param number
      * @return
      */
     public static BigDecimal defaultNumber(BigDecimal number) {
-        return defaultNumber(number,null);
+        return defaultNumber(number, null);
     }
 
-    public static BigDecimal defaultNumber(BigDecimal number,BigDecimal defaultValue) {
-        if( number == null) {
-            return defaultValue == null ?new BigDecimal(0):defaultValue;
+    public static BigDecimal defaultNumber(BigDecimal number, BigDecimal defaultValue) {
+        if (number == null) {
+            return defaultValue == null ? new BigDecimal(0) : defaultValue;
         }
         return number;
     }
 
     /**
-     * 返回一个默认值的数字
+     * 返回一个默认值的数字 0
+     *
      * @param number
      * @return
      */
     public static Double defaultNumber(Double number) {
-        if( number == null) {
+        if (number == null) {
             return 0d;
         }
         return number;
@@ -199,15 +205,16 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
 
     /**
      * 返回一个默认值的数字
+     *
      * @param number
      * @return
      */
     public static Integer defaultNumber(Integer number) {
-        return defaultNumber(number,0);
+        return defaultNumber(number, 0);
     }
 
-    public static Integer defaultNumber(Integer number,Integer defaultValue) {
-        if( number == null) {
+    public static Integer defaultNumber(Integer number, Integer defaultValue) {
+        if (number == null) {
             return defaultValue;
         }
         return number;
@@ -215,11 +222,12 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
 
     /**
      * 返回一个空的数字
+     *
      * @param number
      * @return
      */
     public static Float defaultNumber(Float number) {
-        if( number == null) {
+        if (number == null) {
             return 0f;
         }
         return number;
@@ -227,19 +235,22 @@ public class NumberUtils extends org.apache.commons.lang3.math.NumberUtils {
 
     /**
      * 返回一个空的数字
+     *
      * @param number
      * @return
      */
     public static Long defaultNumber(Long number) {
-        return defaultNumber(number,0l);
+        return defaultNumber(number, 0L);
     }
+
     /**
      * 返回一个空的数字
+     *
      * @param number
      * @return
      */
-    public static Long defaultNumber(Long number,Long defaultValue) {
-        if( number == null) {
+    public static Long defaultNumber(Long number, Long defaultValue) {
+        if (number == null) {
             return defaultValue;
         }
         return number;

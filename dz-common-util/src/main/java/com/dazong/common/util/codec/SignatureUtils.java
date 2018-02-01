@@ -2,7 +2,7 @@ package com.dazong.common.util.codec;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
-import com.dazong.common.util.StringUtils;
+import com.dazong.common.util.StringsUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,8 +14,10 @@ import java.util.Map;
  * @author Sam
  * @version 1.0.0
  */
-public abstract class SignatureUtils {
+public class SignatureUtils {
 
+    private SignatureUtils(){
+    }
 
     /**
      * 签名前要对参数进行排序
@@ -30,7 +32,7 @@ public abstract class SignatureUtils {
         for (int i = 0; i < keys.size(); i++) {
             String key = keys.get(i);
             String value = sortedParams.get(key);
-            if (StringUtils.isNotBlank(key, value)) {
+            if (StringsUtils.isNotBlank(key, value)) {
                 content.append((index == 0 ? "" : "&") + key + "=" + value);
                 index++;
             }
@@ -48,7 +50,7 @@ public abstract class SignatureUtils {
     public static String rsaSign(Map<String, String> params, String privateKey, String charset)  {
         String signContent  = getSignContent(params);
         try {
-            byte[] signData = StringUtils.isBlank(charset)?signContent.getBytes():signContent.getBytes(charset);
+            byte[] signData = StringsUtils.isBlank(charset)?signContent.getBytes():signContent.getBytes(charset);
             return RsaUtils.sign(signData,privateKey);
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL,"使用RSA算法加签rsaSign");
@@ -66,7 +68,7 @@ public abstract class SignatureUtils {
     public static boolean rsaVerify(Map<String,String> params, String sign, String publicKey, String charset) {
         String signContent  = getSignContent(params);
         try {
-            byte[] signData = StringUtils.isBlank(charset)?signContent.getBytes():signContent.getBytes(charset);
+            byte[] signData = StringsUtils.isBlank(charset)?signContent.getBytes():signContent.getBytes(charset);
             return RsaUtils.verify(signData,publicKey,sign);
         } catch (Exception e) {
             throw new PlatformException(e, CommonStatus.FAIL,"使用RSA算法验签rsaVerify");

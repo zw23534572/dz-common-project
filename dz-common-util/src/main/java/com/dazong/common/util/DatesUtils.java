@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 时间工具类
@@ -17,17 +18,16 @@ import java.util.GregorianCalendar;
  * @author zisong.wang
  * @date 2018/01/09
  */
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+public class DatesUtils extends DateUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatesUtils.class);
 
-    public static final String FORMAT_DATE_TIME_MILLI = "yyyy-MM-dd HH:mm:ss.SSS";
-    public static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
-    public static final String FORMAT_DATE = "yyyy-MM-dd";
-    public static final String FORMAT_MONTH = "yyyy-MM";
-    public static final String FORMAT_TIME = "HH:mm:ss";
+    private static final String FORMAT_DATE_TIME_MILLI = "yyyy-MM-dd HH:mm:ss.SSS";
+    private static final String FORMAT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+    private static final String FORMAT_DATE = "yyyy-MM-dd";
+    private static final String FORMAT_MONTH = "yyyy-MM";
 
-    private DateUtils(){
+    private DatesUtils(){
 
     }
 

@@ -4,7 +4,8 @@ import lombok.Data;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import com.dazong.common.trans.serialize.HessianSerialize;
+import com.dazong.common.serialize.HessianSerializer;
+
 
 /**
  * 事务配置
@@ -51,6 +52,6 @@ public class DzTransactionProperties {
 	/**
 	 * 参数序列化类,默认为com.dazong.transaction.serialize.JavaObjectSerialize.JavaObjectSerialize
 	 */
-	private String paramSerializeClass = HessianSerialize.class.getName();
+	private String paramSerializeClass = HessianSerializer.class.getName();
 
 }

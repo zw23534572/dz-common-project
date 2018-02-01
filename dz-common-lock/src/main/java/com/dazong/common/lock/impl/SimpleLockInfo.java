@@ -1,8 +1,10 @@
 package com.dazong.common.lock.impl;
 
+import com.dazong.common.lock.LockConstants;
 import com.dazong.common.lock.LockInfo;
 import com.dazong.common.lock.LockProviderTypeEnum;
 import com.dazong.common.lock.annotation.Locking;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * @author Sam
@@ -25,26 +27,28 @@ public class SimpleLockInfo implements LockInfo {
 
     private Long createTime;
 
-    public static SimpleLockInfo New(String id, String module) {
+    public static SimpleLockInfo of(String id, String module) {
         SimpleLockInfo lock = new SimpleLockInfo();
-        lock.id = id;
-        lock.module = module;
-        lock.expiredTime = DEFAULT_EXPIRED_TIME;
-        lock.waitTime = DEFAULT_WAIT_TIME;
-        lock.provider = DEFAULT_LOCK_PROVIDER;
+        lock.setId(id);
+        lock.setModule(module);
+        lock.setExpiredTime(LockConstants.DEFAULT_EXPIRED_TIME);
+        lock.setWaitTime(LockConstants.DEFAULT_WAIT_TIME);
+        lock.setProvider(LockConstants.DEFAULT_LOCK_PROVIDER);
         lock.createTime = System.currentTimeMillis();
         return lock;
     }
 
     public static SimpleLockInfo of(Locking locking, String targetLockid) {
         SimpleLockInfo lock = new SimpleLockInfo();
-        lock.id = targetLockid;
-        lock.module = locking.module();
-        lock.expiredTime = locking.expiredTime();
-        lock.waitTime = locking.waitTime();
-        lock.provider = locking.provider();
-        lock.lockedAlert = locking.lockedAlert();
+
         lock.createTime = System.currentTimeMillis();
+        lock.setId(targetLockid);
+        lock.setModule(locking.module());
+        lock.setExpiredTime(locking.expiredTime());
+        lock.setWaitTime(locking.waitTime());
+        lock.setProvider(locking.provider());
+        lock.setLockedAlert(locking.lockedAlert());
+
         return lock;
     }
 
@@ -89,9 +93,9 @@ public class SimpleLockInfo implements LockInfo {
     public String getLockURI() {
         StringBuilder sb = new StringBuilder();
         if (provider == LockProviderTypeEnum.REDIS) {
-            sb.append(DEFAULT_REDIS_KEY_PREFIX).append(module).append(":").append(id);
+            sb.append(LockConstants.DEFAULT_REDIS_KEY_PREFIX).append(module).append(":").append(id);
         } else {
-            sb.append(DEFAULT_ZOOKEEPER_PATH_PREFIX).append(module).append("/").append(id);
+            sb.append(LockConstants.DEFAULT_ZOOKEEPER_PATH_PREFIX).append(module).append("/").append(id);
         }
         return sb.toString();
     }
@@ -116,5 +120,9 @@ public class SimpleLockInfo implements LockInfo {
 
     public void setModule(String module) {
         this.module = module;
+    }
+
+    public String toString() {
+        return org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
 }

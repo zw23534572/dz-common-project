@@ -1,7 +1,6 @@
-package com.dazong.common.trans;
+package com.dazong.common.exceptions;
 
 import com.dazong.common.CommonStatus;
-import com.dazong.common.exceptions.BaseApplicationException;
 
 /**
  * 序列化异常
@@ -9,12 +8,14 @@ import com.dazong.common.exceptions.BaseApplicationException;
  *
  */
 public class SerializeException extends BaseApplicationException {
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6111724469017435033L;
+	private static final long serialVersionUID = 2708917060582630145L;
 
 	public SerializeException(String message, Throwable cause) {
-		super(CommonStatus.RETRY_UTIL_ERROR.getCode(), message, cause);
+		super(CommonStatus.SERIALIZE_ERROR.getCode(), message, cause);
 	}
+
 }

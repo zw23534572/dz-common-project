@@ -2,9 +2,7 @@ package com.dazong.common.util;
 
 import com.dazong.common.util.entity.StudentBase;
 import org.junit.Test;
-
 import java.util.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**

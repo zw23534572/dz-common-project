@@ -4,7 +4,6 @@ import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.PlatformException;
 import com.dazong.common.util.CommonUtils;
 import org.apache.commons.codec.binary.Base64;
-import sun.misc.BASE64Encoder;
 
 import javax.crypto.Cipher;
 import java.security.*;
@@ -194,8 +193,8 @@ public class RsaUtils {
         byte[] publicKeyBytes = publicKey.getEncoded();
         byte[] privateKeyBytes = privateKey.getEncoded();
 
-        String publicKeyBase64 = new BASE64Encoder().encode(publicKeyBytes);
-        String privateKeyBase64 = new BASE64Encoder().encode(privateKeyBytes);
+        String publicKeyBase64 = Base64.encodeBase64String(publicKeyBytes);
+        String privateKeyBase64 = Base64.encodeBase64String(privateKeyBytes);
 
         return CommonUtils.map(PUBLIC_KEY, publicKeyBase64, PRIVATE_KEY, privateKeyBase64);
     }

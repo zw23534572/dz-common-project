@@ -11,11 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ *  fastjson工具类
  *  @author zisong.wang
  *  @updateDate 2018/01/15
  */
-public class FastJsonUtils {
-    private FastJsonUtils() {
+public class JsonUtils {
+    private JsonUtils() {
     }
 
     /**
@@ -53,7 +54,7 @@ public class FastJsonUtils {
     }
 
     public static String toJsonSuccess(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<>();
+        Map<String, Object> mp = new HashMap<>(4);
         mp.put("status", 1);
         mp.put("state", "success");
         mp.put("msg", msg);
@@ -62,7 +63,7 @@ public class FastJsonUtils {
     }
 
     public static String toJsonError(String msg, Object obj) {
-        Map<String, Object> mp = new HashMap<>();
+        Map<String, Object> mp = new HashMap<>(4);
         mp.put("status", 0);
         mp.put("state", "error");
         mp.put("msg", msg);
