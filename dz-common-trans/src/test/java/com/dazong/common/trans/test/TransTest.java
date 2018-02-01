@@ -1,7 +1,9 @@
 package com.dazong.common.trans.test;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -19,6 +21,7 @@ import com.dazong.common.trans.support.DzTransactionObject;
 import com.dazong.common.trans.test.service.ITransService;
 import com.dazong.common.trans.test.utils.CacheUtil;
 
+import org.awaitility.Awaitility;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TransApplicationStart.class)
@@ -45,9 +48,14 @@ public class TransTest {
 	@Test
 	public void testDoTrans(){
 		this.transService.doTrans("doTrans");
-		DzTransactionObject o = this.mapper.selectByPrimaryKey(
-				TransContext.getCurrentContext().get("doTrans-uid").toString());
-		Assert.assertTrue(o == null);
+		final String uid = TransContext.getCurrentContext().get("doTrans-uid").toString();
+		Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).until(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				DzTransactionObject o = mapper.selectByPrimaryKey(uid);
+				return o == null;
+			}
+		});
 	}
 	/**
 	 * <B>方法名称：测试异常事务，无嵌套</B><BR>
@@ -75,9 +83,14 @@ public class TransTest {
 			this.transService.doTransExceptionButRollback("doTransExceptionButRollback");
 			Assert.assertTrue(false);
 		} catch (Exception e) {
-			DzTransactionObject o = this.mapper.selectByPrimaryKey(
-					TransContext.getCurrentContext().get("doTransExceptionButRollback-uid").toString());
-			Assert.assertTrue(o == null);
+			final String uid = TransContext.getCurrentContext().get("doTransExceptionButRollback-uid").toString();
+			Awaitility.await().atMost(5000, TimeUnit.MILLISECONDS).until(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					DzTransactionObject o = mapper.selectByPrimaryKey(uid);
+					return o == null;
+				}
+			});
 		}
 	}
 	/**
@@ -169,7 +182,6 @@ public class TransTest {
 		try {
 			this.transService.doTransBussinessId(1000L);
 		} catch (Exception e) {
-			e.printStackTrace();
 			DzTransactionObject o = this.mapper.selectByPrimaryKey(
 					TransContext.getCurrentContext().get("doTransBussinessId-uid").toString());
 			Assert.assertTrue(o.getBussinessId().equals(String.valueOf(1000L)));
@@ -180,14 +192,20 @@ public class TransTest {
 	public void testDoTransRetry(){
 		try {
 			this.transService.doTransRetry("doTransRetry");
+			Assert.assertTrue(false);
 		} catch (Exception e) {
-			e.printStackTrace();
-			String uid = TransContext.getCurrentContext().get("doTransRetry-uid").toString();
+			final String uid = TransContext.getCurrentContext().get("doTransRetry-uid").toString();
 			DzTransactionObject o = this.mapper.selectByPrimaryKey(uid);
 			Assert.assertTrue(o != null);
-			DzTransactionScheduler.get().scheduleTask();
-			o = this.mapper.selectByPrimaryKey(uid);
-			Assert.assertTrue(o == null);
+			
+			Awaitility.await().atMost(12000, TimeUnit.MILLISECONDS).until(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					DzTransactionScheduler.get().scheduleTask();
+					DzTransactionObject o = mapper.selectByPrimaryKey(uid);
+					return o == null;
+				}
+			});
 		}
 	}
 }

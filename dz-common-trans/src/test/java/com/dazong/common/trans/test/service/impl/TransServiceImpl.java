@@ -115,11 +115,6 @@ public class TransServiceImpl implements ITransService{
 	public void doTransRetry(String name) {
 		System.out.println("doTransRetry");
 		setUid("doTransRetry");
-		try {
-			Thread.sleep(11 * 1000L);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		if(retryConut.get() == 0){
 			retryConut.incrementAndGet();
 			throw new RuntimeException("doTransRetry发生异常");

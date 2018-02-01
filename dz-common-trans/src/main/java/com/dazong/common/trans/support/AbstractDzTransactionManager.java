@@ -112,13 +112,14 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 	}
 
 	public void commit(final TransactionStatus status, final boolean rootTransactionSuccess) {
-		// 异步提交,减少对业务流程的影响
-		docommit(status, rootTransactionSuccess);
-//		executor.execute(new Runnable() {
-//			public void run() {
-//				docommit(status, rootTransactionSuccess);
-//			}
-//		});
+		/**
+		 * 异步提交,减少对业务流程的影响
+		 */
+		this.executor.execute(new Runnable() {
+			public void run() {
+				docommit(status, rootTransactionSuccess);
+			}
+		});
 	}
 
 	/**

@@ -10,7 +10,12 @@ import com.dangdang.ddframe.job.reg.base.CoordinatorRegistryCenter;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperConfiguration;
 import com.dangdang.ddframe.job.reg.zookeeper.ZookeeperRegistryCenter;
 import com.dazong.common.elasticjob.properties.ElassticjobZkProperties;
-
+/**
+ * <B>中文类名：</B><BR>
+ * <B>概要说明：</B><BR>
+ * @author 贸易研发部：yanghui
+ * @since 2018年2月1日
+ */
 @Configuration
 @Import(ElassticjobZkProperties.class)
 public class RegistryCenterConfigure {

@@ -65,7 +65,7 @@ public class DzJdbcTransactionDurableManagerAdapter implements DzTransactionDura
 
 	@Override
 	public List<DzTransactionObject> queryTimeoutTransactions(int retryBatchSize) {
-		Map<String,Object> params = new HashMap<String,Object>();
+		Map<String,Object> params = new HashMap<>(2);
 		params.put("retryBatchSize", retryBatchSize);
 		params.put("currentDateMsec", System.currentTimeMillis());
 		return mapper.queryTimeoutTransactions(params);

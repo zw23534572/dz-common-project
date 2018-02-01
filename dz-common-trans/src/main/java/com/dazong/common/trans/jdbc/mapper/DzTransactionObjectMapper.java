@@ -85,8 +85,7 @@ public interface DzTransactionObjectMapper {
 
 	/**
 	 * 查询已超时的retryBatchSize条事务记录
-	 * 
-	 * @param retryBatchSize
+	 * @param params
 	 * @return
 	 */
 	List<DzTransactionObject> queryTimeoutTransactions(Map<String,Object> params);
