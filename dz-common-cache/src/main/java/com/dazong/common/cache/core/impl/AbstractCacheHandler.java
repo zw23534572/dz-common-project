@@ -93,4 +93,9 @@ public abstract class AbstractCacheHandler implements ICacheHandler {
         return 0L;
     }
 
+    @Override
+    public <T> T getMapObj(final  String key, final Class T) {
+        return null;
+    }
+
 }
