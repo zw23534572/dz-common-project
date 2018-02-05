@@ -208,4 +208,25 @@ public class TransTest {
 			});
 		}
 	}
+	@Test
+	public void testDoTransRetryForTimes(){
+		try {
+			this.transService.doTransRetryForTimes("doTransRetryForTimes");
+			Assert.assertTrue(false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			final String uid = TransContext.getCurrentContext().get("doTransRetryForTimes-uid").toString();
+			DzTransactionObject o = this.mapper.selectByPrimaryKey(uid);
+			Assert.assertTrue(o != null);
+			
+			Awaitility.await().atMost(20000, TimeUnit.MILLISECONDS).until(new Callable<Boolean>() {
+				@Override
+				public Boolean call() throws Exception {
+					DzTransactionScheduler.get().scheduleTask();
+					DzTransactionObject o = mapper.selectByPrimaryKey(uid);
+					return o.getStatus().intValue() == DzTransactionObject.STATUS_FAIL;
+				}
+			});
+		}
+	}
 }

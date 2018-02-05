@@ -62,7 +62,7 @@ public class TransactionAspect
 				if (ann != null) {
 					String transactionName = DzTransactionSupport.getDefaultIfNull(ann.name(),
 							type.getName() + "." + method.getName());
-					getTransactionManager().registerTransaction(transactionName, type, method, bean);
+					getTransactionManager().registerTransaction(transactionName, type, method, bean,ann.retryFailCallback());
 					if (ann.async()) {
 						async = true;
 					}

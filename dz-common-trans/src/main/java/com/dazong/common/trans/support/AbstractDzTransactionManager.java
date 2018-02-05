@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -15,6 +16,7 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import com.dazong.common.IObjectSerializer;
 import com.dazong.common.exceptions.SerializeException;
@@ -25,6 +27,8 @@ import com.dazong.common.trans.SimpleThreadFactory;
 import com.dazong.common.trans.TransactionDefinition;
 import com.dazong.common.trans.TransactionStatus;
 import com.dazong.common.trans.annotation.Propagation;
+import com.dazong.common.trans.listener.RetryFailEvent;
+import com.dazong.common.trans.listener.IRetryFailCallback;
 import com.dazong.common.trans.properties.DzTransactionProperties;
 import com.google.common.collect.Maps;
 
@@ -50,6 +54,9 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 	protected boolean usedFmeye;
 
 	protected IObjectSerializer paramSerialize;
+	
+	@Autowired(required=false)
+	private Map<String,IRetryFailCallback> retryEndListenerMap;
 
 	@PostConstruct
 	public void init() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -63,13 +70,13 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 				.newInstance();
 	}
 
-	public void registerTransaction(String name, Class<?> type, Method method, Object bean) {
+	public void registerTransaction(String name, Class<?> type, Method method, Object bean,Class<? extends IRetryFailCallback>[] retryEndListenerClassArr) {
 		if (transactionDeclearMap.containsKey(name)) {
 			logger.error("事务{}已存在,不能重复!", name);
 			throw new DzTransactionException("事务" + name + "已存在,不能重复!");
 		}
 
-		transactionDeclearMap.put(name, new DzTransactionDeclear(name, type, method, bean));
+		transactionDeclearMap.put(name, new DzTransactionDeclear(name, type, method, bean,retryEndListenerClassArr));
 	}
 
 	public TransactionStatus begin(TransactionDefinition def) {
@@ -130,6 +137,7 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 		if (status.isRetryEnd()) {
 			// 重试已达到最大次数,重试失败
 			doRetryFail(transaction, "重试已达到最大次数");
+			retryFailCallBack(transaction);
 		} else {
 			// 更新下次重试时间和已重试次数
 			DzTransactionObject updateTo = new DzTransactionObject();
@@ -139,6 +147,54 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 			updateTo.setFmeyeId(transaction.getFmeyeId());
 			transactionDurableManager.updateTransaction(updateTo);
 		}
+	}
+	
+	private void retryFailCallBack(DzTransactionObject transaction){
+		try {
+			DzTransactionDeclear transactionDeclear = transactionDeclearMap.get(transaction.getTransactionName());
+			Class<? extends IRetryFailCallback>[] retryEndListenerClassArr = transactionDeclear.retryEndListenerClassArr;
+			if(retryEndListenerClassArr == null || retryEndListenerClassArr.length == 0){
+				return;
+			}
+			
+			for(Class<? extends IRetryFailCallback> clz : retryEndListenerClassArr){
+				if(clz.isInterface()){
+					continue;
+				}
+				IRetryFailCallback retryEndListener = getFromMapByClass(clz);
+				
+				RetryFailEvent retryEndEvent = new RetryFailEvent();
+				retryEndEvent.setObj(transactionDeclear.bean);
+				retryEndEvent.setMethod(transactionDeclear.method);
+				if(transaction.getParams() != null){
+					Class<?>[] parameterTypes = transactionDeclear.method.getParameterTypes();
+					Object[] params = paramSerialize.deserialize(transaction.getParams(), parameterTypes);
+					retryEndEvent.setParams(params);
+				}
+				retryEndEvent.setTransactionId(transaction.getUid());
+				retryEndEvent.setTransactionName(transaction.getTransactionName());
+				
+				if(retryEndListener == null){
+					retryEndListener = clz.newInstance();
+				}
+				retryEndListener.callBack(retryEndEvent);
+			}
+		} catch (Exception e) {
+			logger.error("重试结束回调发生异常：{}", e);
+		}
+	}
+	
+	private IRetryFailCallback getFromMapByClass(Class<?> clz){
+		if(CollectionUtils.isEmpty(this.retryEndListenerMap)){
+			return null;
+		}
+		for(Entry<String,IRetryFailCallback> entry : this.retryEndListenerMap.entrySet()){
+			IRetryFailCallback listener = entry.getValue();
+			if(listener.getClass() == clz){
+				return listener;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -336,12 +392,14 @@ public abstract class AbstractDzTransactionManager implements DzTransactionManag
 		Class<?> type;
 		Method method;
 		Object bean;
+		Class<? extends IRetryFailCallback>[] retryEndListenerClassArr;
 
-		public DzTransactionDeclear(String name, Class<?> type, Method method, Object bean) {
+		public DzTransactionDeclear(String name, Class<?> type, Method method, Object bean,Class<? extends IRetryFailCallback>[] retryEndListenerClassArr) {
 			this.name = name;
 			this.type = type;
 			this.method = method;
 			this.bean = bean;
+			this.retryEndListenerClassArr = retryEndListenerClassArr;
 		}
 	}
 }
