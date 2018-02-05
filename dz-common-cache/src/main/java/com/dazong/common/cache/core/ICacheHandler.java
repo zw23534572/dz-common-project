@@ -108,6 +108,16 @@ public interface ICacheHandler {
     public <T> Map<String, T> getMap(final String key, final Class<T> type);
 
     /**
+     * 获取map对象
+     * @param key
+     * @param T
+     * @param <T>
+     * @return
+     */
+    public <T> T getMapObj(final  String key, final Class T);
+
+
+    /**
      * 获取key
      * @param key
      * @param type
