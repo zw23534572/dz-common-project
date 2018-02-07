@@ -22,8 +22,10 @@ public final class LockConstants {
     public static final String DEFAULT_REDIS_KEY_PREFIX = "dz:lock:";
 
     /** Zookeeper默认的路径前缀 */
-    public static final String DEFAULT_ZOOKEEPER_PATH_PREFIX = "/dz/lock/";
+    public static final String DEFAULT_ZOOKEEPER_PATH_PREFIX = new StringBuilder("/dz/lock/").toString();
 
     /** 默认的错误提示 */
     public static final String DEFAULT_LOCKED_ALERT = "有用户正在执行此操作，请稍候重试！";
+
+    private LockConstants(){}
 }
