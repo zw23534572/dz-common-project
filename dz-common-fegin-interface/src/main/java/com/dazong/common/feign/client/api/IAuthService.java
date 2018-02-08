@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  *  @author yanghui
  */
-@FeignClient(name = "${feignclient.auth.serviceId}", url = "${feignclient.auth.url}", configuration = FastJsonConfiguration.class)
+@FeignClient(name = "${feignclient.auth.serviceId:auth}", url = "${feignclient.auth.url:http://auth.dazong.com}", configuration = FastJsonConfiguration.class)
 public interface IAuthService {
 	
 	/**

@@ -90,8 +90,9 @@ public class RedisDistributionLock extends BaseDistributionLock implements Distr
         }
 
         //在当前VM下的其他线程是否已经获得锁
-        if (lockStatusData.get(this.lockInfo.getLockURI()) != null)
+        if (lockStatusData.get(this.lockInfo.getLockURI()) != null) {
             return false;
+        }
 
         //获取实际的锁
         long timeout       = unit.toMillis(waitTime);

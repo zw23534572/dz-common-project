@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author luobw
  */
-@FeignClient(name = "${feignclient.htapi.serviceId}", url = "${feignclient.htapi.url}", configuration = FastJsonConfiguration.class)
+@FeignClient(name = "${feignclient.htapi.serviceId:htapi}", url = "${feignclient.htapi.url:http://htapi.dazong.com}", configuration = FastJsonConfiguration.class)
 public interface IContractService {
     /**
      * <B>方法名称：创建交易确认书</B><BR>

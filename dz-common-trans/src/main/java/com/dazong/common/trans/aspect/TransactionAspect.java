@@ -62,7 +62,7 @@ public class TransactionAspect
 				if (ann != null) {
 					String transactionName = DzTransactionSupport.getDefaultIfNull(ann.name(),
 							type.getName() + "." + method.getName());
-					getTransactionManager().registerTransaction(transactionName, type, method, bean);
+					getTransactionManager().registerTransaction(transactionName, type, method, bean,ann.retryFailCallback());
 					if (ann.async()) {
 						async = true;
 					}
@@ -348,9 +348,4 @@ public class TransactionAspect
 	public void setTransactionManager(DzTransactionManager dzTransactionManager) {
 		this.dzTransactionManager = dzTransactionManager;
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(Math.max(5*60*1000, 10*1000));
-	}
-
 }

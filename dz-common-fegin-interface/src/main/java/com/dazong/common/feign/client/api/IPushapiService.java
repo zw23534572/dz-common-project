@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  *  @author yanghui
  */
-@FeignClient(name="${feignclient.pushapi.serviceId}",url="${feignclient.pushapi.url}")
+@FeignClient(name="${feignclient.pushapi.serviceId:pushapi}",url="${feignclient.pushapi.url:http://pushapi.dazong.com:2005}")
 public interface IPushapiService {
 
 	/**

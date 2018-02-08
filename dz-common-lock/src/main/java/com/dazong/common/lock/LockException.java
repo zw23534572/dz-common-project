@@ -2,7 +2,6 @@ package com.dazong.common.lock;
 
 import com.dazong.common.CommonStatus;
 import com.dazong.common.exceptions.BaseApplicationException;
-import com.dazong.common.exceptions.BusinessException;
 
 /**
  * 锁异常，工获取锁失败要抛出此异常

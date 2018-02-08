@@ -5,6 +5,7 @@ import com.dazong.common.autoconfig.RedisAutoConfigure;
 import com.dazong.common.cache.constants.IExpire;
 import com.dazong.common.cache.core.ICacheHandler;
 import com.dazong.common.cache.redis.domain.Person;
+import org.apache.commons.collections.map.HashedMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -241,4 +243,18 @@ public class RedisCacheHandlerTest {
 
 
     }
+
+    @Test
+    public void getMapObj() {
+        Map map = new HashedMap(){{
+            put("name","周剑");
+            put("age",32);
+            put("wifeList", Arrays.asList("aa","bb"));
+        }};
+        redisCacheHandler.saveMap("abc",map,IExpire.EXPIRE_MAX);
+
+        Boy boy = redisCacheHandler.getMapObj("abc",Boy.class);
+        System.out.println("-----");
+    }
+
 }

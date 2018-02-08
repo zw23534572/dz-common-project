@@ -3,6 +3,7 @@ package com.dazong.common.cache.core.impl;
 import com.dazong.common.IObjectSerializer;
 import com.dazong.common.serialize.JdkSerializer;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,8 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -371,5 +374,56 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
                 return result;
             }
         });
+    }
+
+    /**
+     * 获取redis中的map，并转换成指定对象
+     * @param key
+     * @param T
+     * @param <T>
+     * @return
+     */
+    @Override
+    public  <T> T getMapObj(final  String key, final Class T) {
+        Validate.notBlank(key);
+        return redisTemplate.execute(new RedisCallback<T>() {
+            @Override
+            public T doInRedis(RedisConnection connection) {
+                Map<byte[],byte[]> value = connection.hGetAll(key.getBytes());
+                if(value == null || value.isEmpty()){
+                    logger.info(IS_NULL_VALUE_WARN);
+                    return null;
+                }
+                T result = null;
+                List<String> attrNameList = getFiledName(T);
+                try {
+                    result = (T) T.newInstance();
+                    for (Map.Entry<byte[],byte[]> entry : value.entrySet()) {
+                        String itemKey = new String(entry.getKey());
+                        if(attrNameList.contains(itemKey)) {
+                            String firstLetter = itemKey.substring(0, 1).toUpperCase();
+                            Method m = T.getMethod("set"+ firstLetter + itemKey.substring(1),T.getDeclaredField(itemKey).getType());
+                            m.invoke(result, objectSerializer.deserialize(entry.getValue(),T.getDeclaredField(itemKey).getType()));
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return result;
+            }
+        });
+    }
+
+    /**
+     * 获取属性名数组
+     * */
+    private List<String> getFiledName(Class objClass){
+        Field[] fields = objClass.getDeclaredFields();
+        List<String> attrList = Lists.newArrayList();
+        for(int i=0;i<fields.length;i++){
+            attrList.add(fields[i].getName());
+        }
+        return attrList;
     }
 }

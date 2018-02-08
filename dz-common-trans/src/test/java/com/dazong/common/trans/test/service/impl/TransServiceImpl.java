@@ -10,6 +10,8 @@ import com.dazong.common.trans.annotation.AutoRetry;
 import com.dazong.common.trans.annotation.BussinessIdParam;
 import com.dazong.common.trans.support.DzTransactionInfo;
 import com.dazong.common.trans.support.DzTransactionSyncManager;
+import com.dazong.common.trans.test.RetryEndListener1;
+import com.dazong.common.trans.test.RetryEndListener2;
 import com.dazong.common.trans.test.TransContext;
 import com.dazong.common.trans.test.exception.TransExcetion;
 import com.dazong.common.trans.test.service.ITestService;
@@ -115,14 +117,18 @@ public class TransServiceImpl implements ITransService{
 	public void doTransRetry(String name) {
 		System.out.println("doTransRetry");
 		setUid("doTransRetry");
-		try {
-			Thread.sleep(11 * 1000L);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		if(retryConut.get() == 0){
 			retryConut.incrementAndGet();
 			throw new RuntimeException("doTransRetry发生异常");
 		}
+	}
+
+	
+	@Override
+	@AutoRetry(maxTryTimes=1,timeout=10 * 1000L,retryFailCallback={RetryEndListener1.class,RetryEndListener2.class})
+	public void doTransRetryForTimes(String name) {
+		System.out.println("doTransRetryForTimes");
+		setUid("doTransRetryForTimes");
+		throw new RuntimeException("doTransRetryForTimes发生异常");
 	}
 }
