@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
  *  @author yanghui
  */
 @Configuration
-@ConditionalOnProperty(prefix = "feignclient",value = {"htapi.serviceId","htapi.url"})
 @EnableFeignClients(clients={IContractService.class})
 public class AutoContractConfiguration {
 

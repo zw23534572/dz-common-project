@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
  *  @author yanghui
  */
 @Configuration
-@ConditionalOnProperty(prefix = "feignclient",value = {"userapi.serviceId","userapi.url"})
 @EnableFeignClients(clients={IUserInfoService.class})
 public class AutoUserapiConfiguration {
 

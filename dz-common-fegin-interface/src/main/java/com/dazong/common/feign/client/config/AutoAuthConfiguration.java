@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
  *  @author yanghui
  */
 @Configuration
-@ConditionalOnProperty(prefix = "feignclient",value = {"auth.serviceId","auth.url"})
 @EnableFeignClients(clients={IAuthService.class})
 public class AutoAuthConfiguration {
 

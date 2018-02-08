@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author lori.li
  */
-@FeignClient(name = "${feignclient.up.serviceId}",
-        url = "${feignclient.up.url}",
+@FeignClient(name = "${feignclient.up.serviceId:up}",
+        url = "${feignclient.up.url:https://up.dazong.com/upload}",
         configuration = FastJsonConfiguration.class)
 public interface IUploadService {
 

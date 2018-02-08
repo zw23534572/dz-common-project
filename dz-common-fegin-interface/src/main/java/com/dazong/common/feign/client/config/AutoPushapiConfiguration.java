@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
  *  @author yanghui
  */
 @Configuration
-@ConditionalOnProperty(prefix = "feignclient",value = {"pushapi.serviceId","pushapi.url"})
 @EnableFeignClients(clients={IPushapiService.class})
 public class AutoPushapiConfiguration {
 

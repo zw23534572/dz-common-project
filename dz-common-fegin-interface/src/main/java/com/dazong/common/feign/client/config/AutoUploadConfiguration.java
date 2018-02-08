@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Import;
  * @author lori.li
  */
 @Configuration
-@ConditionalOnProperty(prefix = "feignclient", value = {"up.serviceId", "up.url"})
 @EnableFeignClients(clients = {IUploadService.class})
 @Import(UploadUtils.class)
 public class AutoUploadConfiguration {
