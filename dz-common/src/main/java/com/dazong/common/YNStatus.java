@@ -4,7 +4,7 @@ package com.dazong.common;
  * @author huqichao
  * @create 2017-10-24 10:45
  **/
-public enum YNStatus implements IResultStatus {
+public enum YNStatus implements IResult {
 
 	/**
 	 * 有效

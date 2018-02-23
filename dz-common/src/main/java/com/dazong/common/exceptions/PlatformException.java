@@ -1,6 +1,6 @@
 package com.dazong.common.exceptions;
 
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 
 /**
  * 平台异常的父类 。如：公共组件异常
@@ -24,11 +24,11 @@ public class PlatformException extends BaseApplicationException {
     }
 
 
-    public PlatformException(IResultStatus status, String fmt, Object... args) {
+    public PlatformException(IResult status, String fmt, Object... args) {
         this(status.getCode(), String.format(fmt, args));
     }
 
-    public PlatformException(Throwable e, IResultStatus status, String fmt, Object... args) {
+    public PlatformException(Throwable e, IResult status, String fmt, Object... args) {
         this(status.getCode(), String.format(fmt, args), e);
     }
 
@@ -54,14 +54,14 @@ public class PlatformException extends BaseApplicationException {
      * @param resultStatus 枚举状态
      * @param cause        异常信息
      */
-    public PlatformException(IResultStatus resultStatus, Throwable cause) {
+    public PlatformException(IResult resultStatus, Throwable cause) {
         super(resultStatus.getCode(), resultStatus.getMessage(), cause);
     }
 
     /**
      * @param resultStatus 枚举状态
      */
-    public PlatformException(IResultStatus resultStatus) {
+    public PlatformException(IResult resultStatus) {
         super(resultStatus.getCode(), resultStatus.getMessage());
     }
 }

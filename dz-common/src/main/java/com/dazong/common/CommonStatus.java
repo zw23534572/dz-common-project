@@ -109,15 +109,15 @@ public enum CommonStatus implements IErrors<CommonResponse> {
 		return message;
 	}
 
-	public IResultStatus joinSystemStatusCode() {
+	public IResult joinSystemStatusCode() {
 		Integer fullCode = Integer.parseInt(Integer.toString(ApplicationInfo.instance().getSystemCode()) + this.code);
-		return new ResultStatus(fullCode, this.message);
+		return new CommonResponse(fullCode, this.message);
 
 	}
 
-	public IResultStatus joinSystemStatusCode(String message) {
+	public IResult joinSystemStatusCode(String message) {
 		Integer fullCode = Integer.parseInt(Integer.toString(ApplicationInfo.instance().getSystemCode()) + this.code);
-		return new ResultStatus(fullCode, message);
+		return new CommonResponse(fullCode, message);
 
 	}
 

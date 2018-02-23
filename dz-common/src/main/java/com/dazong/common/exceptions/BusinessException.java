@@ -1,6 +1,6 @@
 package com.dazong.common.exceptions;
 
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 
 /**
  * 公用业务异常,大宗所有异常的公共基类.
@@ -53,7 +53,7 @@ public class BusinessException extends BaseApplicationException {
         super(code, message, cause, args);
     }
     
-    public BusinessException(IResultStatus status){
+    public BusinessException(IResult status){
     	this(status.getCode(),status.getMessage());
     }
 

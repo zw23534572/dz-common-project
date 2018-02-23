@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dazong.common.CommonStatus;
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 import com.dazong.common.exceptions.BaseApplicationException;
 
 /**
  * @author luobinwen
  */
-public class CommonResponse implements Serializable {
+public class CommonResponse implements IResult, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +23,7 @@ public class CommonResponse implements Serializable {
 
     }
 
-    public CommonResponse(IResultStatus resultStatus) {
+    public CommonResponse(IResult resultStatus) {
         this(resultStatus.getCode(), resultStatus.getMessage());
     }
 
@@ -66,5 +66,10 @@ public class CommonResponse implements Serializable {
         map.put("msg", retMsg);
         return map;
     }
+
+	@Override
+	public String getMessage() {
+		return this.retMsg;
+	}
 
 }
