@@ -2,7 +2,6 @@ package com.dazong.example.web.controller;
 
 import com.dazong.common.exceptions.ArgumetException;
 import com.dazong.common.resp.DataResponse;
-import com.dazong.common.web.annotation.DzWrapperSkiped;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,7 +48,6 @@ public class ExcepitionWebController {
      */
     @RequestMapping("/test2")
     @ResponseBody
-    @DzWrapperSkiped
     public List<String> test2() {
         List<String> stringList = new ArrayList<>();
         stringList.add("测试1");
