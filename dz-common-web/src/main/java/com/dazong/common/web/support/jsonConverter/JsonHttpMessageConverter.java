@@ -52,7 +52,7 @@ public class JsonHttpMessageConverter extends FastJsonHttpMessageConverter {
     @Override
     public void write(Object object, Type type, MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         // 如果返回的已经是包装类(是CommonResponse子孙类),则直接返回
-        if (object != null && object.getClass().isInstance(IResult.class)) {
+        if (object != null && object instanceof IResult) {
             super.write(object, contentType, outputMessage);
             return;
         }
