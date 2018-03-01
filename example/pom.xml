@@ -24,6 +24,15 @@
 		<transaction.version>1.0.1</transaction.version>
 	</properties>
 
+	<modules>
+		<module>example-client-sdk</module>
+		<module>example-domain</module>
+		<module>example-common</module>
+		<module>example-dao</module>
+		<module>example-manager</module>
+		<module>example-service</module>
+		<module>example-web</module>
+	</modules>
 
 	<dependencies>
 		<dependency>
@@ -93,13 +102,4 @@
 
 	</dependencies>
 
-	<modules>
-		<module>example-client-sdk</module>
-		<module>example-domain</module>
-		<module>example-common</module>
-		<module>example-dao</module>
-		<module>example-manager</module>
-		<module>example-service</module>
-		<module>example-web</module>
-	</modules>
 </project>

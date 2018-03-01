@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${config.mapperPackage}.${upperModelName}Mapper">
+
+    <resultMap id="BaseResultMap" type="${config.entityPackage}.${upperModelName}">
+        <% for(var item in items) {%>
+        <result column="${item.column}" property="${item.property}" jdbcType="${item.columnType=='INT' ? 'INTEGER':item.columnType}"/>
+        <% } %>
+    </resultMap>
+</mapper>

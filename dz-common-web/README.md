@@ -12,7 +12,7 @@ dz-common-web是专门针对web入口进行封装的基础组件，让使用者�
 
 ## 项目配置
 
-####配置1：```pom.xml```添加父类引用
+### 配置1：```pom.xml```添加父类引用
 
 一个单纯的maven项目，在```pom.xml```文件配置
 
@@ -32,11 +32,14 @@ dz-common-web是专门针对web入口进行封装的基础组件，让使用者�
 
 ``com.dazong.common:dz-common:jar``--大宗common jar包公共类
 
-####配置2：```application.properties```添加项目系统码
+### 配置2：```application.properties```添加项目系统码
 
 ```xml
 system_code=88 --项目系统码
 ```
+
+### 配置3： 使用web异常拦截与正常封包，需加上@EnableDzWeb
+
 
 配置完成，可通过```spring boot```方式正常启动.
 

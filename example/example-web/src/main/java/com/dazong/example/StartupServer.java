@@ -3,8 +3,8 @@ package com.dazong.example;
 import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
 import com.dazong.common.trans.annotation.EnableAutoRetry;
 import com.dazong.common.annotation.EnableValiadtor;
-import com.dazong.common.idempotent.EnableIdempotent;
 
+import com.dazong.common.web.annotation.EnableDzWeb;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +27,9 @@ import javax.annotation.PreDestroy;
 @ComponentScan({ "com.dazong.example"})
 @MapperScan("com.dazong.example.dao.mapper*")
 @EnableValiadtor(patterns = { "com.dazong.example.service..*.*(..)" })
-@EnableIdempotent
 @EnableFeignClients(basePackages={"com.dazong.common.feign"})
 @EnableAutoRetry
+@EnableDzWeb
 public class StartupServer {
 
 	private Logger logger = LoggerFactory.getLogger(StartupServer.class);
