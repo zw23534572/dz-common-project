@@ -13,6 +13,12 @@
     <version>官方发布最新版本</version>
 </dependency>
 ```
+* disconf 配置中加入
+```xml
+## elastic job
+elastic.job.zk.zkServer=172.16.21.12:2181
+elastic.job.zk.namespace=trade-job
+```
 
 只要引入jar包就会开启定时任务
 

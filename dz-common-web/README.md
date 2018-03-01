@@ -22,6 +22,8 @@ dz-common-web是专门针对web入口进行封装的基础组件，让使用者�
         <artifactId>dz-dependencies</artifactId>
         <version>1.6-SNAPSHOT</version>
  </parent>
+ 
+ 目前版本为1.6-SNAPSHOT
 ```
 
 其中``dz-dependencies``包含
@@ -29,6 +31,8 @@ dz-common-web是专门针对web入口进行封装的基础组件，让使用者�
 ``com.dazong.pom:dz-springboot-pom:jar``--支持spring-boot的配置
 
 ``com.dazong.common:dz-common-web:jar``--本篇专门讲解此jar包
+
+``com.dazong.common:dz-common-util:jar``
 
 ``com.dazong.common:dz-common:jar``--大宗common jar包公共类
 
@@ -59,12 +63,12 @@ public List<String> test2() {
 }
 ```
 
-测试结果
+测试结果，拦截异常时code，不自动加system_code
 
 ```
 {
-	"msg":null,
-	"code":88500
+	"msg":"业务系统的空指针异常",
+	"code":500
 }
 ```
 
