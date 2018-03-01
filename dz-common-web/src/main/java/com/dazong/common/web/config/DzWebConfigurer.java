@@ -6,6 +6,7 @@ import com.dazong.common.web.support.jsonConverter.JsonHttpMessageConverter;
 import com.dazong.common.web.support.jsonConverter.JsonMappingExceptionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,11 +19,13 @@ import java.util.List;
 /**
  * Spring MVC 配置
  */
-@Configuration
 @ConditionalOnBean(annotation = {EnableDzWeb.class})
 public class DzWebConfigurer extends WebMvcConfigurerAdapter {
 
     protected static Logger logger = LoggerFactory.getLogger(DzWebConfigurer.class);
+
+    @Autowired
+    JsonHttpMessageConverter jsonHttpMessageConverter;
 
     /**
      * json消息转换类
@@ -30,7 +33,8 @@ public class DzWebConfigurer extends WebMvcConfigurerAdapter {
      */
     @Bean
     public JsonHttpMessageConverter jsonHttpMessageConverter() {
-       return new JsonHttpMessageConverter();
+        logger.info("MvcConfigurer JsonHttpMessageConverter started");
+        return new JsonHttpMessageConverter();
     }
 
     /**
@@ -41,7 +45,7 @@ public class DzWebConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         logger.info("MvcConfigurer configureMessageConverters started");
-        converters.add(jsonHttpMessageConverter());
+        converters.add(jsonHttpMessageConverter);
     }
 
 

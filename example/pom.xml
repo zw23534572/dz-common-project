@@ -15,7 +15,7 @@
 	</parent>
 
 	<properties>
-		<jdk.version>1.8</jdk.version>
+		<jdk.version>1.7</jdk.version>
 
 		<clearing.version>1.0.0-SNAPSHOT</clearing.version>
 		<orderNumber.version>3.0</orderNumber.version>
