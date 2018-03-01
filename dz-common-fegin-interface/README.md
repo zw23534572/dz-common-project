@@ -6,8 +6,8 @@
 
 ```xml
 <dependency>
-    <groupId>com.dazong.feign.client</groupId>
-    <artifactId>feignclient</artifactId>
+    <groupId>com.dazong.common</groupId>
+    <artifactId>dz-common-fegin-interface</artifactId>
     <version>最新版本</version>
 </dependency>
 ```

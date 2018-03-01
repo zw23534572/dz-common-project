@@ -150,7 +150,9 @@ public class SimpleMonitorServlet extends HttpServlet {
 					}
 				}
 			}
-			monitorList.add(new DubboMonitor(dubboConsumerMap));
+			if (dubboConsumerMap.size() > 0){
+				monitorList.add(new DubboMonitor(dubboConsumerMap));
+			}
 		} catch (Exception e) {
 			logger.warn("this application is not Dubbo.{}", e.getMessage());
 		}
