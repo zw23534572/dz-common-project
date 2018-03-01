@@ -11,7 +11,7 @@
 ```xml
 <!--配置dz-common-cache-->
 <dependency>
-    <groupId>com.dazong.common.cache</groupId>
+    <groupId>com.dazong.common</groupId>
     <artifactId>dz-common-cache</artifactId>
     <version>4.0.0-SNAPSHOT</version>
 </dependency>

@@ -12,7 +12,7 @@
 ```xml
 <!--配置dz-mq-->
 <dependency>
-    <groupId>com.dazong.common.mq</groupId>
+    <groupId>com.dazong.common</groupId>
     <artifactId>dz-common-mq</artifactId>
     <version>4.0.0-SNAPSHOT</version>
 </dependency>
