@@ -2,8 +2,7 @@ package com.dazong.common.cache.core.impl;
 
 import com.dazong.common.IObjectSerializer;
 import com.dazong.common.serialize.JdkSerializer;
-
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -395,15 +394,15 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
                     return null;
                 }
                 T result = null;
-                List<String> attrNameList = getFiledName(T);
+                Map<String,Class> attrMap = getAllFields(T);
                 try {
                     result = (T) T.newInstance();
                     for (Map.Entry<byte[],byte[]> entry : value.entrySet()) {
                         String itemKey = new String(entry.getKey());
-                        if(attrNameList.contains(itemKey)) {
+                        if(attrMap.keySet().contains(itemKey)) {
                             String firstLetter = itemKey.substring(0, 1).toUpperCase();
-                            Method m = T.getMethod("set"+ firstLetter + itemKey.substring(1),T.getDeclaredField(itemKey).getType());
-                            m.invoke(result, objectSerializer.deserialize(entry.getValue(),T.getDeclaredField(itemKey).getType()));
+                            Method m = T.getMethod("set"+ firstLetter + itemKey.substring(1),attrMap.get(itemKey));
+                            m.invoke(result, objectSerializer.deserialize(entry.getValue(),attrMap.get(itemKey)));
                         }
                     }
 
@@ -416,14 +415,20 @@ public class RedisCacheHandler extends AbstractCacheHandler implements Initializ
     }
 
     /**
-     * 获取属性名数组
-     * */
-    private List<String> getFiledName(Class objClass){
-        Field[] fields = objClass.getDeclaredFields();
-        List<String> attrList = Lists.newArrayList();
-        for(int i=0;i<fields.length;i++){
-            attrList.add(fields[i].getName());
+     * 获取指定类的所有属性（包括父类）
+     * @param clazz
+     * @return
+     */
+    public Map<String,Class> getAllFields(Class clazz){
+        List<Field> fieldList = new ArrayList<>();
+        while (clazz != null){
+            fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
+            clazz = clazz.getSuperclass();
         }
-        return attrList;
+        Map<String,Class> attrMap = Maps.newConcurrentMap();
+        for(Field field : fieldList) {
+            attrMap.put(field.getName(),field.getType());
+        }
+        return attrMap;
     }
 }
