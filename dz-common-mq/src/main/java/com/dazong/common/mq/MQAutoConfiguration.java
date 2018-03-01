@@ -10,7 +10,7 @@ import com.dazong.common.mq.domian.Consumer;
 import com.dazong.common.mq.domian.TableInfo;
 import com.dazong.common.mq.manager.DBManager;
 import com.dazong.common.mq.manager.MQNotifyManager;
-import com.dazong.common.mq.util.AopTargetUtils;
+import com.dazong.common.util.reflect.AopTargetUtils;
 import org.apache.ibatis.io.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

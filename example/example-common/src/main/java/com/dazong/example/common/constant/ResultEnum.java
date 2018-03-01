@@ -1,13 +1,13 @@
 package com.dazong.example.common.constant;
 
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 
 /**
  * 结果枚举
  * @author luobinwen
  *
  */
-public enum ResultEnum implements IResultStatus {
+public enum ResultEnum implements IResult {
 	/**
 	 * 成功
 	 */

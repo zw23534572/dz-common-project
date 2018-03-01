@@ -57,4 +57,6 @@ public interface ITransService {
 	
 	void doTransRetry(String name);
 	
+	void doTransRetryForTimes(String name);
+	
 }

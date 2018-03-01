@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * @author yanghui
  */
-@FeignClient(name = "${feignclient.userapi.serviceId}",
-        url = "${feignclient.userapi.url}",
+@FeignClient(name = "${feignclient.userapi.serviceId:userapi}",
+        url = "${feignclient.userapi.url:http://userapi.dazong.com}",
         configuration = FastJsonConfiguration.class)
 public interface IUserInfoService {
 

@@ -1,6 +1,7 @@
-package com.dazong.common.mq.util;
+package com.dazong.common.util.reflect;
 
-import com.dazong.common.mq.exception.MQException;
+import com.dazong.common.CommonStatus;
+import com.dazong.common.exceptions.PlatformException;
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.support.AopUtils;
 
@@ -9,7 +10,7 @@ import java.lang.reflect.Field;
 /**
  * 基于Spring AOP获取目标对象.
  *
- * @author caohao
+ * @author huqichao
  */
 public final class AopTargetUtils {
 
@@ -43,7 +44,7 @@ public final class AopTargetUtils {
         try {
             return getTargetObject(h.get(proxy));
         } catch (final IllegalAccessException ex) {
-            throw new MQException(ex);
+            throw new PlatformException(ex, CommonStatus.FAIL, "getProxyTargetObject");
         }
     }
 
@@ -59,7 +60,7 @@ public final class AopTargetUtils {
             // CHECKSTYLE:OFF
         } catch (final Exception ex) {
             // CHECKSTYLE:ON
-            throw new MQException(ex);
+            throw new PlatformException(ex, CommonStatus.FAIL, "getProxyTargetObjectForCglibAndSpring4");
         }
     }
 
@@ -71,7 +72,7 @@ public final class AopTargetUtils {
             // CHECKSTYLE:OFF
         } catch (final Exception ex) {
             // CHECKSTYLE:ON
-            throw new MQException(ex);
+            throw new PlatformException(ex, CommonStatus.FAIL, "getTargetObject");
         }
     }
 }

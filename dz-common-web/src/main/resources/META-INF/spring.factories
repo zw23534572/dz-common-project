@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.dazong.common.web.config.DzWebConfigurer,com.dazong.common.web.config.DzMonitorConfigurer
+com.dazong.common.web.config.DzMonitorConfigurer

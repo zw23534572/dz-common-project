@@ -1,20 +1,20 @@
 package com.dazong.common;
 
 /**
- * 
+ * 通用结果接口
  * @author luobinwen
  *
  */
-public interface IResultStatus  {
+public interface IResult  {
     /**
      * 获取枚举中定义的异常码
      * @return
      */
-    public int getCode();
+    int getCode();
 
     /**
      * 获取枚举中定义的异常信息
      * @return
      */
-	public String getMessage();
+	String getMessage();
 }

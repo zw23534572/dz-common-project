@@ -1,6 +1,6 @@
 package com.dazong.common.exceptions;
 
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 
 /**
  * 参数验证异常
@@ -14,7 +14,7 @@ public class ArgumetException extends BaseApplicationException {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ArgumetException(IResultStatus resultStatus) {
+	public ArgumetException(IResult resultStatus) {
 		super(resultStatus.getCode(), resultStatus.getMessage());
 	}
 

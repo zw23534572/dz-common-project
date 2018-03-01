@@ -20,13 +20,9 @@ public class TransServiceImpl implements ITransService{
 	}
 
 	@Override
-	@AutoRetry
+	@AutoRetry(maxTryTimes=1,timeout=10 * 1000L)
 	public void testForException(String name, int type) {
 		log.info("TransServiceImpl.testForException入参：{}，{}",name,type);
-		Random random = new Random();
-		if (random.nextInt(1000) % 2 == 0) {
-			throw new RuntimeException("异常测试");
-		}
-		log.info("TransServiceImpl.testForException执行成功");
+		throw new RuntimeException("异常测试");
 	}
 }

@@ -7,7 +7,7 @@ import com.dazong.common.exceptions.BaseApplicationException;
  * 
  * @author wzy
  */
-public interface IErrors<T> extends IResultStatus {
+public interface IErrors<T> extends IResult {
 
     /**
      * 采用枚举中定义的message作为返回信息

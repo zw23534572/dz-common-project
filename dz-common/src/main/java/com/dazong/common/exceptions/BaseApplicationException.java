@@ -3,7 +3,7 @@ package com.dazong.common.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 
 /**
  * 异常基类，扩展了异常码code 与 异常参数 args
@@ -25,7 +25,7 @@ public abstract class BaseApplicationException extends RuntimeException {
 	 */
 	protected final transient Object[] args;
 
-	public BaseApplicationException(IResultStatus status) {
+	public BaseApplicationException(IResult status) {
 		this(status.getCode(), status.getMessage());
 	}
 

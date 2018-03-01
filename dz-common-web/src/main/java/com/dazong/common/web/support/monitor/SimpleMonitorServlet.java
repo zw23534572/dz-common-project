@@ -104,8 +104,8 @@ public class SimpleMonitorServlet extends HttpServlet {
 			WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 			jmsMonitor(context);
 			redisMonitor(context);
+			dubboMonitor(context);
 
-			Map<EchoService, String> dubboConsumerMap = new HashMap<>(20);
 			String dataSourceEqualsName = null;
 			String dataSourceContainsName = null;
 			String[] names = context.getBeanDefinitionNames();
@@ -116,12 +116,6 @@ public class SimpleMonitorServlet extends HttpServlet {
 					}
 					if (name.toLowerCase().contains("datasource")) {
 						dataSourceContainsName = name;
-					}
-					try {
-						EchoService service = (EchoService) context.getBean(name);
-						dubboConsumerMap.put(service, name);
-					} catch (ClassCastException e) {
-
 					}
 				}
 			}
@@ -135,11 +129,32 @@ public class SimpleMonitorServlet extends HttpServlet {
 				monitorList.add(new DatabaseMonitor(dataSource));
 			}
 
-			monitorList.add(new DubboMonitor(dubboConsumerMap));
 			monitorList.add(new VersionMonitor(null));
-
 		} catch (Exception e) {
 			logger.error("this application is not spring", e);
+		}
+	}
+
+	private void dubboMonitor(WebApplicationContext context) {
+		try {
+			Class.forName("com.alibaba.dubbo.rpc.service.EchoService");
+			Map<EchoService, String> dubboConsumerMap = new HashMap<>(20);
+			String[] names = context.getBeanDefinitionNames();
+			for (String name : names) {
+				if (!name.contains(".")) {
+					try {
+						EchoService service = (EchoService) context.getBean(name);
+						dubboConsumerMap.put(service, name);
+					} catch (ClassCastException e) {
+
+					}
+				}
+			}
+			if (dubboConsumerMap.size() > 0){
+				monitorList.add(new DubboMonitor(dubboConsumerMap));
+			}
+		} catch (Exception e) {
+			logger.warn("this application is not Dubbo.{}", e.getMessage());
 		}
 	}
 

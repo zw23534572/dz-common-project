@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.dazong.common.trans.listener.IRetryFailCallback;
+
 /**
  * 大宗分布式事务注解,带有此注解的方法会启用事务,如果抛出了需要retry的异常后会有服务去不断的重试这个方法直到成功,保证数据最终一致性
  * @author hujunzhong
@@ -59,5 +61,10 @@ public @interface AutoRetry {
 	 * @return
 	 */
 	boolean async() default false;
+	/**
+	 * 最大重试次数后失败的回调函数
+	 * @return
+	 */
+	Class<? extends IRetryFailCallback>[] retryFailCallback() default {};
 	
 }

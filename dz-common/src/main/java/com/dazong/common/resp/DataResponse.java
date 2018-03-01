@@ -2,7 +2,7 @@ package com.dazong.common.resp;
 
 import com.alibaba.fastjson.JSON;
 import com.dazong.common.CommonStatus;
-import com.dazong.common.IResultStatus;
+import com.dazong.common.IResult;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class DataResponse<T> extends CommonResponse {
 		super(retCode, retMsg);
 	}
 	
-	public DataResponse(IResultStatus resultStatus){
+	public DataResponse(IResult resultStatus){
 		this(resultStatus.getCode(),resultStatus.getMessage());
 	}
 

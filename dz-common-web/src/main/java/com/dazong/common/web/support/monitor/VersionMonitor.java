@@ -1,8 +1,8 @@
 package com.dazong.common.web.support.monitor;
 
-import com.alibaba.dubbo.common.utils.NetUtils;
 import com.dazong.common.monitor.BaseMonitor;
 import com.dazong.common.monitor.CheckResult;
+import com.dazong.common.util.NetUtils;
 
 import java.util.Properties;
 

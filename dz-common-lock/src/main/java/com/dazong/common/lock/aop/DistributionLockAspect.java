@@ -13,10 +13,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.expression.BeanFactoryResolver;
 import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.context.support.ApplicationObjectSupport;
@@ -49,11 +46,16 @@ public class DistributionLockAspect extends ApplicationObjectSupport {
     @Around(value="pointcut()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-        try(DistributionLock lock = createLock(proceedingJoinPoint)) {
+        DistributionLock lock = createLock(proceedingJoinPoint);
+        try  {
             if (lock != null) {
                 lock.lock();
             }
             return proceedingJoinPoint.proceed();
+        } finally {
+            if (lock != null) {
+                lock.unlock();
+            }
         }
 
     }

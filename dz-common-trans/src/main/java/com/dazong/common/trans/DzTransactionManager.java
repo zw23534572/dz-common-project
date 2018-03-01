@@ -3,6 +3,7 @@ package com.dazong.common.trans;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import com.dazong.common.trans.listener.IRetryFailCallback;
 import com.dazong.common.trans.support.DzTransactionObject;
 
 /**
@@ -39,7 +40,7 @@ public interface DzTransactionManager {
 	 * @param method
 	 * @param bean 
 	 */
-	void registerTransaction(String name, Class<?> type, Method method, Object bean);
+	void registerTransaction(String name, Class<?> type, Method method, Object bean,Class<? extends IRetryFailCallback>[] retryEndListenerClassArr);
 	
 	/**
 	 * 查询超时的事务
