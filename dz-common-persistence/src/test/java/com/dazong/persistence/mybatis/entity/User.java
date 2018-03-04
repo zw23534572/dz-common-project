@@ -16,13 +16,12 @@ import java.io.Serializable;
  */
 @TableName("user")
 @Data
-public class User implements Serializable {
+public class User {
 
-    private static final long serialVersionUID = 1L;
     /**
      * 用户主键
      */
-    @TableId
+    @TableId("id1")
     private Long id;
     /**
      * 用户姓名

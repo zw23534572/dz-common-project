@@ -10,4 +10,11 @@
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
     </resultMap>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        *
+        from user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
 </mapper>

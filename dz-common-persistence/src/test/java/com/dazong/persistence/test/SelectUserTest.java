@@ -155,4 +155,13 @@ public class SelectUserTest extends BaseTest {
         }
 
     }
+
+    /**
+     * 测试9，pageHelpler 查询
+     */
+    @Test
+    public void n009() {
+        User user = userMapper.selectByPrimaryKey(1L);
+        Assert.assertTrue(user != null);
+    }
 }

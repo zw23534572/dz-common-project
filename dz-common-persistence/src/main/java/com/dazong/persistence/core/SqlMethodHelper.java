@@ -59,8 +59,12 @@ public class SqlMethodHelper {
      * @return
      */
     private static String scriptSqlSelectColumns(DbTableInfo dbTableInfo) {
+        //主键
         StringBuilder columns = new StringBuilder();
-        columns.append(SqlReservedWordsUtil.convert(dbTableInfo.getKeyProperty()));
+        columns.append(SqlReservedWordsUtil.convert(dbTableInfo.getKeyColumn()));
+        columns.append(" AS ").append(dbTableInfo.getKeyProperty());
+
+        //其它字段赋值
         List<DbTableFieldInfo> dbTableFieldInfoList = dbTableInfo.getDbTableFieldInfoList();
         for (DbTableFieldInfo fieldInfo : dbTableFieldInfoList) {
             columns.append(",").append(fieldInfo.getColumn());

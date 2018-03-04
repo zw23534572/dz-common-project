@@ -2,6 +2,8 @@ package com.dazong.common.util;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -497,4 +499,11 @@ public class StringsUtils extends StringUtils {
         return matched(parameter, REGEX_URL);
     }
 
+    /**
+     * 检查是否为手机号码
+     */
+    public final static String PHONE_PATTERN = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(17([0,1,6,7,]))|(18[0-2,5-9]))\\d{8}$";
+    public static boolean isPhone(String result) {
+        return Pattern.compile(PHONE_PATTERN).matcher(result).matches();
+    }
 }
