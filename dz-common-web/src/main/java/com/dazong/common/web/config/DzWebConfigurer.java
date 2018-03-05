@@ -2,14 +2,13 @@ package com.dazong.common.web.config;
 
 
 import com.dazong.common.web.annotation.EnableDzWeb;
-import com.dazong.common.web.support.jsonConverter.JsonHttpMessageConverter;
-import com.dazong.common.web.support.jsonConverter.JsonMappingExceptionResolver;
+import com.dazong.common.web.support.json.JsonHttpMessageConverter;
+import com.dazong.common.web.support.json.JsonMappingExceptionResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;

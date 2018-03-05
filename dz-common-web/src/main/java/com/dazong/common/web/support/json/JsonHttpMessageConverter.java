@@ -1,9 +1,8 @@
-package com.dazong.common.web.support.jsonConverter;
+package com.dazong.common.web.support.json;
 
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dazong.common.IResult;
-import com.dazong.common.resp.CommonResponse;
 import com.dazong.common.resp.DataResponse;
 import com.dazong.common.util.JsonUtils;
 import org.springframework.http.HttpOutputMessage;
@@ -15,6 +14,8 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dazong.common.util.JsonUtils.toJson;
 
 /**
  * 将消息实体转换成json
@@ -53,6 +54,7 @@ public class JsonHttpMessageConverter extends FastJsonHttpMessageConverter {
     public void write(Object object, Type type, MediaType contentType, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         // 如果返回的已经是包装类(是CommonResponse子孙类),则直接返回
         if (object != null && object instanceof IResult) {
+            logger.debug("JsonHttpMessageConverter object:");
             super.write(object, contentType, outputMessage);
             return;
         }
