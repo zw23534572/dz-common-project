@@ -15,13 +15,13 @@ public class GenerateCode {
     public static void main(String[] args) {
         ConfigGenerator configGenerator = new ConfigGenerator();
 
-        configGenerator.setDbUrl("jdbc:mysql://172.16.21.15:3306/dzrule");
+        configGenerator.setDbUrl("jdbc:mysql://172.16.21.15:3306/yunying");
         configGenerator.setDbUser("maoyi");
         configGenerator.setDbPassword("6qjiaVv6!nlz1JSo");
-        configGenerator.setDbSchema("dzrule");
+        configGenerator.setDbSchema("yunying");
 
         configGenerator.setBasePackage("com.dazong.persistence.mybatis");
-        configGenerator.setGenerateTableName("user");
+        configGenerator.setGenerateTableName("withdraw_cash_audit_log");
 
         new AutoGenerator(configGenerator).run();
     }
