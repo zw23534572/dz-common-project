@@ -5,7 +5,14 @@
 
     <resultMap id="BaseResultMap" type="${config.entityPackage}.${upperModelName}">
         <% for(var item in items) {%>
-        <result column="${item.column}" property="${item.property}" jdbcType="${item.columnType=='INT' ? 'INTEGER':item.columnType}"/>
-        <% } %>
+            <% if (item.columnType == 'INT') {%>
+                <result column="${item.column}" property="${item.property}" jdbcType="INTEGER"/>
+            <% } else if(item.columnType == 'DATETIME' || item.columnType == 'TIMESTAMP') {%>
+                <result column="${item.column}" property="${item.property}" jdbcType="DATE"/>
+            <% } else if(item.columnType == 'TEXT')  {%>
+                <result column="${item.column}" property="${item.property}" jdbcType="VARCHAR"/>
+            <% } else {%>
+                <result column="${item.column}" property="${item.property}" jdbcType="${item.columnType}"/>
+        <% } }%>
     </resultMap>
 </mapper>

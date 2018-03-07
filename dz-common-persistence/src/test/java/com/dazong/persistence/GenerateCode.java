@@ -21,7 +21,7 @@ public class GenerateCode {
         configGenerator.setDbSchema("yunying");
 
         configGenerator.setBasePackage("com.dazong.persistence.mybatis");
-        configGenerator.setGenerateTableName("withdraw_cash_audit_log");
+        configGenerator.setGenerateTableName("cash_price_config");
 
         new AutoGenerator(configGenerator).run();
     }

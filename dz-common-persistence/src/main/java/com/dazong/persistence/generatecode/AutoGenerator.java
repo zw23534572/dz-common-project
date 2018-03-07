@@ -277,7 +277,7 @@ public class AutoGenerator {
                 }
 
                 //设置主键
-                if (key.equals("PRI")) {
+                if (key.equals("PRI") && dbTableInfo.getKeyColumn() == null) {
                     dbTableInfo.setKeyColumn(dbTableFieldInfo.getColumn());
                     dbTableInfo.setKeyProperty(dbTableFieldInfo.getProperty());
                 }

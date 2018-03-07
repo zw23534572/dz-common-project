@@ -33,9 +33,11 @@ public class HttpUtils {
      */
     public static String getCookieValue(HttpServletRequest httpServletRequest, String key) {
         Cookie[] cookies = httpServletRequest.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(key)) {
-                return cookie.getValue();
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(key)) {
+                    return cookie.getValue();
+                }
             }
         }
         return null;
