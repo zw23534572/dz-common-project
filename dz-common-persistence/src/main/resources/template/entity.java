@@ -17,7 +17,7 @@ import java.io.Serializable;
  * @version 1.0.0.
  * @date ${date}
  */
-@TableName("user")
+@TableName("${tableName}")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class ${upperModelName} implements Serializable {

@@ -160,6 +160,7 @@ public class AutoGenerator {
         String upperModelName = convertUpperCamel(tableName);
         data.put("upperModelName", upperModelName);
         data.put("lowerModelName", tableNameConvertLowerCamel(tableName));
+        data.put("tableName", tableName);
 
         //赋值表信息
         DbTableInfo dbTableInfo = getTableInfo(config.getDbSchema(), tableName);
@@ -276,7 +277,7 @@ public class AutoGenerator {
                 }
 
                 //设置主键
-                if (key.equals("PRI")) {
+                if (key.equals("PRI") && dbTableInfo.getKeyColumn() == null) {
                     dbTableInfo.setKeyColumn(dbTableFieldInfo.getColumn());
                     dbTableInfo.setKeyProperty(dbTableFieldInfo.getProperty());
                 }
@@ -313,7 +314,7 @@ public class AutoGenerator {
         dbType = dbType.toLowerCase();
         if (dbType.equals("bigint")) {
             return "Long";
-        } else if (dbType.equals("varchar") || dbType.equals("text")) {
+        } else if (dbType.equals("varchar") || dbType.equals("text") || dbType.equals("char")) {
             return "String";
         } else if (dbType.equals("tinyint")) {
             return "Byte";
