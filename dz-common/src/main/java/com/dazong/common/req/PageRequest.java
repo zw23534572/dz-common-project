@@ -50,7 +50,7 @@ public class PageRequest {
     private String createUser;
 
     public PageRequest() {
-        this.pageNo = 0;
+        this.pageNo = 1;
         this.pageSize = 10;
     }
 
