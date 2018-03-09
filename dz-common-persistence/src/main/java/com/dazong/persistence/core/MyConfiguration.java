@@ -20,6 +20,10 @@ public class MyConfiguration extends Configuration {
 
     private static Logger logger = LoggerFactory.getLogger(MyConfiguration.class);
 
+    public MyConfiguration() {
+        super.setMapUnderscoreToCamelCase(true);
+    }
+
     /**
      * Mybatis加载sql的顺序：<br>
      * 1、加载xml中的sql；<br>

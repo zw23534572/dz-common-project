@@ -6,6 +6,7 @@ import org.apache.commons.lang.StringUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * page 分页的入参
@@ -35,10 +36,12 @@ public class PageRequest {
     /**
      * 开始时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date startDate;
     /**
      * 结束时间
      */
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date endDate;
     /**
      * 查询的关键字
