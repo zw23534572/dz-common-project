@@ -19,11 +19,11 @@ public class PageRequest {
     /**
      * 当前页码
      */
-    private int pageNo;
+    private Integer pageNo;
     /**
      * 每页条数
      */
-    private int pageSize;
+    private Integer pageSize;
     /**
      * 排序名称
      */
@@ -65,6 +65,14 @@ public class PageRequest {
         if (StringUtils.isNotBlank(orderBy)) {
             this.orderBy = SQLFilter.sqlInject(orderBy);
             this.asc = SQLFilter.sqlInject(asc);
+        }
+    }
+
+    public void setPageNo(Integer pageNo) {
+        if (pageNo == null){
+            this.pageNo = 1;
+        } else {
+            this.pageNo = pageNo;
         }
     }
 }
