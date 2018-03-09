@@ -76,11 +76,10 @@ public class Assert {
 
     /**
      * 抛出参数异常
-     * @param filedName 参数名称
+     * @param msg 消息
      */
-    public static void throwIllegalException(String filedName){
-        String errMsg = CommonStatus.ILLEGAL_PARAM.getMessage().replace("{0}", filedName);
-        throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.joinSystemStatusCode(errMsg));
+    public static void throwIllegalException(String msg){
+        throw new ArgumetException(CommonStatus.ILLEGAL_PARAM.joinSystemStatusCode(msg));
     }
 
     /**
