@@ -1,19 +1,18 @@
-package $
+package ${config.entityPackage};
 
-import lombok.EqualsAndHashCode;{basePackage}.model.entity;
 
 import com.dazong.persistence.annotation.TableField;
 import com.dazong.persistence.annotation.TableId;
 import com.dazong.persistence.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import java.io.Serializable;
+import java.util.Date;
 
 /**
- * <B>说明：${entity.comment}</B><BR>
+ * <B>说明：${dbTableInfo.comment}</B><BR>
  *
- * @author ${author}
+ * @author ${config.author}
  * @version 1.0.0.
  * @date ${date}
  */
@@ -23,17 +22,16 @@ import java.io.Serializable;
 public class ${upperModelName} implements Serializable {
 
     private static final long serialVersionUID = 1L;
-<% for(var item in items) {%>
+<% for(var item in dbTableFieldInfoList) {%>
+
     /**
      * ${item.comment}
      */
-    <% if (item.column == entity.keyColumn) {%>
+    <% if (item.column == dbTableInfo.keyColumn) {%>
     @TableId
     <% } else {%>
     @TableField("${item.column}")
     <% }%>
     private ${item.propertyType} ${item.property};
 <% }%>
-
-
 }

@@ -1,77 +1,94 @@
-package ${basePackage}.controller;
+package ${config.controllerPackage};
 
-import ${basePackage}.common.AbstractController;
-import ${basePackage}.common.pojo.QueryVo;
-import ${basePackage}.common.pojo.ResultResponse;
-import ${basePackage}.model.entity.${upperModelName};
-import org.springframework.web.bind.annotation.GetMapping;
 
-import ${basePackage}.service.${upperModelName}Service;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import com.dazong.common.validator.ValidatorUtils;
+import com.github.pagehelper.Page;
+
+import ${config.basePackage}.common.annotation.SysLog;
+import ${config.basePackage}.controller.AbstractController;
+import ${config.requestEntityPackage}.${upperModelName}Request;
+import ${config.responseEntityPackage}.${upperModelName}Response;
+import ${config.entityPackage}.${upperModelName};
+import ${config.servicePackage}.${upperModelName}Service;
 
 /**
- * Created by ZhouWei on 2017/08/05.
+ * <B>说明：</B><BR>
+ *
+ * @author ZhouWei
+ * @version 1.0.0.
+ * @date 2018-03-10 18:47
  */
 @RestController
-@RequestMapping("${baseRequestMapping}")
+@RequestMapping("${config.functionPath}${lowerModelName}")
 public class ${upperModelName}Controller extends AbstractController {
 
     @Autowired
-    private ${upperModelName}Service ${lowerModelName}Service;
+    ${upperModelName}Service ${lowerModelName}Service;
 
     /**
-     * 根据条件,查询对象.支持分页
-     *
-     * @param queryVo
-     * @return
+     * 页面-查询列表
      */
-    @GetMapping("list")
-    public ResultResponse listPost(QueryVo queryVo) {
-        return renderJson(${lowerModelName}Service.selectList(new ${upperModelName}()));
+    @RequestMapping("/list")
+    public ModelAndView list(${upperModelName}Request ${lowerModelName}Request) {
+        ModelAndView mv = render();
+        Page<${upperModelName}Response> page = ${lowerModelName}Service.selectPage(${lowerModelName}Request);
+        mv.addObject("page", page);
+        return mv;
     }
 
     /**
-     * post请求 insert
-     *
-     * @param ${lowerModelName}
-     * @return
+     * 页面-新增
      */
-    @GetMapping("insert")
-    public ResultResponse insert(${upperModelName} ${lowerModelName}) {
-        return renderJson(${lowerModelName}Service.insert(${lowerModelName}));
+    @RequestMapping("/add")
+    public ModelAndView add() {
+        return render();
     }
 
     /**
-     * post请求 update
-     *
-     * @param ${lowerModelName}
-     * @return
+     * 页面-编辑
      */
-    @GetMapping("update")
-    public ResultResponse update(${upperModelName} ${lowerModelName}) {
-        return renderJson(${lowerModelName}Service.updateById(${lowerModelName}));
+    @RequestMapping("/edit")
+    public ModelAndView edit(Long id) {
+        ModelAndView mv = render();
+        ${upperModelName} ${lowerModelName} = ${lowerModelName}Service.selectById(id);
+        mv.addObject("model", ${lowerModelName});
+        return mv;
     }
 
     /**
-     * post请求 delete
-     *
-     * @param id 主键
-     * @return
+     * 接口-新增
      */
-    @GetMapping("delete")
-    public ResultResponse delete(@RequestParam Long id) {
-        return renderJson(${lowerModelName}Service.deleteById(id));
+    @SysLog("新增订单")
+    @RequestMapping("/insert")
+    @RequiresPermissions("sys:${lowerModelName}:insert")
+    public boolean save(${upperModelName}Request ${lowerModelName}Request) {
+        ValidatorUtils.validateEntity(${lowerModelName}Request);
+        return ${lowerModelName}Service.insertOrUpdate(${lowerModelName}Request);
     }
 
     /**
-     * post请求 查询单个对象
-     *
-     * @param id
-     * @return
+     * 修改
      */
-    @GetMapping("info")
-    public ResultResponse infoPost(@RequestParam Long id) {
-        return renderJson(${lowerModelName}Service.selectById(id));
+    @SysLog("修改订单")
+    @RequestMapping("/update")
+    @RequiresPermissions("sys:${lowerModelName}:update")
+    public boolean update(${upperModelName}Request ${lowerModelName}Request) {
+        ValidatorUtils.validateEntity(${lowerModelName}Request);
+        return ${lowerModelName}Service.insertOrUpdate(${lowerModelName}Request);
+    }
+
+    /**
+     * 删除
+     */
+    @SysLog("删除订单")
+    @RequestMapping("/delete")
+    @RequiresPermissions("sys:${lowerModelName}:delete")
+    public boolean delete(long id) {
+        return ${lowerModelName}Service.deleteById(id);
     }
 }

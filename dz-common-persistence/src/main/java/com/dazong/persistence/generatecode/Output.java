@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Output {
@@ -25,6 +26,11 @@ public class Output {
             System.out.println("Output getBeetlConfiguration started");
             ClasspathResourceLoader resourceLoader = new ClasspathResourceLoader();
             Configuration cfg = Configuration.defaultConfiguration();
+            Map<String, String> hashMap = new HashMap<>();
+            hashMap.put("sputil","org.beetl.ext.spring.UtilsFunctionPackage");
+            hashMap.put("strutil","org.beetl.ext.fn.StringUtil");
+
+            cfg.setFnPkgMap(hashMap);
             return new GroupTemplate(resourceLoader, cfg);
         } catch (IOException ex) {
             ex.printStackTrace();

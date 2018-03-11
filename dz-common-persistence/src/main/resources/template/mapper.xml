@@ -3,16 +3,63 @@
 
 <mapper namespace="${config.mapperPackage}.${upperModelName}Mapper">
 
-    <resultMap id="BaseResultMap" type="${config.entityPackage}.${upperModelName}">
-        <% for(var item in items) {%>
-            <% if (item.columnType == 'INT') {%>
-                <result column="${item.column}" property="${item.property}" jdbcType="INTEGER"/>
-            <% } else if(item.columnType == 'DATETIME' || item.columnType == 'TIMESTAMP') {%>
-                <result column="${item.column}" property="${item.property}" jdbcType="DATE"/>
-            <% } else if(item.columnType == 'TEXT')  {%>
-                <result column="${item.column}" property="${item.property}" jdbcType="VARCHAR"/>
+    <sql id="Base_Column_List">
+        <% for(var item in dbTableFieldInfoList) {%>${itemLP.index!=itemLP.size?item.column+",":item.column}<% } %>
+    </sql>
+
+    <select id="selectPage" resultType="${config.responseEntityPackage}.${upperModelName}Response"
+            parameterType="${config.requestEntityPackage}.${upperModelName}Request">
+        select
+        <include refid="Base_Column_List" />
+        from ${tableName}
+        <where>
+        <% for(var item in dbTableFieldInfoList) {
+            var isIgore=false;
+            for(var igoreitem in config.ignoreFieldArr){
+              if(item.column==igoreitem && igoreitem!="create_time" && igoreitem!="create_date"){
+                isIgore = true;
+                break;
+              }
+            }
+            if(isIgore) continue;
+        %>
+            <% if (item.propertyType=='String') {%>
+            <if test="${item.property} != null and ${item.property} != ''">
+                and ${item.column} = #{${item.property}}
+            </if>
+            <% } else if(item.propertyType=='Long' || item.propertyType=='Integer' || item.propertyType=='Byte') {%>
+            <if test="${item.property} != null and ${item.property} >= 0">
+                and ${item.column} = #{${item.property}}
+            </if>
+            <% } else if(item.column=='create_time' || item.column=='create_date') {%>
+            <if test="startDate != null">
+                and ${item.column} &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and ${item.column} &lt;= #{endDate}
+            </if>
             <% } else {%>
-                <result column="${item.column}" property="${item.property}" jdbcType="${item.columnType}"/>
-        <% } }%>
-    </resultMap>
+            <if test="${item.property} != null">
+                and ${item.column} = #{${item.property}}
+            </if>
+            <% } %>
+            <% if(strutil.startWith(item.comment,"@status")) { %>
+            <if test="${item.property}List != null and ${item.property}List.size > 0">
+                and ${item.column} in
+                <foreach collection="${item.property}List" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <% } %>
+        <% } %>
+        </where>
+        <choose>
+            <when test="orderBy != null and orderBy.trim() != ''">
+                order by ${orderBy} ${asc}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

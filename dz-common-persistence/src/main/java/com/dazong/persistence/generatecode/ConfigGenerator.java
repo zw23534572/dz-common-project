@@ -53,15 +53,25 @@ public class ConfigGenerator {
     private String author;
 
     /**
+     * 功能模板名称
+     */
+    private String functionPath;
+
+    /**
      * 忽略的字段
      */
-    private String[] ignoreFieldArr = new String[]{"id", "create_time", "create_user", "update_time", "update_user", "yn"};
+    private String[] ignoreFieldArr = new String[]{"id", "create_time", "create_user", "update_time", "update_user", "update_date", "create_date", "yn"};
+
+    /**
+     * 所有包名
+     */
+    private String[] packageArr = new String[]{".entity.", ".domain.request.", ".domain.response.", ".dao.", ".service.", ".service.impl.", ".controller.", ".domain.enums."};
 
     /**
      * 包名： 实体
      */
     public String getEntityPackage() {
-        return basePackage + ".entity";
+        return basePackage + packageArr[0] + functionPath;
     }
 
     /**
@@ -72,10 +82,38 @@ public class ConfigGenerator {
     }
 
     /**
+     * 包名： 请求的实体
+     */
+    public String getRequestEntityPackage() {
+        return basePackage + packageArr[1] + functionPath;
+    }
+
+    /**
+     * 包路径：请求的实体
+     */
+    public String getRequestEntityPath() {
+        return getSaveDir() + packageConvertPath(getRequestEntityPackage());
+    }
+
+    /**
+     * 包名： 响应的实体
+     */
+    public String getResponseEntityPackage() {
+        return basePackage + packageArr[2] + functionPath;
+    }
+
+    /**
+     * 包路径：请求的实体
+     */
+    public String getResponseEntityPath() {
+        return getSaveDir() + packageConvertPath(getResponseEntityPackage());
+    }
+
+    /**
      * 包名： mapper
      */
     public String getMapperPackage() {
-        return basePackage + ".mapper";
+        return basePackage + packageArr[3] + functionPath;
     }
 
     /**
@@ -89,7 +127,7 @@ public class ConfigGenerator {
      * 包名： service
      */
     public String getServicePackage() {
-        return basePackage + ".service";
+        return basePackage + packageArr[4] + functionPath;
     }
 
     /**
@@ -103,7 +141,7 @@ public class ConfigGenerator {
      * 包名： service impl
      */
     public String getServiceImplPackage() {
-        return basePackage + ".service.impl";
+        return basePackage + packageArr[5] + functionPath;
     }
 
     /**
@@ -117,7 +155,7 @@ public class ConfigGenerator {
      * 包名： controller
      */
     public String getControllerPackage() {
-        return basePackage + ".service.impl";
+        return basePackage + packageArr[6] + functionPath;
     }
 
     /**
@@ -125,6 +163,25 @@ public class ConfigGenerator {
      */
     public String getControllerPath() {
         return getSaveDir() + packageConvertPath(getControllerPackage());
+    }
+
+    /**
+     * 包名： enum
+     */
+    public String getEnumPackage() {
+        return basePackage + packageArr[7];
+    }
+
+    /**
+     * 包路径： enum
+     */
+    public String getEnumPath() {
+        return getSaveDir() + packageConvertPath(getEnumPackage());
+    }
+
+
+    public String getFunctionPath() {
+        return packageConvertPath(this.functionPath);
     }
 
     /**

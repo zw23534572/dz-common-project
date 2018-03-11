@@ -20,8 +20,9 @@ public class GenerateCode {
         configGenerator.setDbPassword("6qjiaVv6!nlz1JSo");
         configGenerator.setDbSchema("yunying");
 
-        configGenerator.setBasePackage("com.dazong.persistence.mybatis");
-        configGenerator.setGenerateTableName("cash_price_config");
+        configGenerator.setBasePackage("com.dazong.yunying");
+        configGenerator.setFunctionPath("sys");
+        configGenerator.setGenerateTableName("trader_order");
 
         new AutoGenerator(configGenerator).run();
     }

@@ -2,14 +2,17 @@ package ${config.mapperPackage};
 
 import com.dazong.persistence.core.BaseMapper;
 import ${config.entityPackage}.${upperModelName};
+import ${config.requestEntityPackage}.${upperModelName}Request;
+import ${config.responseEntityPackage}.${upperModelName}Response;
+import java.util.List;
 
 /**
- * <B>说明：${entity.comment}</B><BR>
+ * <B>说明：${dbTableInfo.comment}</B><BR>
  *
- * @author ${author}
+ * @author ${config.author}
  * @version 1.0.0.
  * @date ${date}
  */
 public interface ${upperModelName}Mapper extends BaseMapper<${upperModelName}> {
-
+    List<${upperModelName}Response> selectPage(${upperModelName}Request ${lowerModelName}Request);
 }

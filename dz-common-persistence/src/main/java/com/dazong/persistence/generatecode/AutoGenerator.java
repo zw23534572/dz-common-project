@@ -2,6 +2,7 @@ package com.dazong.persistence.generatecode;
 
 import com.dazong.persistence.entity.DbTableFieldInfo;
 import com.dazong.persistence.entity.DbTableInfo;
+import com.dazong.persistence.entity.EnumMethodModel;
 
 import java.io.File;
 import java.sql.ResultSet;
@@ -12,6 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.CopyUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+
 /**
  * <B>说明：</B><BR>
  *
@@ -21,6 +27,7 @@ import java.util.Map;
  */
 public class AutoGenerator {
 
+    private static Logger logger = LoggerFactory.getLogger(AutoGenerator.class);
 
     public AutoGenerator(ConfigGenerator config) {
         this.config = config;
@@ -83,7 +90,72 @@ public class AutoGenerator {
             //根据需求生成，不需要的注掉，模板有问题的话可以自己修改。
             buildMapper(data);
             buildEntity(data);
+            buildRequestEntity(data);
+            buildResponseEntity(data);
+            buildEnum(data);
+            buildService(data);
+            buildController(data);
             System.out.println(tableName + "生成完成");
+        }
+    }
+
+    /**
+     * 生成 enum
+     *
+     * @param data
+     */
+    public void buildEnum(Map<String, Object> data) {
+        List<DbTableFieldInfo> dbTableFieldInfoList = (List<DbTableFieldInfo>) data.get("dbTableFieldInfoList");
+        List<EnumMethodModel> enumMethodModelList = new ArrayList<>();
+        DbTableFieldInfo dbTableFieldStatus = new DbTableFieldInfo();
+        try {
+            for (DbTableFieldInfo tableFieldInfo : dbTableFieldInfoList) {
+                String startsWithContent = "@status";
+                if (tableFieldInfo.getComment().startsWith(startsWithContent)) {
+                    String comment = tableFieldInfo.getComment().replace(startsWithContent, "");
+                    comment = comment.substring(1, comment.indexOf(")"));
+                    String[] commentArr = comment.split(",");
+
+                    /**
+                     * 有道翻译成中文字段
+                     */
+                    String englishComment = YoudaoTranslation.toEnglish(comment);
+                    String[] englishCommentArr = englishComment.split(",");
+                    HashMap englishCommentHashMap = new HashMap();
+                    for (String item : englishCommentArr) {
+                        String[] englishFieldNameArr = item.split("=");
+                        if (englishFieldNameArr.length > 0) {
+                            englishCommentHashMap.put(englishFieldNameArr[0], englishFieldNameArr[1]);
+                        }
+                    }
+
+                    for (String item : commentArr) {
+                        String[] fieldNameArr = item.split("=");
+
+                        if (fieldNameArr.length > 0) {
+                            EnumMethodModel enumMethodModel = new EnumMethodModel();
+                            enumMethodModel.setCode(Integer.valueOf(fieldNameArr[0]));
+                            enumMethodModel.setMsg(fieldNameArr[1]);
+                            enumMethodModel.setFieldName((String) englishCommentHashMap.get(fieldNameArr[0]));
+                            enumMethodModelList.add(enumMethodModel);
+                        }
+                    }
+                    BeanUtils.copyProperties(tableFieldInfo, dbTableFieldStatus);
+                    dbTableFieldStatus.setProperty(convertUpperCamel(dbTableFieldStatus.getProperty()));
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            logger.error("AutoGenerator buildEnum ex:{}", ex.getMessage());
+        }
+
+        if (enumMethodModelList.size() > 0) {
+            data.put("statusList", enumMethodModelList);
+            data.put("dbTableFieldStatus", dbTableFieldStatus);
+            String upperModelName = String.valueOf(data.get("upperModelName"));
+            String templatePath = "enum.java";
+            String outputPath = config.getEnumPath() + upperModelName + dbTableFieldStatus.getProperty() + "Enum.java";
+            Output.createFile(templatePath, outputPath, data);
         }
     }
 
@@ -105,14 +177,32 @@ public class AutoGenerator {
     }
 
     /**
-     * 生成实体类
-     *
-     * @param data
+     * 生成entity类
      */
     public void buildEntity(Map<String, Object> data) {
         String upperModelName = String.valueOf(data.get("upperModelName"));
         String templateName = "entity.java";
         String outputName = config.getEntityPath() + upperModelName + ".java";
+        Output.createFile(templateName, outputName, data);
+    }
+
+    /**
+     * 生成request entity类
+     */
+    public void buildRequestEntity(Map<String, Object> data) {
+        String upperModelName = String.valueOf(data.get("upperModelName"));
+        String templateName = "requestEntity.java";
+        String outputName = config.getRequestEntityPath() + upperModelName + "Request.java";
+        Output.createFile(templateName, outputName, data);
+    }
+
+    /**
+     * 生成response entity类
+     */
+    public void buildResponseEntity(Map<String, Object> data) {
+        String upperModelName = String.valueOf(data.get("upperModelName"));
+        String templateName = "responseEntity.java";
+        String outputName = config.getResponseEntityPath() + upperModelName + "Response.java";
         Output.createFile(templateName, outputName, data);
     }
 
@@ -152,23 +242,21 @@ public class AutoGenerator {
      */
     public Map<String, Object> createRenderData(String tableName) {
         Map<String, Object> data = new HashMap();
-        data.put("date", new SimpleDateFormat("yyyy-MM-dd HH:ss").format(new java.util.Date()));
-        data.put("author", config.getAuthor());
-        data.put("basePackage", config.getBasePackage());
-        data.put("baseRequestMapping", tableNameConvertMappingPath(tableName));
-        data.put("config", config);
-        String upperModelName = convertUpperCamel(tableName);
-        data.put("upperModelName", upperModelName);
-        data.put("lowerModelName", tableNameConvertLowerCamel(tableName));
         data.put("tableName", tableName);
+        data.put("date", new SimpleDateFormat("yyyy-MM-dd HH:ss").format(new java.util.Date()));
+        data.put("upperModelName", convertUpperCamel(tableName));
+        data.put("lowerModelName", tableNameConvertLowerCamel(tableName));
+        data.put("config", config);
+        data.put("orderBy", "${orderby}");
+        data.put("asc", "${asc}");
 
         //赋值表信息
         DbTableInfo dbTableInfo = getTableInfo(config.getDbSchema(), tableName);
-        data.put("entity", dbTableInfo);
+        data.put("dbTableInfo", dbTableInfo);
 
         //赋值字段信息
         List<DbTableFieldInfo> dbTableFieldInfoList = getEntityList(tableName, dbTableInfo);
-        data.put("items", dbTableFieldInfoList);
+        data.put("dbTableFieldInfoList", dbTableFieldInfoList);
         return data;
     }
 

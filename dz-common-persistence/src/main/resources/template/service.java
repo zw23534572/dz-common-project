@@ -1,11 +1,35 @@
-package ${basePackage}.service;
+package ${config.servicePackage};
 
-import ${basePackage}.common.AbstractService;
-import ${basePackage}.model.entity.${upperModelName};
+import java.util.List;
+import com.github.pagehelper.Page;
+import ${config.entityPackage}.${upperModelName};
+import ${config.requestEntityPackage}.${upperModelName}Request;
+import ${config.responseEntityPackage}.${upperModelName}Response;
 
 /**
-* Created by ${author} on ${date}.
-*/
-public interface ${upperModelName}Service extends AbstractService<${upperModelName}> {
-
+ * <B>说明：${dbTableInfo.comment}</B><BR>
+ *
+ * @author ${config.author}
+ * @version 1.0.0.
+ * @date ${date}
+ */
+public interface ${upperModelName}Service {
+    /** 自动生成 start */
+    ${upperModelName} selectById(Long id);
+    ${upperModelName} selectOne(${upperModelName} t);
+    List<${upperModelName}> selectList(${upperModelName} t);
+    boolean insertOrUpdate(${upperModelName}Request ${lowerModelName}Request);
+    boolean deleteById(Long id);
+    Page<${upperModelName}Response> selectPage(${upperModelName}Request ${lowerModelName}Request);
+<% for(var item in dbTableFieldInfoList) { %>
+    <% if(strutil.startWith(item.comment,"@yn")) { %>
+    /** @yn 注解生成 */
+    boolean deleteLogicById(Long id);
+    <%}%>
+    <% if(strutil.startWith(item.comment,"@no")) { %>
+    /** @no 注解生成 */
+    ${upperModelName} selectByNo(String no);
+    <%}%>
+<%}%>
+    /** 自动生成 end */
 }

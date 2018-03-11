@@ -8,7 +8,8 @@ package com.dazong.persistence.enums;
  * @author Zhouwei
  */
 public enum FieldStrategyEnum {
-    NULL(0, "null"), NOT_NULL(1, "not null");
+    NULL(0, "null"),
+    NOT_NULL(1, "not null");
 
     /**
      * 主键
