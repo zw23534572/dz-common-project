@@ -13,7 +13,7 @@ public enum SqlMethodEnum {
      */
     SELECT_BY_ID("selectById", "根据ID 查询一条数据", "SELECT %s FROM %s WHERE %s=#{%s}"),
     SELECT_BATCH_BY_IDS("selectBatchIds", "根据ID集合，批量查询数据", "SELECT %s FROM %s WHERE %s IN (%s)"),
-    SELECT_ONE("selectOne", "查询满足条件一条数据", "SELECT %s FROM %s %s"),
+    SELECT_ONE("selectOne", "查询满足条件一条数据", "SELECT %s FROM %s %s limit 1"),
     SELECT_LIST("selectList", "查询满足条件所有数据", "SELECT %s FROM %s %s"),
     SELECT_COUNT("selectCount", "查询满足条件总记录数", "SELECT COUNT(1) FROM %s %s"),
 
