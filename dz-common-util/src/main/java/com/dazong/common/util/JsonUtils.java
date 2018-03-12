@@ -27,7 +27,6 @@ public class JsonUtils {
      * SerializerFeature.WriteNullNumberAsZero -Number null -> 0
      */
     private static SerializerFeature[] serializerFeatures = new SerializerFeature[]{
-            SerializerFeature.PrettyFormat,
             SerializerFeature.WriteDateUseDateFormat,
             SerializerFeature.WriteMapNullValue,
             SerializerFeature.WriteNullStringAsEmpty,
